@@ -1,0 +1,74 @@
+---
+permalink: protect-scu/task_clone_unix_file_systems_backup.html 
+sidebar: sidebar 
+keywords: alternate host, clone, Unix file systems, file systems 
+summary: SnapCenter 사용하면 파일 시스템 백업을 사용하여 Unix 파일 시스템 데이터베이스를 복제할 수 있습니다. 
+---
+= Unix 파일 시스템 백업 복제
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 사용하면 파일 시스템의 백업을 사용하여 Unix 파일 시스템을 복제할 수 있습니다.
+
+.시작하기 전에
+* _agent.properties_ 파일(_/opt/ NetApp/snapcenter/scc/etc_)에서 _SKIP_FSTAB_UPDATE_ 값을 *true*로 설정하면 fstab 파일 업데이트를 건너뛸 수 있습니다.
+* _agent.properties_ 파일(_/opt/ NetApp/snapcenter/scc/etc_)에서 _USE_CUSTOM_CLONE_VOLUME_NAME_FORMAT_ 값을 *true*로 설정하면 정적 복제 볼륨 이름과 연결 경로를 사용할 수 있습니다.  파일을 업데이트한 후 다음 명령을 실행하여 SnapCenter 플러그인 생성 서비스를 다시 시작해야 합니다. `/opt/NetApp/snapcenter/scc/bin/scc restart` .
++
+예: 이 속성이 없으면 복제 볼륨 이름과 접합 경로는 <Source_volume_name>_Clone_<Timestamp>와 같지만 이제는 <Source_volume_name>_Clone_<Clone_Name>이 됩니다.
+
++
+이렇게 하면 이름이 일정하게 유지되므로 SnapCenter 에서 fstab을 업데이트하지 않으려는 경우 fstab 파일을 수동으로 업데이트할 수 있습니다.
+
+
+
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 클릭한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 *보기* 목록에서 *경로* 또는 *리소스 그룹*을 선택합니다.
+. 세부 정보 보기 또는 리소스 그룹 세부 정보 보기에서 파일 시스템을 선택합니다.
++
+토폴로지 페이지가 표시됩니다.
+
+. 복사본 관리 보기에서 로컬 복사본(기본), 미러 복사본(보조) 또는 볼트 복사본(보조) 중에서 백업을 선택합니다.
+. 테이블에서 백업을 선택한 후 *를 클릭합니다.image:../media/clone_icon.gif["복제 아이콘"] *.
+. 위치 페이지에서 다음 작업을 수행합니다.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+복제 서버
+ a| 
+기본적으로 소스 호스트가 채워져 있습니다.
+
+
+
+ a| 
+클론 마운트 지점
+ a| 
+파일 시스템이 마운트될 경로를 지정합니다.
+
+|===
+. 스크립트 페이지에서 다음 단계를 수행합니다.
++
+.. 복제 작업 전이나 후에 실행해야 하는 사전 복제 또는 사후 복제에 대한 명령을 각각 입력합니다.
++
+
+NOTE: 플러그인 호스트에서 사용 가능한 명령 목록에 해당 명령이 있는지 _/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_ 경로에서 확인해야 합니다.
+
+
+
+. 알림 페이지의 *이메일 환경 설정* 드롭다운 목록에서 이메일을 보낼 시나리오를 선택합니다.
++
+또한 발신자와 수신자의 이메일 주소와 이메일 제목을 지정해야 합니다.  수행된 복제 작업의 보고서를 첨부하려면 *작업 보고서 첨부*를 선택하세요.
+
++
+
+NOTE: 이메일 알림을 받으려면 GUI나 PowerShell 명령 Set-SmSmtpServer를 사용하여 SMTP 서버 세부 정보를 지정해야 합니다.
+
+. 요약을 검토한 후 *마침*을 클릭하세요.
+. *모니터* > *작업*을 클릭하여 작업 진행 상황을 모니터링하세요.
+

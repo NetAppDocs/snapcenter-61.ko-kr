@@ -1,0 +1,49 @@
+---
+permalink: uninstall/reference_prerequisites_for_removing_a_host.html 
+sidebar: sidebar 
+keywords: uninstall, prerequisites, plug-in, plug-in packages 
+summary: 더 이상 SnapCenter 사용하여 데이터 보호 작업을 관리하지 않으려면 호스트를 제거할 수 있습니다.  예를 들어, 더 이상 보호해야 할 데이터가 없는 경우 호스트를 제거하고 싶을 수 있습니다.  SnapCenter 서버에서 호스트를 제거하기 전에 필수 작업을 수행해야 합니다. 
+---
+= 호스트 제거를 위한 전제 조건
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter GUI를 사용하여 호스트를 제거하고 개별 플러그인이나 플러그인 패키지를 제거할 수 있습니다.  SnapCenter 서버 호스트에서 명령줄 인터페이스(CLI)를 사용하거나 모든 호스트에서 로컬로 Windows *프로그램 제거* 옵션을 사용하여 원격 호스트에서 개별 플러그인이나 플러그인 패키지를 제거할 수도 있습니다.
+
+SnapCenter 서버에서 호스트를 제거하기 전에 필수 조건을 완료해야 합니다.
+
+* 관리자로 로그인해야 합니다.
+* 호스트에서 검색 작업이 실행되고 있지 않은지 확인해야 합니다.
+* 호스트와 연관된 모든 객체를 제거하려면 필요한 권한이 있는 역할이 할당되어야 합니다.  그렇지 않으면 제거 작업이 실패합니다.
+* SnapCenter 에 호스트를 추가한 후 SSH 키가 수정된 경우 지문을 확인해야 합니다.
+* SnapCenter 호스트가 SnapCenter 의 최신 버전으로 업그레이드되었지만 플러그인 호스트가 여전히 이전 버전의 플러그인을 실행 중인 경우 지문을 확인해야 합니다.
+
+
+
+
+== 역할 기반 액세스 제어를 사용하여 호스트를 제거하기 위한 전제 조건
+
+* 읽기, 호스트 삭제, 플러그인 설치, 제거, 개체 삭제 권한이 있는 RBAC 역할을 사용하여 로그인했어야 합니다.
++
+객체에는 복제, 백업, 리소스 그룹, 스토리지 시스템 등이 있습니다.
+
+* RBAC 사용자를 RBAC 역할에 추가했어야 합니다.
+* 삭제하려는 호스트, 플러그인, 자격 증명, 리소스 그룹 및 스토리지 시스템(복제본의 경우)에 RBAC 사용자를 할당해야 합니다.
+* SnapCenter 에 RBAC 사용자로 로그인했어야 합니다.
+
+
+
+
+== 복제 수명 주기 작업에서 생성된 복제본이 있는 호스트를 제거하기 위한 전제 조건
+
+* SQL 데이터베이스에 대한 복제 수명 주기 관리를 사용하여 복제 작업을 생성했어야 합니다.
+* 복제 읽기 및 삭제, 리소스 읽기 및 삭제, 리소스 그룹 읽기 및 삭제, 스토리지 읽기 및 삭제, 프로비저닝 읽기 및 삭제, 마운트, 마운트 해제, 플러그인 설치 및 설치 제거, 호스트 읽기 및 삭제 권한이 있는 RBAC 역할을 만들어야 합니다.
+* RBAC 사용자에게 RBAC 역할을 할당했어야 합니다.
+* 호스트, Microsoft SQL Server용 SnapCenter 플러그인, 자격 ​​증명, 복제 수명 주기 리소스 그룹 및 스토리지 시스템에 RBAC 사용자를 할당했어야 합니다.
+* SnapCenter 에 RBAC 사용자로 로그인했어야 합니다.
+
+
+SnapCenter Plug-in for VMware vSphere 제거에 대한 자세한 내용은 다음을 참조하세요. https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_remove_plugin.html["SnapCenter Plug-in for VMware vSphere 제거"^] .

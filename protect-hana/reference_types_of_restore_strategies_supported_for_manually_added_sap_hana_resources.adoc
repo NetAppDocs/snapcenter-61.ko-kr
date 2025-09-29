@@ -1,0 +1,35 @@
+---
+permalink: protect-hana/reference_types_of_restore_strategies_supported_for_manually_added_sap_hana_resources.html 
+sidebar: sidebar 
+keywords: SnapCenter 
+summary: SnapCenter 사용하여 복원 작업을 성공적으로 수행하려면 먼저 전략을 정의해야 합니다.  수동으로 추가된 SAP HANA 리소스에 대한 복원 전략에는 두 가지 유형이 있습니다.  수동으로 추가한 SAP HANA 리소스는 복구할 수 없습니다. 
+---
+= 수동으로 추가된 SAP HANA 리소스에 지원되는 복원 전략 유형
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 사용하여 복원 작업을 성공적으로 수행하려면 먼저 전략을 정의해야 합니다.  수동으로 추가된 SAP HANA 리소스에 대한 복원 전략에는 두 가지 유형이 있습니다.  수동으로 추가한 SAP HANA 리소스는 복구할 수 없습니다.
+
+
+NOTE: 수동으로 추가한 SAP HANA 리소스는 복구할 수 없습니다.
+
+
+
+== 리소스 복구 완료
+
+* 리소스의 모든 볼륨, Qtree 및 LUN을 복원합니다.
+
+
+
+NOTE: 리소스에 볼륨이나 Q트리가 포함되어 있는 경우 해당 볼륨이나 Q트리에서 복원을 위해 선택한 스냅샷 이후에 생성된 스냅샷은 삭제되며 복구할 수 없습니다.  또한, 동일한 볼륨이나 Q트리에 다른 리소스가 호스팅되는 경우 해당 리소스도 삭제됩니다.
+
+
+
+== 파일 수준 복원
+
+* 볼륨, Qtree 또는 디렉토리에서 파일을 복원합니다.
+* 선택된 LUN만 복원합니다.
+

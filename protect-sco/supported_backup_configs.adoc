@@ -1,0 +1,47 @@
+---
+permalink: protect-sco/supported_backup_configs.html 
+sidebar: sidebar 
+keywords: backup type, preferred nodes, catalog backups, schedules, backup name format, retention, verification 
+summary: SnapCenter 다양한 Oracle 데이터베이스 구성의 백업을 지원합니다. 
+---
+= 백업을 위한 지원되는 Oracle 데이터베이스 구성
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 다양한 Oracle 데이터베이스 구성의 백업을 지원합니다.
+
+* Oracle Standalone
+* Oracle Real Application Clusters(RAC)
+* Oracle Standalone 레거시
+* Oracle 독립형 컨테이너 데이터베이스(CDB)
+* Oracle Data Guard 대기
++
+Data Guard 대기 데이터베이스의 오프라인 마운트 백업만 생성할 수 있습니다.  오프라인 종료 백업, 보관 로그 전용 백업 및 전체 백업은 지원되지 않습니다.
+
+* Oracle Active Data Guard 대기
++
+Active Data Guard 대기 데이터베이스의 온라인 백업만 생성할 수 있습니다.  아카이브 로그만 백업하고 전체 백업은 지원되지 않습니다.
+
++
+Data Guard 대기 또는 Active Data Guard 대기 데이터베이스의 백업을 생성하기 전에 관리형 복구 프로세스(MRP)가 중지되고 백업이 생성되면 MRP가 시작됩니다.
+
+* 자동 스토리지 관리(ASM)
++
+** 가상 머신 디스크(VMDK)의 ASM 독립형 및 ASM RAC
++
+Oracle 데이터베이스에 지원되는 모든 복원 방법 중에서 VMDK에서는 ASM RAC 데이터베이스에 대한 연결 및 복사 복원만 수행할 수 있습니다.
+
+** ASM 독립형 및 원시 장치 매핑(RDM)의 ASM RAC + ASMLib을 사용하거나 사용하지 않고 ASM에서 Oracle 데이터베이스에 대한 백업, 복원 및 복제 작업을 수행할 수 있습니다.
+** Oracle ASM 필터 드라이버(ASMFD)
++
+PDB 마이그레이션 및 PDB 복제 작업은 지원되지 않습니다.
+
+** 오라클 플렉스 ASM
+
+
+
+
+지원되는 Oracle 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121071;&solution=1259&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .

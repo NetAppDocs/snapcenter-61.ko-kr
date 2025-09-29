@@ -1,0 +1,85 @@
+---
+permalink: install/task_add_an_rbac_role_using_security_login_commands.html 
+sidebar: sidebar 
+keywords: RBAC roles, add, NetApp ONTAP RBAC role, storage system 
+summary: 스토리지 시스템에서 클러스터형 NetApp ONTAP 실행하는 경우 보안 로그인 명령을 사용하여 NetApp ONTAP RBAC 역할을 추가할 수 있습니다. 
+---
+= 보안 로그인 명령을 사용하여 NetApp ONTAP RBAC 역할 추가
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+스토리지 시스템에서 클러스터형 ONTAP 실행하는 경우 보안 로그인 명령을 사용하여 NetApp ONTAP RBAC 역할을 추가할 수 있습니다.
+
+.시작하기 전에
+* 수행하고자 하는 작업(들)과 해당 작업을 수행하는 데 필요한 권한을 확인하세요.
+* 명령 및/또는 명령 디렉토리에 권한을 부여합니다.
++
+각 명령/명령 디렉토리에는 모든 액세스와 읽기 전용의 두 가지 액세스 수준이 있습니다.
+
++
+항상 모든 접근 권한을 먼저 할당해야 합니다.
+
+* 사용자에게 역할을 할당합니다.
+* SnapCenter 플러그인이 전체 클러스터의 클러스터 관리자 IP에 연결되어 있는지, 아니면 클러스터 내의 SVM에 직접 연결되어 있는지에 따라 구성을 식별합니다.
+
+
+.이 작업에 관하여
+스토리지 시스템에서 이러한 역할의 구성을 간소화하려면 NetApp 커뮤니티 포럼에 게시된 NetApp ONTAP 도구용 RBAC 사용자 생성기를 사용하면 됩니다.
+
+이 도구는 ONTAP 권한을 올바르게 설정하는 작업을 자동으로 처리합니다.  예를 들어, NetApp ONTAP 도구용 RBAC User Creator는 모든 액세스 권한이 먼저 나타나도록 올바른 순서로 권한을 자동으로 추가합니다.  먼저 읽기 전용 권한을 추가한 다음 모든 액세스 권한을 추가하면 ONTAP 모든 액세스 권한을 중복으로 표시하고 무시합니다.
+
+
+NOTE: 나중에 SnapCenter 또는 ONTAP 업그레이드하는 경우 NetApp ONTAP 도구용 RBAC User Creator를 다시 실행하여 이전에 만든 사용자 역할을 업데이트해야 합니다.  이전 버전의 SnapCenter 또는 ONTAP 에서 생성된 사용자 역할은 업그레이드된 버전에서는 제대로 작동하지 않습니다.  도구를 다시 실행하면 자동으로 업그레이드가 처리됩니다.  역할을 다시 만들 필요는 없습니다.
+
+ONTAP RBAC 역할 설정에 대한 자세한 내용은 다음을 참조하세요. http://docs.netapp.com/ontap-9/topic/com.netapp.doc.pow-adm-auth-rbac/home.html["ONTAP 9 관리자 인증 및 RBAC 전원 가이드"^] .
+
+.단계
+. 스토리지 시스템에서 다음 명령을 입력하여 새 역할을 만듭니다.
++
+`security login role create <role_name\> -cmddirname "command" -access all –vserver <svm_name\>`
+
++
+** svm_name은 SVM의 이름입니다.  이 항목을 비워 두면 기본적으로 클러스터 관리자가 됩니다.
+** role_name은 역할에 지정하는 이름입니다.
+** 명령은 ONTAP 기능입니다.
++
+
+NOTE: 각 권한에 대해 이 명령을 반복해야 합니다.  모든 액세스 명령은 읽기 전용 명령보다 먼저 나열되어야 한다는 점을 기억하세요.
+
++
+권한 목록에 대한 정보는 다음을 참조하세요.link:../install/task_create_an_ontap_cluster_role_with_minimum_privileges.html#ontap-cli-commands-for-creating-cluster-roles-and-assigning-permissions["역할 생성 및 권한 할당을 위한 ONTAP CLI 명령"^] .
+
+
+
+. 다음 명령을 입력하여 사용자 이름을 만듭니다.
++
+`security login create -username <user_name\> -application ontapi -authmethod <password\> -role <name_of_role_in_step_1\> –vserver <svm_name\> -comment "user_description"`
+
++
+** user_name은 생성하려는 사용자의 이름입니다.
+** <password>는 귀하의 비밀번호입니다.  비밀번호를 지정하지 않으면 시스템에서 비밀번호를 입력하라고 요청합니다.
+** svm_name은 SVM의 이름입니다.
+
+
+. 다음 명령을 입력하여 사용자에게 역할을 할당합니다.
++
+`security login modify username <user_name\> –vserver <svm_name\> -role <role_name\> -application ontapi -application console -authmethod <password\>`
+
++
+** <user_name>은 2단계에서 생성한 사용자의 이름입니다.  이 명령을 사용하면 사용자를 수정하여 역할과 연결할 수 있습니다.
+** <svm_name>은 SVM의 이름입니다.
+** <role_name>은 1단계에서 만든 역할의 이름입니다.
+** <password>는 귀하의 비밀번호입니다.  비밀번호를 지정하지 않으면 시스템에서 비밀번호를 입력하라고 요청합니다.
+
+
+. 다음 명령을 입력하여 사용자가 올바르게 생성되었는지 확인하세요.
++
+`security login show –vserver <svm_name\> -user-or-group-name <user_name\>`
+
++
+user_name은 3단계에서 생성한 사용자의 이름입니다.
+
+

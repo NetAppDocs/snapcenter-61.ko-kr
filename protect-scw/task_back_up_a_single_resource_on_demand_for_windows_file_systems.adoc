@@ -1,0 +1,210 @@
+---
+permalink: protect-scw/task_back_up_a_single_resource_on_demand_for_windows_file_systems.html 
+sidebar: sidebar 
+keywords: backing up 
+summary: 리소스가 리소스 그룹에 없는 경우 리소스 페이지에서 필요에 따라 리소스를 백업할 수 있습니다. 
+---
+= Windows 파일 시스템에 대한 단일 리소스를 필요에 따라 백업합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스가 리소스 그룹에 없는 경우 리소스 페이지에서 필요에 따라 리소스를 백업할 수 있습니다.
+
+.이 작업에 관하여
+보조 저장소와 SnapMirror 관계가 있는 리소스를 백업하려면 저장소 사용자에게 할당된 역할에 "`snapmirror all`" 권한이 포함되어야 합니다.  하지만 "`vsadmin`" 역할을 사용하는 경우 "`snapmirror all`" 권한은 필요하지 않습니다.
+
+
+NOTE: 파일 시스템을 백업할 때 SnapCenter 백업 중인 파일 시스템의 볼륨 마운트 지점(VMP)에 마운트된 LUN을 백업하지 않습니다.
+
+
+IMPORTANT: Windows 파일 시스템 컨텍스트에서 작업하는 경우 데이터베이스 파일을 백업하지 마세요.  그렇게 하면 일관되지 않은 백업이 생성되고 복원 시 데이터가 손실될 가능성이 있습니다.  데이터베이스 파일을 보호하려면 데이터베이스에 적합한 SnapCenter 플러그인을 사용해야 합니다(예: Microsoft SQL Server용 SnapCenter 플러그인 또는 Microsoft Exchange Server용 SnapCenter 플러그인).
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 클릭한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 파일 시스템 리소스 유형을 선택한 다음 백업할 리소스를 선택합니다.
+. 파일 시스템 보호 마법사가 자동으로 시작되지 않으면 *보호*를 클릭하여 마법사를 시작합니다.
++
+리소스 그룹 생성 작업에 설명된 대로 보호 설정을 지정합니다.
+
+. 선택 사항: 마법사의 리소스 페이지에서 스냅샷에 대한 사용자 지정 이름 형식을 입력합니다.
++
+예를 들어, customtext_resourcegroup_policy_hostname 또는 resourcegroup_hostname입니다.  기본적으로 타임스탬프는 스냅샷 이름에 추가됩니다.
+
+. 정책 페이지에서 다음 작업을 수행합니다.
++
+.. 드롭다운 목록에서 하나 이상의 정책을 선택하세요.
++
+기존 정책을 선택한 다음 *세부정보*를 클릭하면 해당 정책을 사용할 수 있는지 확인할 수 있습니다.
+
++
+기존 정책이 요구 사항을 충족하지 않는 경우 기존 정책을 복사하여 수정하거나 다음을 클릭하여 새 정책을 만들 수 있습니다.image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] 정책 마법사를 시작합니다.  기존 정책이 요구 사항을 충족하지 않는 경우 기존 정책을 복사하여 수정하거나 다음을 클릭하여 새 정책을 만들 수 있습니다.image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] 정책 마법사를 시작합니다.
+
++
+선택한 정책은 '선택한 정책에 대한 일정 구성' 섹션의 '정책' 열에 나열됩니다.
+
+.. 선택한 정책에 대한 일정 구성 섹션에서 다음을 클릭합니다.image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] 일정을 구성하려는 정책의 일정 구성 열에 있습니다.
+.. 정책 _정책_이름_에 대한 일정 추가 대화 상자에서 시작 날짜, 만료 날짜, 빈도를 지정하여 일정을 구성한 다음 *마침*을 클릭합니다.
++
+구성된 일정은 '선택한 정책에 대한 일정 구성' 섹션의 '적용된 일정' 열에 나열됩니다.
+
++
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Scheduled_data_protection_operations_fail_if_the_number_of_operations_running_reaches_maximum_limit["예정된 작업이 실패할 수 있습니다"]
+
+
+
+. 알림 페이지에서 다음 작업을 수행합니다.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+이메일 환경 설정
+ a| 
+백업 리소스 그룹을 만들고, 정책을 첨부하고, 일정을 구성한 후 수신자에게 이메일을 보내려면 *항상*, *실패 시*, *실패 또는 경고 시*를 선택합니다.
+
+SMTP 서버 정보, 기본 이메일 제목줄, "받는 사람" 및 "보낸 사람" 이메일 주소를 입력합니다.
+
+
+
+ a| 
+에서
+ a| 
+이메일 주소
+
+
+
+ a| 
+에게
+ a| 
+이메일 주소로
+
+
+
+ a| 
+주제
+ a| 
+기본 이메일 제목줄
+
+|===
+. 요약을 검토한 후 *마침*을 클릭하세요.
++
+데이터베이스 토폴로지 페이지가 표시됩니다.
+
+. *지금 백업*을 클릭하세요.
+. 백업 페이지에서 다음 단계를 수행합니다.
++
+.. 리소스에 여러 정책을 적용한 경우 정책 드롭다운 목록에서 백업에 사용할 정책을 선택합니다.
++
+주문형 백업에 대해 선택한 정책이 백업 일정과 연결되어 있는 경우, 주문형 백업은 일정 유형에 지정된 보존 설정에 따라 보존됩니다.
+
+.. *백업*을 클릭하세요.
+
+
+. *모니터* > *작업*을 클릭하여 작업 진행 상황을 모니터링하세요.
+
+
+--
+.PowerShell cmdlet
+--
+.단계
+. Open-SmConnection cmdlet을 사용하여 지정된 사용자에 대한 SnapCenter 서버와의 연결 세션을 시작합니다.
++
+[listing]
+----
+Open-smconnection  -SMSbaseurl  https://snapctr.demo.netapp.com:8146
+----
++
+사용자 이름과 비밀번호를 입력하라는 메시지가 표시됩니다.
+
+. Add-SmPolicy cmdlet을 사용하여 백업 정책을 만듭니다.
++
+이 예제에서는 FullBackup의 SQL 백업 유형을 사용하여 새 백업 정책을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmPolicy -PolicyName TESTPolicy
+-PluginPolicyType SCSQL -PolicyType Backup
+-SqlBackupType FullBackup -Verbose
+----
++
+이 예제에서는 CrashConsistent의 Windows 파일 시스템 백업 유형을 사용하여 새 백업 정책을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmPolicy -PolicyName FileSystemBackupPolicy
+-PluginPolicyType SCW -PolicyType Backup
+-ScwBackupType CrashConsistent -Verbose
+----
+. Get-SmResources cmdlet을 사용하여 호스트 리소스를 검색합니다.
++
+이 예제에서는 지정된 호스트에서 Microsoft SQL 플러그인에 대한 리소스를 검색합니다.
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmResources -HostName vise-f6.sddev.mycompany.com
+-PluginCode SCSQL
+----
++
+이 예제에서는 지정된 호스트에서 Windows 파일 시스템의 리소스를 검색합니다.
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmResources -HostName vise2-f6.sddev.mycompany.com
+-PluginCode SCW
+----
+. Add-SmResourceGroup cmdlet을 사용하여 SnapCenter 에 새 리소스 그룹을 추가합니다.
++
+이 예제에서는 지정된 정책과 리소스를 사용하여 새로운 SQL 데이터베이스 백업 리소스 그룹을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmResourceGroup -ResourceGroupName AccountingResource
+-Resources @{"Host"="visef6.org.com";
+"Type"="SQL Database";"Names"="vise-f6\PayrollDatabase"}
+-Policies "BackupPolicy"
+----
++
+이 예제에서는 지정된 정책과 리소스를 사용하여 새로운 Windows 파일 시스템 백업 리소스 그룹을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmResourceGroup -ResourceGroupName EngineeringResource
+-PluginCode SCW -Resources @{"Host"="WIN-VOK20IKID5I";
+"Type"="Windows Filesystem";"Names"="E:\"}
+-Policies "EngineeringBackupPolicy"
+----
+. New-SmBackup cmdlet을 사용하여 새로운 백업 작업을 시작합니다.
++
+[listing]
+----
+PS C:> New-SmBackup -ResourceGroupName PayrollDataset -Policy FinancePolicy
+----
+. Get-SmBackupReport cmdlet을 사용하여 백업 작업의 상태를 확인합니다.
++
+이 예제에서는 지정된 날짜에 실행된 모든 작업에 대한 작업 요약 보고서를 표시합니다.
+
++
+[listing]
+----
+PS C:\> Get-SmJobSummaryReport -Date '1/27/2016'
+----
+
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+--
+====

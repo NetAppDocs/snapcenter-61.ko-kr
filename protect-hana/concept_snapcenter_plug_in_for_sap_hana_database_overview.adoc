@@ -1,0 +1,20 @@
+---
+permalink: protect-hana/concept_snapcenter_plug_in_for_sap_hana_database_overview.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: SAP HANA 데이터베이스용 SnapCenter 플러그인은 NetApp SnapCenter software 의 호스트 측 구성 요소로, SAP HANA 데이터베이스의 애플리케이션 인식 데이터 보호 관리를 지원합니다.  SAP HANA 데이터베이스용 플러그인은 SnapCenter 환경에서 SAP HANA 데이터베이스의 백업, 복원 및 복제를 자동화합니다. 
+---
+= SAP HANA 데이터베이스용 SnapCenter 플러그인 개요
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SAP HANA 데이터베이스용 SnapCenter 플러그인은 NetApp SnapCenter software 의 호스트 측 구성 요소로, SAP HANA 데이터베이스의 애플리케이션 인식 데이터 보호 관리를 지원합니다.  SAP HANA 데이터베이스용 플러그인은 SnapCenter 환경에서 SAP HANA 데이터베이스의 백업, 복원 및 복제를 자동화합니다.
+
+SnapCenter 단일 컨테이너와 멀티테넌트 데이터베이스 컨테이너(MDC)를 지원합니다.  Windows와 Linux 환경 모두에서 SAP HANA 데이터베이스 플러그인을 사용할 수 있습니다.  HANA 데이터베이스 호스트에 설치되지 않은 플러그인을 중앙 집중식 호스트 플러그인이라고 합니다. 중앙 집중식 호스트 플러그인은 여러 호스트에 걸쳐 있는 여러 HANA 데이터베이스를 관리할 수 있습니다.
+
+SAP HANA 데이터베이스용 플러그인이 설치되면 NetApp SnapMirror 기술과 함께 SnapCenter 사용하여 다른 볼륨에 백업 세트의 미러 사본을 만들 수 있습니다.  NetApp SnapVault 기술과 함께 플러그인을 사용하면 표준을 준수하기 위해 디스크 간 백업 복제를 수행할 수도 있습니다.
+
+SAP HANA 데이터베이스용 플러그인은 SnapMirror Active Sync(처음에는 SnapMirror Business Continuity[SM-BC]로 출시)를 지원하여 사이트 전체에 장애가 발생하더라도 비즈니스 서비스가 계속 운영될 수 있도록 하며, 보조 복사본을 사용하여 애플리케이션이 투명하게 장애 조치되도록 지원합니다.  SnapMirror Active Sync를 사용하면 장애 조치를 트리거하는 데 수동 개입이나 추가 스크립팅이 필요하지 않습니다.

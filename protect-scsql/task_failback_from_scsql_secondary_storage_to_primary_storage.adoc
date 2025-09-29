@@ -1,0 +1,41 @@
+---
+permalink: protect-scsql/task_failback_from_scsql_secondary_storage_to_primary_storage.html 
+sidebar: sidebar 
+keywords: failback, snapcenter 
+summary: SQL Server 기본 저장소용 SnapCenter 플러그인이 다시 온라인 상태가 되면 기본 저장소로 장애 복구해야 합니다. 
+---
+= SQL Server 보조 스토리지용 SnapCenter 플러그인에서 기본 스토리지로의 장애 복구
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SQL Server 기본 저장소용 SnapCenter 플러그인이 다시 온라인 상태가 되면 기본 저장소로 장애 복구해야 합니다.
+
+.시작하기 전에
+* 관리 호스트 페이지에서 SQL Server용 SnapCenter 플러그인을 *유지 관리* 모드로 전환합니다.
+* 호스트에서 보조 저장소의 연결을 끊고 기본 저장소에서 연결합니다.
+* 기본 저장소로 장애 복구하려면 역방향 재동기화 작업을 수행하여 관계 방향이 장애 조치 전과 동일하게 유지되도록 합니다.
++
+역방향 재동기화 작업 후에 기본 및 보조 저장소의 역할을 유지하려면 역방향 재동기화 작업을 다시 한 번 수행합니다.
+
++
+자세한 내용은 다음을 참조하세요.link:https://docs.netapp.com/us-en/ontap-sm-classic/online-help-96-97/task_reverse_resynchronizing_snapmirror_relationships.html["역방향 재동기화 미러 관계"]
+
+* MSSQL 서버 서비스를 다시 시작합니다.
+* SQL 리소스가 다시 온라인 상태인지 확인하세요.
+
+
+
+NOTE: 플러그인의 장애 조치(failover) 또는 장애 복구(failback) 중에 플러그인의 전체 상태가 즉시 새로 고쳐지지 않습니다.  호스트와 플러그인의 전반적인 상태는 후속 호스트 새로 고침 작업 중에 업데이트됩니다.
+
+.단계
+. 설정 페이지에서 *설정* > *전역 설정* > *재해 복구*로 이동합니다.
+. *재해 복구 활성화*를 선택 해제합니다.
+. *적용*을 클릭하세요.
+. *모니터* > *작업*을 클릭하여 DR 작업이 활성화되어 있는지 확인하세요.
+
+
+.당신이 완료한 후
+UI나 다음 cmdlet을 사용하여 장애 조치 중에 생성된 SQL Server 백업용 SnapCenter 플러그인을 삭제할 수 있습니다. `Remove-SmDRFailoverBackups`

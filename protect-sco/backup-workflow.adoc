@@ -1,0 +1,26 @@
+---
+permalink: protect-sco/backup-workflow.html 
+sidebar: sidebar 
+keywords: backup, workflow 
+summary: '리소스(데이터베이스) 또는 리소스 그룹의 백업을 만들 수 있습니다.' 
+---
+= 백업 절차 개요
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스(데이터베이스) 또는 리소스 그룹의 백업을 만들 수 있습니다.  백업 절차에는 계획, 백업 리소스 식별, 백업 정책 생성, 리소스 그룹 생성 및 정책 첨부, 백업 생성, 작업 모니터링이 포함됩니다.
+
+다음 워크플로는 백업 작업을 수행해야 하는 순서를 보여줍니다.
+
+image::../media/sco_backup_workflow.gif[Oracle용 백업 워크플로]
+
+Oracle 데이터베이스에 대한 백업을 생성하는 동안 여러 작업이 데이터베이스에서 실행되는 것을 방지하기 위해 Oracle 데이터베이스 호스트의 _/var/opt/snapcenter/sco/lock_ 디렉토리에 작업 잠금 파일(_.sm_lock_dbsid_)이 생성됩니다.  데이터베이스가 백업된 후에는 운영 잠금 파일이 자동으로 제거됩니다.
+
+하지만 이전 백업이 경고와 함께 완료된 경우 작업 잠금 파일이 삭제되지 않을 수 있으며, 다음 백업 작업이 대기 큐에 들어갈 수 있습니다.  *.sm_lock_dbsid* 파일을 삭제하지 않으면 결국 취소될 수 있습니다.  이러한 시나리오에서는 다음 단계를 수행하여 수동으로 운영 잠금 파일을 삭제해야 합니다.
+
+. 명령 프롬프트에서 _/var/opt/snapcenter/sco/lock_으로 이동합니다.
+. 작업 잠금을 삭제합니다.``rm -rf .sm_lock_dbsid.``
+

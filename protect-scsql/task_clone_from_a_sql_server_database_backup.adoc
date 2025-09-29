@@ -1,0 +1,359 @@
+---
+permalink: protect-scsql/task_clone_from_a_sql_server_database_backup.html 
+sidebar: sidebar 
+keywords: clone 
+summary: SnapCenter 사용하여 SQL Server 데이터베이스 백업을 복제할 수 있습니다.  이전 버전의 데이터에 액세스하거나 복원하려면 필요에 따라 데이터베이스 백업을 복제할 수 있습니다. 
+---
+= SQL Server 데이터베이스 백업에서 복제
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 사용하여 SQL Server 데이터베이스 백업을 복제할 수 있습니다.  이전 버전의 데이터에 액세스하거나 복원하려면 필요에 따라 데이터베이스 백업을 복제할 수 있습니다.
+
+.시작하기 전에
+* 호스트 추가, 리소스 식별, 스토리지 시스템 연결 생성 등의 작업을 완료하여 데이터 보호를 준비했어야 합니다.
+* 데이터베이스나 리소스 그룹을 백업했어야 합니다.
+* 데이터 LUN과 로그 LUN에 대한 미러, 볼트 또는 미러-볼트와 같은 보호 유형은 로그 백업을 사용하여 대체 호스트에 복제하는 동안 보조 로케이터를 검색하기 위해 동일해야 합니다.
+* SnapCenter 복제 작업 중에 마운트된 복제 드라이브를 찾을 수 없는 경우 SnapCenter 서버의 CloneRetryTimeout 매개변수를 300으로 변경해야 합니다.
+* 볼륨을 호스팅하는 집계가 스토리지 가상 머신(SVM)의 할당된 집계 목록에 있는지 확인해야 합니다.
+
+
+.이 작업에 관하여
+* 독립 실행형 데이터베이스 인스턴스에 복제하는 동안 마운트 지점 경로가 존재하고 전용 디스크인지 확인하세요.
+* FCI(장애 조치 클러스터 인스턴스)에 복제하는 동안 마운트 지점이 있는지, 공유 디스크인지, 경로와 FCI가 동일한 SQL 리소스 그룹에 속해야 하는지 확인하세요.
+* 각 호스트에 연결된 vFC 또는 FC 이니시에이터가 하나만 있는지 확인하세요.  이는 SnapCenter 호스트당 하나의 이니시에이터만 지원하기 때문입니다.
+* 소스 데이터베이스 또는 대상 인스턴스가 클러스터 공유 볼륨(CSV)에 있는 경우 복제된 데이터베이스는 CSV에 있습니다.
+* SCRIPTS_PATH는 플러그인 호스트의 SMCoreServiceHost.exe.Config 파일에 있는 PredefinedWindowsScriptsDirectory 키를 사용하여 정의됩니다.
++
+필요한 경우 이 경로를 변경하고 SMcore 서비스를 다시 시작할 수 있습니다.  보안을 위해 기본 경로를 사용하는 것이 좋습니다.
+
++
+키 값은 API를 통해 swagger에서 표시될 수 있습니다: API /4.7/configsettings
+
++
+GET API를 사용하여 키 값을 표시할 수 있습니다.  SET API는 지원되지 않습니다.
+
+
+
+
+NOTE: 가상 환경(VMDK/RDM)의 경우 마운트 지점이 전용 디스크인지 확인하세요.
+
+* ONTAP 9.12.1 이하 버전의 경우 복원의 일부로 SnapLock Vault 스냅샷에서 생성된 복제본은 SnapLock Vault 만료 시간을 상속받습니다. 스토리지 관리자는 SnapLock 만료 시간 이후에 복제본을 수동으로 정리해야 합니다.
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 선택한 다음 목록에서 *SQL Server용 SnapCenter 플러그인*을 선택합니다.
+. 리소스 페이지에서 *보기* 목록에서 *데이터베이스* 또는 *리소스 그룹*을 선택합니다.
++
+
+NOTE: 인스턴스 백업 복제는 지원되지 않습니다.
+
+. 데이터베이스 또는 리소스 그룹을 선택하세요.
+. *사본 관리* 보기 페이지에서 기본 또는 보조(미러링 또는 보관) 스토리지 시스템에서 백업을 선택합니다.
+. 백업을 선택한 후 *를 선택하세요image:../media/clone_icon.gif["복제 아이콘"] *.
+. *복제 옵션* 페이지에서 다음 작업을 수행합니다.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+복제 서버
+ a| 
+복제본을 생성할 호스트를 선택하세요.
+
+
+
+ a| 
+인스턴스 복제
+ a| 
+데이터베이스 백업을 복제할 복제 인스턴스를 선택합니다.
+
+이 SQL 인스턴스는 지정된 복제 서버에 있어야 합니다.
+
+
+
+ a| 
+클론 접미사
+ a| 
+데이터베이스가 복제본임을 식별하기 위해 복제 파일 이름에 추가될 접미사를 입력하세요.
+
+예를 들어, _db1_clone_.  원본 데이터베이스와 동일한 위치에 복제하는 경우 복제된 데이터베이스와 원본 데이터베이스를 구별하기 위해 접미사를 제공해야 합니다.  그렇지 않으면 작업이 실패합니다.
+
+
+
+ a| 
+경로 아래에 마운트 지점 자동 할당 또는 볼륨 마운트 지점 자동 할당
+ a| 
+경로 아래에 마운트 지점이나 볼륨 마운트 지점을 자동으로 할당할지 여부를 선택합니다.
+
+경로 아래의 볼륨 마운트 지점을 자동으로 할당: 경로 아래의 마운트 지점을 사용하면 특정 디렉토리를 제공할 수 있습니다.  해당 디렉토리 내에 마운트 지점이 생성됩니다.  이 옵션을 선택하기 전에 디렉토리가 비어 있는지 확인해야 합니다.  디렉토리에 데이터베이스가 있는 경우 마운트 작업 후 데이터베이스는 유효하지 않은 상태가 됩니다.
+
+|===
+. 로그 페이지에서 다음 옵션 중 하나를 선택하세요.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+None
+ a| 
+로그 없이 전체 백업만 복제하려는 경우 이 옵션을 선택하세요.
+
+
+
+ a| 
+모든 로그 백업
+ a| 
+전체 백업 이후의 모든 사용 가능한 로그 백업을 복제하려면 이 옵션을 선택합니다.
+
+
+
+ a| 
+로그 백업까지
+ a| 
+선택한 날짜의 백업 로그까지 생성된 백업 로그를 기반으로 데이터베이스를 복제하려면 이 옵션을 선택하세요.
+
+
+
+ a| 
+특정 날짜까지
+ a| 
+복제된 데이터베이스에 트랜잭션 로그가 적용되지 않는 날짜와 시간을 지정합니다.
+
+이 시점 복제는 지정된 날짜 및 시간 이후에 기록된 트랜잭션 로그 항목의 복제를 중지합니다.
+
+|===
+. *스크립트* 페이지에서 복제 작업 전이나 후에 실행해야 하는 스크립트 시간 초과, 경로, 프리스크립트 또는 포스트스크립트의 인수를 각각 입력합니다.
++
+예를 들어, SNMP 트랩을 업데이트하고, 알림을 자동화하고, 로그를 보내는 등의 작업을 수행하는 스크립트를 실행할 수 있습니다.
+
++
+
+NOTE: prescripts 또는 postscripts 경로에는 드라이브나 공유가 포함되어서는 안 됩니다.  경로는 SCRIPTS_PATH를 기준으로 해야 합니다.
+
++
+기본 스크립트 시간 초과는 60초입니다.
+
+. *알림* 페이지의 *이메일 환경 설정* 드롭다운 목록에서 이메일을 보낼 시나리오를 선택합니다.
++
+또한 발신자와 수신자의 이메일 주소와 이메일 제목을 지정해야 합니다.  수행된 복제 작업의 보고서를 첨부하려면 *작업 보고서 첨부*를 선택하세요.
+
++
+
+NOTE: 이메일 알림을 받으려면 GUI나 PowerShell 명령 Set-SmSmtpServer를 사용하여 SMTP 서버 세부 정보를 지정해야 합니다.
+
++
+EMS의 경우 다음을 참조하세요. https://docs.netapp.com/us-en/snapcenter/admin/concept_manage_ems_data_collection.html["EMS 데이터 수집 관리"]
+
+. 요약을 검토한 후 *마침*을 선택하세요.
+. *모니터* > *작업*을 선택하여 작업 진행 상황을 모니터링합니다.
+
+
+.당신이 완료한 후
+복제본을 만든 후에는 절대로 이름을 바꾸면 안 됩니다.
+
+.관련 정보
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Clone_operation_might_fail_or_take_longer_time_to_complete_with_default_TCP_TIMEOUT_value["기본 TCP_TIMEOUT 값을 사용하면 복제 작업이 실패하거나 완료하는 데 시간이 더 오래 걸릴 수 있습니다."]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/The_failover_cluster_instance_database_clone_fails["장애 조치(failover) 클러스터 인스턴스 데이터베이스 복제가 실패합니다."]
+
+--
+.PowerShell cmdlet
+--
+.단계
+. Open-SmConnection cmdlet을 사용하여 지정된 사용자에 대한 SnapCenter 서버와의 연결 세션을 시작합니다.
++
+[listing]
+----
+Open-SmConnection  -SMSbaseurl  https://snapctr.demo.netapp.com:8146
+----
+. Get-SmBackup 또는 Get-SmResourceGroup cmdlet을 사용하여 복제할 수 있는 백업을 나열합니다.
++
+이 예제에서는 사용 가능한 모든 백업에 대한 정보를 표시합니다.
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmBackup
+
+BackupId   BackupName                     BackupTime   BackupType
+--------   ----------                     ----------   ----------
+1          Payroll Dataset_vise-f6_08...  8/4/2015     Full Backup
+                                          11:02:32 AM
+
+2          Payroll Dataset_vise-f6_08...  8/4/2015
+                                          11:23:17 AM
+----
++
+이 예제에서는 지정된 리소스 그룹, 해당 리소스 및 관련 정책에 대한 정보를 표시합니다.
+
++
+[listing]
+----
+PS C:\> Get-SmResourceGroup -ListResources –ListPolicies
+
+Description :
+CreationTime : 8/4/2015 3:44:05 PM
+ModificationTime : 8/4/2015 3:44:05 PM
+EnableEmail : False
+EmailSMTPServer :
+EmailFrom :
+EmailTo :
+EmailSubject :
+EnableSysLog : False
+ProtectionGroupType : Backup
+EnableAsupOnFailure : False
+Policies : {FinancePolicy}
+HostResourceMaping : {}
+Configuration : SMCoreContracts.SmCloneConfiguration
+LastBackupStatus :
+VerificationServer :
+EmailBody :
+EmailNotificationPreference : Never
+VerificationServerInfo : SMCoreContracts.SmVerificationServerInfo
+SchedulerSQLInstance :
+CustomText :
+CustomSnapshotFormat :
+SearchResources : False
+ByPassCredential : False
+IsCustomSnapshot :
+MaintenanceStatus : Production
+PluginProtectionGroupTypes : {SMSQL}
+Name : Payrolldataset
+Type : Group
+Id : 1
+Host :
+UserName :
+Passphrase :
+Deleted : False
+Auth : SMCoreContracts.SmAuth
+IsClone : False
+CloneLevel : 0
+ApplySnapvaultUpdate : False
+ApplyRetention : False
+RetentionCount : 0
+RetentionDays : 0
+ApplySnapMirrorUpdate : False
+SnapVaultLabel :
+MirrorVaultUpdateRetryCount : 7
+AppPolicies : {}
+Description : FinancePolicy
+PreScriptPath :
+PreScriptArguments :
+PostScriptPath :
+PostScriptArguments :
+ScriptTimeOut : 60000
+DateModified : 8/4/2015 3:43:30 PM
+DateCreated : 8/4/2015 3:43:30 PM
+Schedule : SMCoreContracts.SmSchedule
+PolicyType : Backup
+PluginPolicyType : SMSQL
+Name : FinancePolicy
+Type :
+Id : 1
+Host :
+UserName :
+Passphrase :
+Deleted : False
+Auth : SMCoreContracts.SmAuth
+IsClone : False
+CloneLevel : 0
+clab-a13-13.sddev.lab.netapp.com
+DatabaseGUID :
+SQLInstance : clab-a13-13
+DbStatus : AutoClosed
+DbAccess : eUndefined
+IsSystemDb : False
+IsSimpleRecoveryMode : False
+IsSelectable : True
+SqlDbFileGroups : {}
+SqlDbLogFiles : {}
+AppFileStorageGroups : {}
+LogDirectory :
+AgName :
+Version :
+VolumeGroupIndex : -1
+IsSecondary : False
+Name : TEST
+Type : SQL Database
+Id : clab-a13-13\TEST
+Host : clab-a13-13.sddev.mycompany.com
+UserName :
+Passphrase :
+Deleted : False
+Auth : SMCoreContracts.SmAuth
+IsClone : False
+----
+. New-SmClone cmdlet을 사용하여 기존 백업에서 복제 작업을 시작합니다.
++
+이 예제에서는 모든 로그를 포함하는 지정된 백업에서 복제본을 만듭니다.
+
++
+[listing]
+----
+PS C:\> New-SmClone
+-BackupName payroll_dataset_vise-f3_08-05-2015_15.28.28.9774
+-Resources @{"Host"="vise-f3.sddev.mycompany.com";
+"Type"="SQL Database";"Names"="vise-f3\SQLExpress\payroll"}
+-CloneToInstance vise-f3\sqlexpress -AutoAssignMountPoint
+-Suffix _clonefrombackup
+-LogRestoreType All -Policy clonefromprimary_ondemand
+
+PS C:> New-SmBackup -ResourceGroupName PayrollDataset -Policy FinancePolicy
+----
++
+이 예제에서는 지정된 Microsoft SQL Server 인스턴스에 대한 복제본을 만듭니다.
+
++
+[listing]
+----
+PS C:\> New-SmClone
+-BackupName "BackupDS1_NY-VM-SC-SQL_12-08-2015_09.00.24.8367"
+-Resources @{"host"="ny-vm-sc-sql";"Type"="SQL Database";
+"Names"="ny-vm-sc-sql\AdventureWorks2012_data"}
+-AppPluginCode SMSQL -CloneToInstance "ny-vm-sc-sql"
+-Suffix _CLPOSH -AssignMountPointUnderPath "C:\SCMounts"
+----
+. Get-SmCloneReport cmdlet을 사용하여 복제 작업의 상태를 확인합니다.
++
+이 예제에서는 지정된 작업 ID에 대한 복제 보고서를 표시합니다.
+
++
+[listing]
+----
+PS C:\> Get-SmCloneReport -JobId 186
+
+SmCloneId : 1
+SmJobId : 186
+StartDateTime : 8/3/2015 2:43:02 PM
+EndDateTime : 8/3/2015 2:44:08 PM
+Duration : 00:01:06.6760000
+Status : Completed
+ProtectionGroupName : Draper
+SmProtectionGroupId : 4
+PolicyName : OnDemand_Clone
+SmPolicyId : 4
+BackupPolicyName : OnDemand_Full_Log
+SmBackupPolicyId : 1
+CloneHostName : SCSPR0054212005.mycompany.com
+CloneHostId : 4
+CloneName : Draper__clone__08-03-2015_14.43.53
+SourceResources : {Don, Betty, Bobby, Sally}
+ClonedResources : {Don_DRAPER, Betty_DRAPER, Bobby_DRAPER,
+                   Sally_DRAPER}
+----
+
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+--
+====

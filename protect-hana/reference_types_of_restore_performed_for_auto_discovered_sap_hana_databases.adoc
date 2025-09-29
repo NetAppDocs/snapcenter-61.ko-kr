@@ -1,0 +1,50 @@
+---
+permalink: protect-hana/reference_types_of_restore_performed_for_auto_discovered_sap_hana_databases.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Databases 
+summary: 'SnapCenter 자동으로 검색된 SAP HANA 데이터베이스에 대해 볼륨 기반 SnapRestore \(VBSR\), 단일 파일 SnapRestore 및 연결 및 복사 복원 유형을 지원합니다.' 
+---
+= 자동 검색된 SAP HANA 데이터베이스에 대한 복원 작업 유형
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 자동으로 검색된 SAP HANA 데이터베이스에 대해 볼륨 기반 SnapRestore (VBSR), 단일 파일 SnapRestore 및 연결 및 복사 복원 유형을 지원합니다.
+
+
+
+== 볼륨 기반 SnapRestore (VBSR)는 다음 시나리오에 대해 NFS 환경에서 수행됩니다.
+
+* 복원을 위해 선택된 백업이 SnapCenter 4.3 이전 릴리스에서 수행되고 **전체 리소스** 옵션이 선택된 경우에만 해당
+* SnapCenter 4.3에서 복원을 위해 선택된 백업이 수행되고 *볼륨 되돌리기* 옵션이 선택된 경우
+
+
+
+
+== 단일 파일 SnapRestore 다음 시나리오에 대해 NFS 환경에서 수행됩니다.
+
+* SnapCenter 4.3에서 복원을 위해 선택된 백업이 수행되고 *전체 리소스* 옵션만 선택된 경우
+* 다중 테넌트 데이터베이스 컨테이너(MDC)의 경우 복원을 위해 선택된 백업이 SnapCenter 4.3에서 수행되고 *테넌트 데이터베이스* 옵션이 선택된 경우
+* 선택한 백업이 SnapMirror 또는 SnapVault 보조 위치에서 시작되고 *전체 리소스* 옵션이 선택된 경우
+
+
+
+
+== 단일 파일 SnapRestore 다음 시나리오에 대해 SAN 환경에서 수행됩니다.
+
+* SnapCenter 4.3 이전 릴리스에서 백업이 수행되고 *전체 리소스* 옵션이 선택된 경우에만
+* SnapCenter 4.3에서 백업이 수행되고 *전체 리소스* 옵션이 선택된 경우에만
+* SnapMirror 또는 SnapVault 보조 위치에서 백업을 선택하고 *전체 리소스* 옵션을 선택한 경우
+
+
+
+
+== 연결 및 복사 기반 복원은 다음 시나리오에 대해 SAN 환경에서 수행됩니다.
+
+* MDC의 경우 복원을 위해 선택된 백업이 SnapCenter 4.3에서 수행되고 *테넌트 데이터베이스* 옵션이 선택된 경우
+
+
+
+NOTE: *전체 리소스*, *볼륨 되돌리기* 및 *테넌트 데이터베이스* 옵션은 복원 범위 페이지에서 사용할 수 있습니다.

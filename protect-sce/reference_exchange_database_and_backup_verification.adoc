@@ -1,0 +1,23 @@
+---
+permalink: protect-sce/reference_exchange_database_and_backup_verification.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Microsoft Exchange Server 
+summary: Microsoft Exchange Server용 SnapCenter 플러그인은 백업 검증 기능을 제공하지 않습니다. 하지만 Exchange와 함께 제공되는 Eseutil 도구를 사용하면 Exchange 데이터베이스와 백업을 검증할 수 있습니다. 
+---
+= Exchange 데이터베이스 및 백업 검증
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Microsoft Exchange Server용 SnapCenter 플러그인은 백업 검증 기능을 제공하지 않습니다. 하지만 Exchange와 함께 제공되는 Eseutil 도구를 사용하면 Exchange 데이터베이스와 백업을 검증할 수 있습니다.
+
+Microsoft Exchange Eseutil 도구는 Exchange 서버에 포함된 명령줄 유틸리티입니다.  이 유틸리티를 사용하면 일관성 검사를 수행하여 Exchange 데이터베이스와 백업의 무결성을 확인할 수 있습니다.
+
+|===
+
+
+| *모범 사례:* 최소 2개의 복제본이 있는 데이터베이스 가용성 그룹(DAG) 구성의 일부인 데이터베이스에서는 일관성 검사를 수행할 필요가 없습니다. 
+|===
+추가 정보는 다음을 참조하세요. https://docs.microsoft.com/en-us/exchange/exchange-server?view=exchserver-2019["Microsoft Exchange Server 설명서"^] .

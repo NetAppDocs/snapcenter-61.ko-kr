@@ -1,0 +1,58 @@
+---
+permalink: protect-db2/host-requirements-to-install-snapcenter-plug-in-package-for-windows-db2.html 
+sidebar: sidebar 
+keywords: IBM Db2 
+summary: Windows용 SnapCenter 플러그인 패키지를 설치하기 전에 몇 가지 기본적인 호스트 시스템 공간 요구 사항과 크기 요구 사항을 숙지해야 합니다. 
+---
+= Windows용 SnapCenter 플러그인 패키지를 설치하기 위한 호스트 요구 사항
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Windows용 SnapCenter 플러그인 패키지를 설치하기 전에 몇 가지 기본적인 호스트 시스템 공간 요구 사항과 크기 요구 사항을 숙지해야 합니다.
+
+|===
+| 목 | 요구 사항 
+
+
+ a| 
+운영 체제
+ a| 
+마이크로소프트 윈도우
+
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121074;&solution=1258&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인을 위한 최소 RAM
+ a| 
+1GB
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인에 대한 최소 설치 및 로그 공간
+ a| 
+5GB
+
+
+NOTE: 충분한 디스크 공간을 할당하고 로그 폴더의 저장 공간 소비를 모니터링해야 합니다.  필요한 로그 공간은 보호해야 할 엔터티의 수와 데이터 보호 작업의 빈도에 따라 달라집니다.  디스크 공간이 충분하지 않으면 최근 실행된 작업에 대한 로그가 생성되지 않습니다.
+
+
+
+ a| 
+필수 소프트웨어 패키지
+ a| 
+* ASP.NET Core Runtime 8.0.12(및 이후 모든 8.0.x 패치) 호스팅 번들
+* 파워셸 코어 7.4.2
+* Java 11 Oracle Java 및 OpenJDK
+
+
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121074;&solution=1258&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+.NET 관련 문제 해결 정보는 다음을 참조하세요. https://kb.netapp.com/mgmt/SnapCenter/SnapCenter_upgrade_or_install_fails_with_This_KB_is_not_related_to_the_OS["인터넷 연결이 없는 레거시 시스템에서는 SnapCenter 업그레이드 또는 설치가 실패합니다."]
+
+|===

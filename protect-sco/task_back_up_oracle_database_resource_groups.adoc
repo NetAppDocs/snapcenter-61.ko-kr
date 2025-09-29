@@ -1,0 +1,55 @@
+---
+permalink: protect-sco/task_back_up_oracle_database_resource_groups.html 
+sidebar: sidebar 
+keywords: backup, resource group 
+summary: 리소스 그룹은 호스트나 클러스터에 있는 리소스의 모음입니다.  리소스 그룹에 대한 백업 작업은 리소스 그룹에 정의된 모든 리소스에 대해 수행됩니다. 
+---
+= Oracle 데이터베이스 리소스 그룹 백업
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스 그룹은 호스트나 클러스터에 있는 리소스의 모음입니다.  백업 작업은 리소스 그룹에 정의된 모든 리소스에 대해 수행됩니다.
+
+리소스 페이지에서 필요에 따라 리소스 그룹을 백업할 수 있습니다.  리소스 그룹에 정책이 첨부되고 일정이 구성된 경우 일정에 따라 백업이 생성됩니다.
+
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 선택하고 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 *보기* 목록에서 *리소스 그룹*을 선택합니다.
+. 검색창에 리소스 그룹 이름을 입력하거나 클릭하세요.image:../media/filter_icon.gif["필터 아이콘"] , 태그를 선택하세요.
++
+딸깍 하는 소리image:../media/filter_icon.gif["필터 아이콘"] 필터 창을 닫으려면.
+
+. 리소스 그룹 페이지에서 백업할 리소스 그룹을 선택합니다.
++
+
+NOTE: 두 개의 데이터베이스가 있는 페더레이션 리소스 그룹이 있고 그 중 하나에 NetApp 스토리지가 아닌 스토리지에 데이터가 있는 경우, 다른 데이터베이스가 NetApp 스토리지에 있더라도 백업 작업이 중단됩니다.
+
+. 백업 페이지에서 다음 단계를 수행합니다.
++
+.. 리소스 그룹과 연관된 정책이 여러 개 있는 경우 *정책* 드롭다운 목록에서 사용할 백업 정책을 선택합니다.
++
+주문형 백업에 대해 선택한 정책이 백업 일정과 연결되어 있는 경우, 주문형 백업은 일정 유형에 지정된 보존 설정에 따라 보존됩니다.
+
+.. *백업*을 선택하세요.
+
+
+. *모니터 > 작업*을 선택하여 진행 상황을 모니터링하세요.
+
+
+.당신이 완료한 후
+* AIX 설정에서는 다음을 사용할 수 있습니다. `lkdev` 잠금 명령 및 `rendev` 백업된 데이터베이스가 상주하던 디스크의 이름을 바꾸는 명령입니다.
++
+해당 백업을 사용하여 복원하는 경우 장치를 잠그거나 이름을 변경해도 복원 작업에 영향을 미치지 않습니다.
+
+* 데이터베이스 쿼리 실행 시간이 시간 초과 값을 초과하여 백업 작업이 실패하는 경우 다음을 실행하여 ORACLE_SQL_QUERY_TIMEOUT 및 ORACLE_PLUGIN_SQL_QUERY_TIMEOUT 매개변수 값을 변경해야 합니다. `Set-SmConfigSettings` cmdlet:
++
+매개변수 값을 수정한 후 다음 명령을 실행하여 SnapCenter 플러그인 Loader (SPL) 서비스를 다시 시작합니다. `/opt/NetApp/snapcenter/spl/bin/spl restart`
+
+* 파일에 접근할 수 없고 검증 과정 중에 마운트 지점을 사용할 수 없는 경우, 지정된 파일이라는 오류 코드 DBV-00100이 발생하여 작업이 실패할 수 있습니다.  sco.properties에서 VERIFICATION_DELAY_ 및 VERIFICATION_RETRY_COUNT 매개변수 값을 수정해야 합니다.
++
+매개변수 값을 수정한 후 다음 명령을 실행하여 SnapCenter 플러그인 Loader (SPL) 서비스를 다시 시작합니다. `/opt/NetApp/snapcenter/spl/bin/spl restart`
+
+

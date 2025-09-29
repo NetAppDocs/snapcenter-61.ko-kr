@@ -1,0 +1,26 @@
+---
+permalink: protect-sce/reference_prepare_storage_system_for_snapmirror_and_snapvault.html 
+sidebar: sidebar 
+keywords: requirements 
+summary: ONTAP SnapMirror 기술과 함께 SnapCenter 플러그인을 사용하면 다른 볼륨에 백업 세트의 미러 사본을 생성할 수 있으며, ONTAP SnapVault 기술과 함께 사용하면 표준 준수 및 기타 거버넌스 관련 목적으로 디스크 간 백업 복제를 수행할 수 있습니다.  이러한 작업을 수행하기 전에 소스 볼륨과 대상 볼륨 간의 데이터 보호 관계를 구성하고 해당 관계를 초기화해야 합니다. 
+---
+= SnapMirror 및 SnapVault 복제를 위한 스토리지 시스템 준비
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ONTAP SnapMirror 기술과 함께 SnapCenter 플러그인을 사용하면 다른 볼륨에 백업 세트의 미러 사본을 생성할 수 있으며, ONTAP SnapVault 기술과 함께 사용하면 표준 준수 및 기타 거버넌스 관련 목적으로 디스크 간 백업 복제를 수행할 수 있습니다.  이러한 작업을 수행하기 전에 소스 볼륨과 대상 볼륨 간의 데이터 보호 관계를 구성하고 해당 관계를 초기화해야 합니다.
+
+SnapCenter 스냅샷 작업을 완료한 후 SnapMirror 와 SnapVault 에 대한 업데이트를 수행합니다. SnapMirror 및 SnapVault 업데이트는 SnapCenter 작업의 일부로 수행되므로 별도의 ONTAP 일정을 만들지 마세요.
+
+
+NOTE: NetApp SnapManager 제품을 통해 SnapCenter 에 접속했고 구성한 데이터 보호 관계에 만족하는 경우 이 섹션을 건너뛸 수 있습니다.
+
+데이터 보호 관계는 기본 저장소(소스 볼륨)의 데이터를 보조 저장소(대상 볼륨)로 복제합니다.  관계를 초기화하면 ONTAP 소스 볼륨에서 참조되는 데이터 블록을 대상 볼륨으로 전송합니다.
+
+
+NOTE: SnapCenter SnapMirror 와 SnapVault 볼륨 간의 계단식 관계(*Primary* > *Mirror* > *Vault*)를 지원하지 않습니다.  팬아웃 관계를 사용해야 합니다.
+
+SnapCenter 버전에 따라 유연한 SnapMirror 관계 관리를 지원합니다.  버전에 따라 유연한 SnapMirror 관계와 이를 설정하는 방법에 대한 자세한 내용은 다음을 참조하세요. http://docs.netapp.com/ontap-9/index.jsp?topic=%2Fcom.netapp.doc.ic-base%2Fresources%2Fhome.html["ONTAP 문서"^] .

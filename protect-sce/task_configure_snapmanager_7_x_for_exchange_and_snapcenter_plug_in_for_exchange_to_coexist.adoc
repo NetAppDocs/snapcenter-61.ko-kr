@@ -1,0 +1,76 @@
+---
+permalink: protect-sce/task_configure_snapmanager_7_x_for_exchange_and_snapcenter_plug_in_for_exchange_to_coexist.html 
+sidebar: sidebar 
+keywords: SnapCenter plug-in for Exchange Server 
+summary: Microsoft Exchange Server용 SnapCenter 플러그인을 Microsoft Exchange Server용 SnapManager SnapManager 함께 사용하려면 SnapManager for Microsoft Exchange Server가 설치된 동일한 Exchange Server에 Microsoft Exchange Server용 SnapCenter 플러그인을 설치하고, SnapManager for Exchange 일정을 비활성화한 다음, Microsoft Exchange Server용 SnapCenter 플러그인을 사용하여 새로운 일정과 백업을 구성해야 합니다. 
+---
+= Exchange와 SnapCenter 공존하도록 SnapManager 7.x 구성
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Microsoft Exchange Server용 SnapCenter 플러그인을 Microsoft Exchange Server용 SnapManager SnapManager 함께 사용하려면 SnapManager for Microsoft Exchange Server가 설치된 동일한 Exchange Server에 Microsoft Exchange Server용 SnapCenter 플러그인을 설치하고, SnapManager for Exchange 일정을 비활성화한 다음, Microsoft Exchange Server용 SnapCenter 플러그인을 사용하여 새로운 일정과 백업을 구성해야 합니다.
+
+.시작하기 전에
+* Microsoft Exchange Server용 SnapManager 와 Windows용 SnapDrive 이미 설치되어 있으며, Microsoft Exchange Server용 SnapManager 백업은 시스템과 SnapInfo 디렉터리에 있습니다.
+* 더 이상 필요하지 않은 Microsoft Exchange Server용 SnapManager 에서 수행한 백업을 삭제하거나 회수했어야 합니다.
+* Windows 스케줄러에서 Microsoft Exchange Server용 SnapManager 가 생성한 모든 일정을 일시 중단하거나 삭제해야 합니다.
+* Microsoft Exchange Server용 SnapCenter 플러그인과 Microsoft Exchange Server용 SnapManager 동일한 Exchange Server에서 함께 사용할 수 있지만, 기존 Microsoft Exchange Server용 SnapManager 설치를 SnapCenter 로 업그레이드할 수는 없습니다.
++
+SnapCenter 업그레이드 옵션을 제공하지 않습니다.
+
+* SnapCenter Microsoft Exchange Server 백업을 위한 SnapManager 에서 Exchange 데이터베이스를 복원하는 것을 지원하지 않습니다.
++
+Microsoft Exchange Server용 SnapCenter 플러그인을 설치한 후 Microsoft Exchange Server용 SnapManager 제거하지 않고 나중에 Microsoft Exchange Server용 SnapManager 백업을 복원하려면 추가 단계를 수행해야 합니다.
+
+
+
+.단계
+. 모든 DAG 노드에서 PowerShell을 사용하여 Windows VSS 하드웨어 공급자용 SnapDrive 등록되었는지 확인합니다. _vssadmin list providers_
++
+[listing]
+----
+C:\Program Files\NetApp\SnapDrive>vssadmin list providers
+vssadmin 1.1 - Volume Shadow Copy Service administrative command-line tool
+(C) Copyright 2001-2013 Microsoft Corp.
+
+Provider name: 'Data ONTAP VSS Hardware Provider'
+   Provider type: Hardware
+   Provider Id: {ddd3d232-a96f-4ac5-8f7b-250fd91fd102}
+   Version: 7. 1. 4. 6845
+----
+. SnapDrive 디렉토리에서 Windows용 SnapDrive 에서 VSS 하드웨어 공급자를 등록 취소합니다: _navssprv.exe -r service –u_
+. VSS 하드웨어 공급자가 제거되었는지 확인하세요: _vssadmin list providers_
+. SnapCenter 에 Exchange 호스트를 추가한 다음 Microsoft Windows용 SnapCenter 플러그인과 Microsoft Exchange Server용 SnapCenter 플러그인을 설치합니다.
+. 모든 DAG 노드의 Microsoft Windows용 SnapCenter 플러그인 디렉토리에서 VSS 하드웨어 공급자가 등록되었는지 확인합니다. _vssadmin list providers_
++
+[listing]
+----
+[PS] C:\Windows\system32>vssadmin list providers
+vssadmin 1.1 - Volume Shadow Copy Service administrative command-line tool
+(C) Copyright 2001-2013 Microsoft Corp.
+
+Provider name: 'Data ONTAP VSS Hardware Provider'
+   Provider type: Hardware
+   Provider Id: {31fca584-72be-45b6-9419-53a3277301d1}
+   Version: 7. 0. 0. 5561
+----
+. Microsoft Exchange Server 백업 일정에 대한 SnapManager 중지합니다.
+. SnapCenter GUI를 사용하여 주문형 백업을 만들고, 예약된 백업을 구성하고, 보존 설정을 구성합니다.
+. Microsoft Exchange Server용 SnapManager 제거합니다.
++
+지금 SnapManager for Microsoft Exchange Server를 제거하지 않고 나중에 SnapManager for Microsoft Exchange Server 백업을 복원하려는 경우:
+
++
+.. 모든 DAG 노드에서 Microsoft Exchange Server용 SnapCenter 플러그인 등록을 취소합니다: _navssprv.exe -r service -u_
++
+[listing]
+----
+C:\Program Files\NetApp\SnapCenter\SnapCenter Plug-in for Microsoft Windows>navssprv.exe -r service -u
+----
+.. _C:\Program Files\ NetApp\ SnapDrive\_ 디렉토리에서 모든 DAG 노드에 Windows용 SnapDrive 등록합니다: _navssprv.exe -r service -a hostname\\username -p password_
+
+
+

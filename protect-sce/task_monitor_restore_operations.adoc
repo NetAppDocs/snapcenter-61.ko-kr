@@ -1,0 +1,46 @@
+---
+permalink: protect-sce/task_monitor_restore_operations.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for Exchange Server 
+summary: 작업 페이지를 사용하여 다양한 SnapCenter 복원 작업의 진행 상황을 모니터링할 수 있습니다.  작업이 완료되었는지 또는 문제가 있는지 확인하기 위해 작업 진행 상황을 확인하고 싶을 수 있습니다. 
+---
+= 복원 작업 모니터링
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+작업 페이지를 사용하여 다양한 SnapCenter 복원 작업의 진행 상황을 모니터링할 수 있습니다.  작업이 완료되었는지 또는 문제가 있는지 확인하기 위해 작업 진행 상황을 확인하고 싶을 수 있습니다.
+
+.이 작업에 관하여
+복원 후 상태는 복원 작업 후 리소스의 조건과 수행할 수 있는 추가 복원 작업을 설명합니다.
+
+다음 아이콘은 작업 페이지에 나타나며 작업 상태를 나타냅니다.
+
+* image:../media/progress_icon.gif["진행 중 아이콘"]진행 중
+* image:../media/success_icon.gif["완료된 아이콘"]성공적으로 완료되었습니다
+* image:../media/failed_icon.gif["실패한 아이콘"]실패한
+* image:../media/warning_icon.gif["경고 아이콘으로 완료됨"]경고와 함께 완료되었거나 경고로 인해 시작할 수 없습니다.
+* image:../media/verification_job_in_queue.gif["검증 작업이 대기 중입니다."]대기 중
+* image:../media/cancel_icon.gif["취소 아이콘"]취소
+
+
+.단계
+. 왼쪽 탐색 창에서 *모니터*를 클릭합니다.
+. *모니터* 페이지에서 *작업*을 클릭합니다.
+. *작업* 페이지에서 다음 단계를 수행합니다.
++
+.. 딸깍 하는 소리image:../media/filter_icon.gif["필터 아이콘"] 복원 작업만 나열되도록 목록을 필터링합니다.
+.. 시작일과 종료일을 지정하세요.
+.. *유형* 드롭다운 목록에서 *복원*을 선택합니다.
+.. *상태* 드롭다운 목록에서 복원 상태를 선택합니다.
+.. 성공적으로 완료된 작업을 보려면 *적용*을 클릭하세요.
+
+
+. 복원 작업을 선택한 다음 *세부 정보*를 클릭하여 작업 세부 정보를 확인합니다.
+. *작업 세부 정보* 페이지에서 *로그 보기*를 클릭합니다.
++
+*로그 보기* 버튼을 클릭하면 선택한 작업에 대한 자세한 로그가 표시됩니다.
+
+

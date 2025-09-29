@@ -1,0 +1,146 @@
+---
+permalink: protect-sco/alternate-ways-install-plug-in-linux-aix.html 
+sidebar: sidebar 
+keywords: alternate methods, install, plug-ins package, linux, aix, remote hosts, cmdlets, cluster host, silent mode, console mode 
+summary: Linux용 SnapCenter 플러그인 패키지 또는 AIX용 SnapCenter 플러그인 패키지를 설치하려면 다른 대체 방법을 사용할 수 있습니다. 
+---
+= Linux 또는 AIX용 플러그인 패키지를 설치하는 대체 방법
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+cmdlet이나 CLI를 사용하여 Linux 또는 AIX용 플러그인 패키지를 수동으로 설치할 수도 있습니다.
+
+플러그인을 수동으로 설치하기 전에 _C:\ProgramData\ NetApp\ SnapCenter\Package Repository_에 있는 키 *snapcenter_public_key.pub* 및 *snapcenter_linux_host_plugin.bin.sig*를 사용하여 바이너리 패키지의 서명을 확인해야 합니다.
+
+
+NOTE: 플러그인을 설치하려는 호스트에 *OpenSSL 1.0.2g*가 설치되어 있는지 확인하세요.
+
+다음 명령을 실행하여 바이너리 패키지의 서명을 검증합니다.
+
+* Linux 호스트의 경우: `openssl dgst -sha256 -verify snapcenter_public_key.pub -signature snapcenter_linux_host_plugin.bin.sig snapcenter_linux_host_plugin.bin`
+* AIX 호스트의 경우: `openssl dgst -sha256 -verify snapcenter_public_key.pub -signature snapcenter_aix_host_plugin.bsx.sig snapcenter_aix_host_plugin.bsx`
+
+
+
+
+== cmdlet을 사용하여 여러 원격 호스트에 설치
+
+Linux용 SnapCenter 플러그인 패키지 또는 AIX용 SnapCenter 플러그인 패키지를 여러 호스트에 설치하려면 _Install-SmHostPackage_ PowerShell cmdlet을 사용해야 합니다.
+
+*필요한 것*
+
+플러그인 패키지를 설치하려는 각 호스트에서 로컬 관리자 권한이 있는 도메인 사용자로 SnapCenter 에 로그인해야 합니다.
+
+*단계*
+
+. PowerShell을 실행합니다.
+. SnapCenter 서버 호스트에서 _Open-SmConnection_ cmdlet을 사용하여 세션을 설정한 다음 자격 증명을 입력합니다.
+. _Install-SmHostPackage_ cmdlet과 필요한 매개변수를 사용하여 Linux용 SnapCenter 플러그인 패키지 또는 AIX용 SnapCenter 플러그인 패키지를 설치합니다.
++
+플러그인을 수동으로 설치했고 호스트가 플러그인 설치 요구 사항을 충족하는지 확인하지 않으려는 경우 _-skipprecheck_ 옵션을 사용할 수 있습니다.
+
++
+
+NOTE: 사전 확인 스크립트는 방화벽 거부 규칙에 지정된 경우 플러그인 포트 방화벽 상태를 검증하지 않습니다.
+
+. 원격 설치를 위한 자격 증명을 입력하세요.
+
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+
+
+== 클러스터 호스트에 설치
+
+클러스터 호스트의 두 노드 모두에 Linux용 SnapCenter 플러그인 패키지 또는 AIX용 SnapCenter 플러그인 패키지를 설치해야 합니다.
+
+클러스터 호스트의 각 노드에는 두 개의 IP가 있습니다.  IP 중 하나는 해당 노드의 공용 IP가 되고, 두 번째 IP는 두 노드 간에 공유되는 클러스터 IP가 됩니다.
+
+*단계*
+
+. 클러스터 호스트의 두 노드에 Linux용 SnapCenter 플러그인 패키지 또는 AIX용 SnapCenter 플러그인 패키지를 설치합니다.
+. _/var/opt/snapcenter/spl/etc/_에 있는 spl.properties 파일에 SNAPCENTER_SERVER_HOST, SPL_PORT, SNAPCENTER_SERVER_PORT 및 SPL_ENABLED_PLUGINS 매개변수에 대한 올바른 값이 지정되었는지 확인합니다.
++
+spl.properties에 SPL_ENABLED_PLUGINS가 지정되어 있지 않으면 이를 추가하고 SCO,SCU 값을 할당할 수 있습니다.
+
+. SnapCenter 서버 호스트에서 _Open-SmConnection_ cmdlet을 사용하여 세션을 설정한 다음 자격 증명을 입력합니다.
+. 각 노드에서 _Set-PreferredHostIPsInStorageExportPolicy_ sccli 명령과 필요한 매개변수를 사용하여 노드의 기본 IP를 설정합니다.
+. SnapCenter 서버 호스트에서 _C:\Windows\System32\drivers\etc\hosts_에 클러스터 IP와 해당 DNS 이름에 대한 항목을 추가합니다.
+. _Add-SmHost_ cmdlet을 사용하여 호스트 이름에 클러스터 IP를 지정하여 SnapCenter 서버에 노드를 추가합니다.
+
+
+노드 1에서 Oracle 데이터베이스를 검색하고(클러스터 IP가 노드 1에 호스팅된다고 가정) 데이터베이스 백업을 만듭니다.  장애 조치가 발생하면 노드 1에서 생성된 백업을 사용하여 노드 2의 데이터베이스를 복원할 수 있습니다.  노드 1에서 생성된 백업을 사용하여 노드 2에 복제본을 생성할 수도 있습니다.
+
+
+NOTE: 다른 SnapCenter 작업이 실행되는 동안 장애 조치가 발생하면 오래된 볼륨, 디렉토리 및 잠금 파일이 생성됩니다.
+
+
+
+== Linux용 플러그인 패키지를 자동 모드로 설치합니다.
+
+명령줄 인터페이스(CLI)를 사용하여 Linux용 SnapCenter 플러그인 패키지를 자동 모드로 설치할 수 있습니다.
+
+*필요한 것*
+
+* 플러그인 패키지를 설치하기 위한 필수 구성 요소를 검토해야 합니다.
+* DISPLAY 환경 변수가 설정되어 있지 않은지 확인해야 합니다.
++
+DISPLAY 환경 변수가 설정되어 있는 경우 unset DISPLAY를 실행한 다음 플러그인을 수동으로 설치해보세요.
+
+
+
+*이 작업에 관하여*
+
+콘솔 모드로 설치하는 경우 필요한 설치 정보를 제공해야 하지만, 사일런트 모드로 설치하는 경우에는 설치 정보를 제공할 필요가 없습니다.
+
+*단계*
+
+. SnapCenter 서버 설치 위치에서 Linux용 SnapCenter 플러그인 패키지를 다운로드합니다.
++
+기본 설치 경로는 _C:\ProgramData\ NetApp\ SnapCenter\PackageRepository_입니다.  이 경로는 SnapCenter 서버가 설치된 호스트에서 접근할 수 있습니다.
+
+. 명령 프롬프트에서 설치 파일을 다운로드한 디렉토리로 이동합니다.
+. 달리다
++
+`./SnapCenter_linux_host_plugin.bin-i silent-DPORT=8145-DSERVER_IP=SnapCenter_Server_FQDN-DSERVER_HTTPS_PORT=SnapCenter_Server_Port-DUSER_INSTALL_DIR==/opt/custom_path`
+
+. _/var/opt/snapcenter/spl/etc/_에 있는 spl.properties 파일을 편집하여 SPL_ENABLED_PLUGINS=SCO,SCU를 추가한 다음 SnapCenter 플러그인 Loader 서비스를 다시 시작합니다.
+
+
+
+IMPORTANT: 플러그인 패키지를 설치하면 플러그인이 SnapCenter 서버가 아닌 호스트에 등록됩니다.  SnapCenter GUI 또는 PowerShell cmdlet을 사용하여 호스트를 추가하여 SnapCenter 서버에 플러그인을 등록해야 합니다.  호스트를 추가하는 동안 자격 증명으로 "없음"을 선택하세요.  호스트가 추가되면 설치된 플러그인이 자동으로 검색됩니다.
+
+
+
+== AIX용 플러그인 패키지를 자동 모드로 설치합니다.
+
+명령줄 인터페이스(CLI)를 사용하여 AIX용 SnapCenter 플러그인 패키지를 자동 모드로 설치할 수 있습니다.
+
+*필요한 것*
+
+* 플러그인 패키지를 설치하기 위한 필수 구성 요소를 검토해야 합니다.
+* DISPLAY 환경 변수가 설정되어 있지 않은지 확인해야 합니다.
++
+DISPLAY 환경 변수가 설정되어 있는 경우 unset DISPLAY를 실행한 다음 플러그인을 수동으로 설치해보세요.
+
+
+
+*단계*
+
+. SnapCenter 서버 설치 위치에서 AIX용 SnapCenter 플러그인 패키지를 다운로드합니다.
++
+기본 설치 경로는 _C:\ProgramData\ NetApp\ SnapCenter\PackageRepository_입니다.  이 경로는 SnapCenter 서버가 설치된 호스트에서 접근할 수 있습니다.
+
+. 명령 프롬프트에서 설치 파일을 다운로드한 디렉토리로 이동합니다.
+. 달리다
++
+`./snapcenter_aix_host_plugin.bsx-i silent-DPORT=8145-DSERVER_IP=SnapCenter_Server_FQDN-DSERVER_HTTPS_PORT=SnapCenter_Server_Port-DUSER_INSTALL_DIR==/opt/custom_path-DINSTALL_LOG_NAME=SnapCenter_AIX_Host_Plug-in_Install_MANUAL.log-DCHOSEN_FEATURE_LIST=CUSTOMDSPL_USER=install_user`
+
+. _/var/opt/snapcenter/spl/etc/_에 있는 spl.properties 파일을 편집하여 SPL_ENABLED_PLUGINS=SCO,SCU를 추가한 다음 SnapCenter 플러그인 Loader 서비스를 다시 시작합니다.
+
+
+
+IMPORTANT: 플러그인 패키지를 설치하면 플러그인이 SnapCenter 서버가 아닌 호스트에 등록됩니다.  SnapCenter GUI 또는 PowerShell cmdlet을 사용하여 호스트를 추가하여 SnapCenter 서버에 플러그인을 등록해야 합니다.  호스트를 추가하는 동안 자격 증명으로 "없음"을 선택하세요.  호스트가 추가되면 설치된 플러그인이 자동으로 검색됩니다.

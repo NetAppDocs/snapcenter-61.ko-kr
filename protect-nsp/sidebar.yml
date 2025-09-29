@@ -1,0 +1,114 @@
+---
+section: protect-nsp
+title: NetApp 지원 플러그인을 사용하여 애플리케이션 보호
+entries:
+- title: NetApp 지원 플러그인
+  entries:
+  - title: NetApp 지원 플러그인 개요
+    url: "/protect-nsp/netapp_supported_plugins_overview.html"
+  - title: NetApp 지원 플러그인으로 할 수 있는 작업
+    url: "/protect-nsp/what_you_can_do_with_the_netapp_supported_plugins.html"
+  - title: NetApp 지원 플러그인 기능
+    url: "/protect-nsp/netapp_supported_plugins_features.html"
+  - title: NetApp 지원 플러그인에서 지원하는 스토리지 유형
+    url: "/protect-nsp/storage_types_supported_by_netapp_supported_plugins.html"
+  - title: NetApp 지원 플러그인에 필요한 최소 ONTAP 권한
+    url: "/protect-nsp/minimum_ontap_privileges_required_for_netapp_supported_plugins.html"
+  - title: SnapMirror 및 SnapVault 복제를 위한 스토리지 시스템 준비
+    url: "/protect-nsp/prepare_storage_systems_for_snapmirror_and_snapvault_replication_for_netapp_supported_plugins.html"
+  - title: 백업 전략 정의
+    url: "/protect-nsp/define_a_backup_strategy.html"
+  - title: NetApp 지원 플러그인에 대한 백업 전략
+    entries:
+    - title: NetApp 지원 플러그인 리소스의 백업 일정
+      url: "/protect-nsp/backup_schedules_of_netapp_supported_plugins_resources.html"
+    - title: 필요한 백업 작업 수
+      url: "/protect-nsp/number_of_backup_jobs_needed.html"
+  - title: 수동으로 추가된 NetApp 지원 플러그인 리소스에 대해 지원되는 복원 전략 유형
+    url: "/protect-nsp/types_of_restore_strategies_supported_for_manually_added_netapp_supported_plugins_resources.html"
+- title: NetApp 지원 플러그인 설치를 준비하세요
+  entries:
+  - title: NetApp 지원 플러그인 설치 워크플로
+    url: "/protect-nsp/install_netapp_supported_plugins.html"
+  - title: 호스트 추가 및 NetApp 지원 플러그인 설치를 위한 전제 조건
+    url: "/protect-nsp/prerequisites_to_adding_hosts_and_installing_netapp_supported_plugins.html"
+  - title: Windows용 SnapCenter 플러그인 패키지를 설치하기 위한 호스트 요구 사항
+    url: "/protect-nsp/host_requirements_to_install_snapcenter_plug_in_package_for_windows.html"
+  - title: Linux용 SnapCenter 플러그인 패키지를 설치하기 위한 호스트 요구 사항
+    url: "/protect-nsp/host_requirements_for_installing_the_snapcenter_plug_in_package_for_linux.html"
+  - title: NetApp 지원 플러그인에 대한 자격 증명 설정
+    url: "/protect-nsp/set_up_credentials_for_netapp_supported_plugins.html"
+  - title: Windows Server 2016 이상에서 gMSA 구성
+    url: "/protect-nsp/configure_gMSA_on_windows_server_2012_or_later.html"
+  - title: NetApp 지원 플러그인을 설치하세요
+    entries:
+    - title: 원격 호스트에 호스트를 추가하고 플러그인 패키지를 설치합니다.
+      url: "/protect-nsp/add_hosts_and_install_plug_in_packages_on_remote_hosts.html"
+    - title: cmdlet을 사용하여 여러 원격 호스트에 Linux 또는 Windows용 SnapCenter 플러그인 패키지 설치
+      url: "/protect-nsp/install_snapcenter_plug_in_packages_for_linux_or_windows_on_multiple_remote_hosts_using_cmdlets.html"
+    - title: 명령줄 인터페이스를 사용하여 Linux 호스트에 NetApp 지원 플러그인을 설치합니다.
+      url: "/protect-nsp/install_the_netapp_supported_plugins_on_linux_hosts_using_the_command_line_interface.html"
+    - title: SnapCenter 플러그인 패키지 설치 상태 모니터링
+      url: "/protect-nsp/monitor_the_status_of_installing_plugin.html"
+  - title: CA 인증서 구성
+    entries:
+    - title: CA 인증서 CSR 파일 생성
+      url: "/protect-nsp/generate_CA_certificate_CSR_file.html"
+    - title: CA 인증서 가져오기
+      url: "/protect-nsp/import_CA_certificates.html"
+    - title: CA 인증서 지문을 받으세요
+      url: "/protect-nsp/get_the_CA_certificate_thumbprint.html"
+    - title: Windows 호스트 플러그인 서비스를 사용하여 CA 인증서 구성
+      url: "/protect-nsp/configure_CA_certificate_with_Windows_host_plug-in_services.html"
+    - title: Linux 호스트에서 SnapCenter 플러그인 서비스에 대한 CA 인증서 구성
+      url: "/protect-nsp/configure_CA_certificate_on_Linux_host.html"
+    - title: Windows 호스트에서 SnapCenter 플러그인 서비스에 대한 CA 인증서 구성
+      url: "/protect-nsp/configure_CA_certificate_on_windows_host.html"
+    - title: 플러그인에 대한 CA 인증서 활성화
+      url: "/protect-nsp/enable_ca_certificates_for_plug-ins.html"
+- title: 데이터 보호를 준비하세요
+  entries:
+  - title: NetApp 지원 플러그인을 사용하기 위한 전제 조건
+    url: "/protect-nsp/prerequisites_for_using_netapp_supported_plugins.html"
+  - title: NetApp 지원 플러그인 리소스를 보호하기 위해 리소스, 리소스 그룹 및 정책이 사용되는 방식
+    url: "/protect-nsp/how_resources_resource_groups_policies_used_for_protecting_netapp_supported_plugins_resources.html"
+- title: NetApp 지원 플러그인 리소스 백업
+  entries:
+  - title: 백업 워크플로
+    url: "/protect-nsp/back_up_netapp_supported_plugins_resources.html"
+  - title: NetApp 지원 플러그인에 리소스 추가
+    url: "/protect-nsp/add_resources_to_netapp_supported_plugins.html"
+  - title: NetApp 지원 플러그인 리소스에 대한 정책 생성
+    url: "/protect-nsp/create_policies_for_netapp_supported_plugins_resources.html"
+  - title: 리소스 그룹을 만들고 정책을 첨부합니다.
+    url: "/protect-nsp/create_resource_groups_and_attach_policies.html"
+  - title: ASA r2 시스템의 리소스에 대한 리소스 그룹을 만들고 보조 보호를 활성화합니다.
+    url: "/protect-nsp/create-resource-groups-secondary-protection-for-asa-r2-resources.html"
+  - title: PowerShell cmdlet을 사용하여 스토리지 시스템 연결 및 자격 증명 만들기
+    url: "/protect-nsp/create_a_storage_system_connection_and_a_credential_using_powershell_cmdlets.html"
+  - title: 개별 NetApp 지원 플러그인 리소스 백업
+    url: "/protect-nsp/back_up_individual_netapp_supported_plugins_resources.html"
+  - title: NetApp 지원 플러그인 리소스의 리소스 그룹 백업
+    url: "/protect-nsp/back_up_resource_groups_of_netapp_supported_plugins_resources.html"
+  - title: 백업 작업 모니터링
+    url: "/protect-nsp/monitor_resources_backup_operations.html"
+  - title: 백업 작업 취소
+    url: "/protect-nsp/cancel_backup_operations.html"
+  - title: 토폴로지 페이지에서 NetApp 지원 플러그인 리소스 관련 백업 및 복제본 보기
+    url: "/protect-nsp/view_netapp_supported_plugins_resource_backups_and_clones_in_the_topology_page.html"
+- title: NetApp 지원 플러그인 리소스 복원
+  entries:
+  - title: 워크플로 복원
+    url: "/protect-nsp/restore_netapp_supported_plugins_resources.html"
+  - title: 리소스 백업 복원
+    url: "/protect-nsp/restore_a_resource_backup.html"
+  - title: 복원 작업 모니터링
+    url: "/protect-nsp/monitor_resources_restore_operations.html"
+- title: NetApp 지원 플러그인 리소스 백업 복제
+  entries:
+  - title: 복제 워크플로
+    url: "/protect-nsp/clone_netapp_supported_plugins_resource_backups.html"
+  - title: 백업에서 복제
+    url: "/protect-nsp/clone_from_a_backup.html"
+  - title: SnapCenter 에서 복제 작업 모니터링
+    url: "/protect-nsp/monitor_resource_clone_operations.html"

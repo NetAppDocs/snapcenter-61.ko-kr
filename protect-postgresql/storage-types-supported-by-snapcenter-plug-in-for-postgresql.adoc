@@ -1,0 +1,47 @@
+---
+permalink: protect-postgresql/storage-types-supported-by-snapcenter-plug-in-for-postgresql.html 
+sidebar: sidebar 
+keywords: storage types, 
+summary: 'SnapCenter 물리적 머신과 가상 머신(VM) 모두에서 다양한 스토리지 유형을 지원합니다.  PostgreSQL용 SnapCenter 플러그인을 설치하기 전에 스토리지 유형에 대한 지원을 확인해야 합니다.' 
+---
+= PostgreSQL용 SnapCenter 플러그인이 지원하는 스토리지 유형
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 물리적 머신과 가상 머신(VM) 모두에서 다양한 스토리지 유형을 지원합니다.  PostgreSQL용 SnapCenter 플러그인을 설치하기 전에 스토리지 유형에 대한 지원을 확인해야 합니다.
+
+|===
+| 기계 | 저장 유형 
+
+
+ a| 
+물리적 서버
+ a| 
+* FC 연결 LUN
+* iSCSI로 연결된 LUN
+* NFS 연결 볼륨
+
+
+
+
+ a| 
+VMware ESXi
+ a| 
+* FC 또는 iSCSI ESXi HBA로 연결된 RDM LUN 호스트 버스 어댑터(HBA) 스캐닝은 SnapCenter 호스트에 있는 모든 호스트 버스 어댑터를 스캔하기 때문에 완료하는 데 오랜 시간이 걸릴 수 있습니다.
++
+_/opt/ NetApp/snapcenter/spl/plugins/scu/scucore/modules/SCU/Config_에 있는 *LinuxConfig.pm* 파일을 편집하여 *SCSI_HOSTS_OPTIMIZED_RESCAN* 매개변수 값을 1로 설정하면 HBA_DRIVER_NAMES에 나열된 HBA만 다시 스캔합니다.
+
+* iSCSI 이니시에이터에 의해 게스트 시스템에 직접 연결된 iSCSI LUN
+* NFS 데이터 저장소의 VMDK
+* VMFS의 VMDK
+* 게스트 시스템에 직접 연결된 NFS 볼륨
+* NFS와 SAN 모두에 있는 vVol 데이터 저장소
++
+vVol 데이터스토어는 VMware vSphere용 ONTAP 도구를 사용해서만 프로비저닝할 수 있습니다.
+
+
+
+|===

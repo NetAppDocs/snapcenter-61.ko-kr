@@ -1,0 +1,318 @@
+---
+permalink: protect-hana/task_back_up_sap_hana_databases.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: 리소스가 아직 어떤 리소스 그룹에도 속하지 않은 경우 리소스 페이지에서 리소스를 백업할 수 있습니다. 
+---
+= SAP HANA 데이터베이스 백업
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스가 아직 어떤 리소스 그룹에도 속하지 않은 경우 리소스 페이지에서 리소스를 백업할 수 있습니다.
+
+.시작하기 전에
+* 백업 정책을 생성했어야 합니다.
+* 보조 저장소와 SnapMirror 관계가 있는 리소스를 백업하려면 저장소 사용자에게 할당된 ONTAP 역할에 "`snapmirror all`" 권한이 포함되어야 합니다.  하지만 "`vsadmin`" 역할을 사용하는 경우 "`snapmirror all`" 권한은 필요하지 않습니다.
+* 스냅샷 복사 기반 백업 작업의 경우 모든 테넌트 데이터베이스가 유효하고 활성화되어 있는지 확인하세요.
+* SAP HANA 시스템 복제 백업을 생성하려면 SAP HANA 시스템의 모든 리소스를 하나의 리소스 그룹에 추가하는 것이 좋습니다.  이를 통해 인수-장애 복구 모드에서 원활한 백업이 보장됩니다.
++
+link:task_create_resource_groups_and_attach_policies.html["리소스 그룹을 만들고 정책을 첨부합니다."] .
+
++
+link:task_back_up_resource_groups_sap_hana.html["리소스 그룹 백업"]
+
+* 하나 이상의 테넌트 데이터베이스가 다운된 경우 파일 기반 백업을 생성하려면 HANA 속성 파일에서 ALLOW_FILE_BASED_BACKUP_IFINACTIVE_TENANTS_PRESENT 매개변수를 *YES*로 설정합니다. `Set-SmConfigSettings` cmdlet.
++
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 Get-Help _command_name_을 실행하여 얻을 수 있습니다.  또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"]
+
+* 정지, 스냅샷, 정지 해제 작업에 대한 사전 및 사후 명령의 경우, 플러그인 호스트에서 다음 경로의 명령 목록에 해당 명령이 있는지 확인해야 합니다.
++
+** Windows 호스트의 기본 위치: _C:\Program Files\ NetApp\ SnapCenter\Snapcenter Plug-in Creator\etc\allowed_commands.config_
+** Linux 호스트의 기본 위치: _/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_
+
+
+
+
+
+NOTE: 명령 목록에 해당 명령이 없으면 작업이 실패합니다.
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 선택한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 리소스 유형을 기준으로 *보기* 드롭다운 목록에서 리소스를 필터링합니다.
++
+선택하다 *image:../media/filter_icon.gif["필터 아이콘"] *를 선택한 다음 호스트 이름과 리소스 유형을 선택하여 리소스를 필터링합니다.  그런 다음 선택할 수 있습니다image:../media/filter_icon.gif["필터 아이콘"] 필터 창을 닫으려면.
+
+. 백업할 리소스를 선택하세요.
+. 리소스 페이지에서 *스냅샷 복사에 사용자 지정 이름 형식 사용*을 선택한 다음 스냅샷 이름에 사용할 사용자 지정 이름 형식을 입력합니다.
++
+예를 들어, _customtext_policy_hostname_ 또는 _resource_hostname_입니다.  기본적으로 타임스탬프는 스냅샷 이름에 추가됩니다.
+
+. 애플리케이션 설정 페이지에서 다음을 수행합니다.
++
+** 추가 백업 옵션을 설정하려면 *백업* 화살표를 선택하세요.
++
+필요한 경우 일관성 그룹 백업을 활성화하고 다음 작업을 수행합니다.
+
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+"일관성 그룹 스냅샷" 작업이 완료될 때까지 기다릴 시간을 확보하세요.
+ a| 
+스냅샷 작업이 완료될 때까지의 대기 시간을 지정하려면 *긴급*, *보통*, *느슨함*을 선택합니다.  긴급 = 5초, 보통 = 7초, 여유 = 20초.
+
+
+
+ a| 
+WAFL 동기화 비활성화
+ a| 
+WAFL 일관성 지점을 강제로 적용하지 않으려면 이 옵션을 선택하세요.
+
+|===
+** *스크립트* 화살표를 선택하여 정지, 스냅샷 및 정지 해제 작업에 대한 사전 및 사후 명령을 실행합니다.
++
+백업 작업을 종료하기 전에 사전 명령을 실행할 수도 있습니다.  Prescript와 Postscript는 SnapCenter Server에서 실행됩니다.
+
+** **사용자 정의 구성** 화살표를 선택한 다음, 이 리소스를 사용하는 모든 작업에 필요한 사용자 정의 값 쌍을 입력합니다.
+** 스냅샷 복사 도구* 화살표를 선택하여 스냅샷을 만드는 도구를 선택하세요.
++
+|===
+| 원하신다면... | 그 다음에... 
+
+
+ a| 
+SnapCenter 사용하여 스토리지 수준 스냅샷을 생성합니다.
+ a| 
+*파일 시스템 일관성이 없는 SnapCenter *를 선택하세요.
+
+
+
+ a| 
+SnapCenter Windows용 플러그인을 사용하여 파일 시스템을 일관된 상태로 만든 다음 스냅샷을 생성합니다.
+ a| 
+*파일 시스템 일관성을 갖춘 SnapCenter *를 선택하세요.
+
+
+
+ a| 
+스냅샷을 생성하는 명령을 입력하려면
+ a| 
+*기타*를 선택한 다음 스냅샷을 만드는 명령을 입력합니다.
+
+|===
++
+image:../media/application_settings.gif["애플리케이션 설정"]
+
+
+
+. 정책 페이지에서 다음 단계를 수행합니다.
++
+.. 드롭다운 목록에서 하나 이상의 정책을 선택하세요.
++
+
+NOTE: *를 클릭하여 정책을 생성할 수도 있습니다.image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] *.
+
++
+선택한 정책에 대한 일정 구성 섹션에서는 선택한 정책이 나열됩니다.
+
+.. 선택하다 *image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] * 일정을 구성하려는 정책에 대한 일정 구성 열에 있습니다.
+.. 정책 _policy_name_에 대한 일정 추가 대화 상자에서 일정을 구성한 다음 *확인*을 선택합니다.
++
+_policy_name_은 선택한 정책의 이름입니다.
+
++
+구성된 일정은 적용된 일정 열에 나열됩니다.
+
+
+
+. 알림 페이지의 *이메일 환경 설정* 드롭다운 목록에서 이메일을 보낼 시나리오를 선택합니다.
++
+또한 발신자와 수신자의 이메일 주소와 이메일 제목을 지정해야 합니다.  SMTP는 *설정* > *전역 설정*에서도 구성해야 합니다.
+
+. 요약을 검토한 후 *마침*을 선택하세요.
++
+리소스 토폴로지 페이지가 표시됩니다.
+
+. *지금 백업*을 선택하세요.
+. 백업 페이지에서 다음 단계를 수행합니다.
++
+.. 리소스에 여러 정책을 적용한 경우, *정책* 드롭다운 목록에서 백업에 사용할 정책을 선택합니다.
++
+주문형 백업에 대해 선택한 정책이 백업 일정과 연결되어 있는 경우, 주문형 백업은 일정 유형에 지정된 보존 설정에 따라 보존됩니다.
+
+.. *백업*을 선택하세요.
+
+
+. *모니터* > *작업*을 클릭하여 작업 진행 상황을 모니터링하세요.
++
+** MetroCluster 구성에서 SnapCenter 장애 조치 후 보호 관계를 감지하지 못할 수 있습니다.
++
+자세한 내용은 다음을 참조하세요. https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Unable_to_detect_SnapMirror_or_SnapVault_relationship_after_MetroCluster_failover["MetroCluster 장애 조치 후 SnapMirror 또는 SnapVault 관계를 감지할 수 없습니다."^]
+
+** VMDK에서 애플리케이션 데이터를 백업하고 SnapCenter Plug-in for VMware vSphere 의 Java 힙 크기가 충분히 크지 않으면 백업이 실패할 수 있습니다.
++
+Java 힙 크기를 늘리려면 스크립트 파일 _/opt/netapp/init_scripts/scvservice_를 찾으세요.  해당 스크립트에서 _do_start 메서드_ 명령은 SnapCenter VMware 플러그인 서비스를 시작합니다.  해당 명령을 다음으로 업데이트하세요: _Java -jar -Xmx8192M -Xms4096M_
+
+
+
+
+
+--
+.PowerShell cmdlet
+--
+.단계
+. Open-SmConnection cmdlet을 사용하여 지정된 사용자에 대한 SnapCenter 서버와의 연결 세션을 시작합니다.
++
+[listing]
+----
+Open-smconnection  -SMSbaseurl  https:\\snapctr.demo.netapp.com:8146\
+----
++
+사용자 이름과 비밀번호를 입력하라는 메시지가 표시됩니다.
+
+. Add-SmResources cmdlet을 사용하여 리소스를 추가합니다.
++
+이 예제에서는 SingleContainer 유형의 SAP HANA 데이터베이스를 추가하는 방법을 보여줍니다.
+
++
+[listing]
+----
+C:\PS> Add-SmResource -HostName '10.232.204.42' -PluginCode 'HANA' -DatabaseName H10 -ResourceType SingleContainer -StorageFootPrint (@{"VolumeName"="HanaData10";"StorageSystem"="vserver_scauto_primary"}) -SID 'H10' -filebackuppath '/tmp/HanaFileLog' -userstorekeys 'HS10' -osdbuser 'h10adm' -filebackupprefix 'H10_'
+----
++
+이 예제에서는 MultipleContainers 유형의 SAP HANA 데이터베이스를 추가하는 방법을 보여줍니다.
+
++
+[listing]
+----
+C:\PS> Add-SmResource -HostName 'vp-hana2.gdl.englab.netapp.com' -PluginCode 'HANA' -DatabaseName MDC_MT -ResourceType MultipleContainers -StorageFootPrint (@{"VolumeName"="VP_HANA2_data";"StorageSystem"="buck.gdl.englab.netapp.com"}) -sid 'A12' -userstorekeys 'A12KEY' -TenantType 'MultiTenant'
+----
++
+이 예제에서는 비데이터 볼륨 리소스를 만드는 방법을 보여줍니다.
+
++
+[listing]
+----
+C:\PS> Add-SmResource -HostName 'SNAPCENTERN42.sccore.test.com' -PluginCode 'hana' -ResourceName NonDataVolume -ResourceType NonDataVolume -StorageFootPrint (@{"VolumeName"="ng_pvol";"StorageSystem"="vserver_scauto_primary"}) -sid 'S10'
+----
+. Add-SmPolicy cmdlet을 사용하여 백업 정책을 만듭니다.
++
+이 예제에서는 스냅샷 복사 기반 백업에 대한 백업 정책을 만듭니다.
+
++
+[listing]
+----
+C:\PS> Add-SmPolicy -PolicyName hana_snapshotbased -PolicyType Backup -PluginPolicyType hana -BackupType SnapShotBasedBackup
+----
++
+이 예제에서는 파일 기반 백업에 대한 백업 정책을 만듭니다.
+
++
+[listing]
+----
+C:\PS> Add-SmPolicy -PolicyName hana_Filebased -PolicyType Backup -PluginPolicyType hana -BackupType FileBasedBackup
+----
+. Add-SmResourceGroup cmdlet을 사용하여 리소스를 보호하거나 SnapCenter 에 새 리소스 그룹을 추가합니다.
++
+이 예제에서는 단일 컨테이너 리소스를 보호합니다.
+
++
+[listing]
+----
+C:\PS> Add-SmProtectResource -PluginCode HANA  -Policies hana_snapshotbased,hana_Filebased
+ -Resources @{"Host"="host.example.com";"UID"="SID"} -Description test -usesnapcenterwithoutfilesystemconsistency
+----
++
+이 예제에서는 여러 컨테이너 리소스를 보호합니다.
+
++
+[listing]
+----
+C:\PS> Add-SmProtectResource -PluginCode HANA  -Policies hana_snapshotbased,hana_Filebased
+ -Resources @{"Host"="host.example.com";"UID"="MDC\SID"} -Description test -usesnapcenterwithoutfilesystemconsistency
+----
++
+이 예제에서는 지정된 정책과 리소스를 사용하여 새 리소스 그룹을 만듭니다.
+
++
+[listing]
+----
+C:\PS> Add-SmResourceGroup -ResourceGroupName 'ResourceGroup_with_SingleContainer_MultipleContainers_Resources' -Resources @(@{"Host"="sccorelinux61.sccore.test.com";"Uid"="SID"},@{"Host"="sccorelinux62.sccore.test.com";"Uid"="MDC\SID"})
+  -Policies hana_snapshotbased,hana_Filebased  -usesnapcenterwithoutfilesystemconsistency  -plugincode 'HANA'
+----
++
+이 예제에서는 비데이터 볼륨 리소스 그룹을 생성합니다.
+
++
+[listing]
+----
+C:\PS> Add-SmResourceGroup -ResourceGroupName 'Mixed_RG_backup_when_Remove_Backup_throguh_BackupName_windows' -Resources @(@{"Host"="SNAPCENTERN42.sccore.test.com";"Uid"="H11";"PluginName"="hana"},@{"Host"="SNAPCENTERN42.sccore.test.com";"Uid"="MDC\H31";"PluginName"="hana"},@{"Host"="SNAPCENTERN42.sccore.test.com";"Uid"="NonDataVolume\S10\NonDataVolume";"PluginName"="hana"}) -Policies hanaprimary
+----
+. New-SmBackup cmdlet을 사용하여 새로운 백업 작업을 시작합니다.
++
+이 예제에서는 리소스 그룹을 백업하는 방법을 보여줍니다.
+
++
+[listing]
+----
+C:\PS> New-SMBackup -ResourceGroupName 'ResourceGroup_with_SingleContainer_MultipleContainers_Resources'  -Policy hana_snapshotbased
+----
++
+이 예제에서는 보호된 리소스를 백업합니다.
+
++
+[listing]
+----
+C:\PS> New-SMBackup -Resources @{"Host"="10.232.204.42";"Uid"="MDC\SID";"PluginName"="hana"} -Policy hana_Filebased
+----
+. Get-smJobSummaryReport cmdlet을 사용하여 작업 상태(실행 중, 완료 또는 실패)를 모니터링합니다.
++
+[listing]
+----
+PS C:\> Get-smJobSummaryReport -JobID 123
+----
+. Get-SmBackupReport cmdlet을 사용하여 복원 또는 복제 작업을 수행하기 위한 백업 ID, 백업 이름과 같은 백업 작업 세부 정보를 모니터링합니다.
++
+[listing]
+----
+PS C:\> Get-SmBackupReport -JobId 351
+Output:
+BackedUpObjects           : {DB1}
+FailedObjects             : {}
+IsScheduled               : False
+HasMetadata               : False
+SmBackupId                : 269
+SmJobId                   : 2361
+StartDateTime             : 10/4/2016 11:20:45 PM
+EndDateTime               : 10/4/2016 11:21:32 PM
+Duration                  : 00:00:46.2536470
+CreatedDateTime           : 10/4/2016 11:21:09 PM
+Status                    : Completed
+ProtectionGroupName       : Verify_ASUP_Message_windows
+SmProtectionGroupId       : 211
+PolicyName                : test2
+SmPolicyId                : 20
+BackupName                : Verify_ASUP_Message_windows_scc54_10-04-2016_23.20.46.2758
+VerificationStatus        : NotVerified
+VerificationStatuses      :
+SmJobError                :
+BackupType                : SCC_BACKUP
+CatalogingStatus          : NotApplicable
+CatalogingStatuses        :
+ReportDataCreatedDateTime :
+----
+
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+--
+====

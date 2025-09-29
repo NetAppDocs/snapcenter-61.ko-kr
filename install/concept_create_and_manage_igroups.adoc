@@ -1,0 +1,120 @@
+---
+permalink: install/concept_create_and_manage_igroups.html 
+sidebar: sidebar 
+keywords: igroup 
+summary: '스토리지 시스템의 주어진 LUN에 어떤 호스트가 액세스할 수 있는지 지정하려면 이니시에이터 그룹(igroup)을 만듭니다.  SnapCenter 사용하면 Windows 호스트에서 igroup을 생성, 이름 변경, 수정 또는 삭제할 수 있습니다.' 
+---
+= igroups를 만들고 관리하세요
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+스토리지 시스템의 주어진 LUN에 어떤 호스트가 액세스할 수 있는지 지정하려면 이니시에이터 그룹(igroup)을 만듭니다.  SnapCenter 사용하면 Windows 호스트에서 igroup을 생성, 이름 변경, 수정 또는 삭제할 수 있습니다.
+
+
+
+== igroup 만들기
+
+SnapCenter 사용하면 Windows 호스트에 igroup을 만들 수 있습니다.  LUN에 igroup을 매핑하면 디스크 생성 마법사 또는 디스크 연결 마법사에서 igroup을 사용할 수 있습니다.
+
+*단계*
+
+. 왼쪽 탐색 창에서 *호스트*를 클릭합니다.
+. 호스트 페이지에서 *Igroup*을 클릭합니다.
+. 개시자 그룹 페이지에서 *새로 만들기*를 클릭합니다.
+. Igroup 만들기 대화 상자에서 igroup을 정의합니다.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+저장 시스템
+ a| 
+igroup에 매핑할 LUN에 대한 SVM을 선택합니다.
+
+
+
+ a| 
+주인
+ a| 
+igroup을 만들려는 호스트를 선택하세요.
+
+
+
+ a| 
+Igroup 이름
+ a| 
+igroup의 이름을 입력하세요.
+
+
+
+ a| 
+개시자
+ a| 
+개시자를 선택하세요.
+
+
+
+ a| 
+유형
+ a| 
+이니시에이터 유형을 iSCSI, FCP 또는 혼합(FCP 및 iSCSI) 중에서 선택합니다.
+
+|===
+. 입력한 내용이 마음에 들면 *확인*을 클릭하세요.
++
+SnapCenter 스토리지 시스템에 igroup을 생성합니다.
+
+
+
+
+
+== igroup 이름 바꾸기
+
+SnapCenter 사용하여 기존 igroup의 이름을 바꿀 수 있습니다.
+
+*단계*
+
+. 왼쪽 탐색 창에서 *호스트*를 클릭합니다.
+. 호스트 페이지에서 *Igroup*을 클릭합니다.
+. 이니시에이터 그룹 페이지에서 *스토리지 가상 머신* 필드를 클릭하여 사용 가능한 SVM 목록을 표시한 다음, 이름을 바꾸려는 igroup의 SVM을 선택합니다.
+. SVM의 igroup 목록에서 이름을 바꾸려는 igroup을 선택하고 *이름 바꾸기*를 클릭합니다.
+. igroup 이름 바꾸기 대화 상자에서 igroup의 새 이름을 입력하고 *이름 바꾸기*를 클릭합니다.
+
+
+
+
+== igroup 수정
+
+SnapCenter 사용하면 기존 igroup에 igroup 초기자를 추가할 수 있습니다.  igroup을 만들 때 호스트를 하나만 추가할 수 있습니다.  클러스터에 대한 igroup을 만들려면 igroup을 수정하여 다른 노드를 해당 igroup에 추가할 수 있습니다.
+
+*단계*
+
+. 왼쪽 탐색 창에서 *호스트*를 클릭합니다.
+. 호스트 페이지에서 *Igroup*을 클릭합니다.
+. 이니시에이터 그룹 페이지에서 *스토리지 가상 머신* 필드를 클릭하여 사용 가능한 SVM의 드롭다운 목록을 표시한 다음, 수정하려는 igroup의 SVM을 선택합니다.
+. igroup 목록에서 igroup을 선택하고 *igroup에 시작자 추가*를 클릭합니다.
+. 호스트를 선택하세요.
+. 시작 프로그램을 선택하고 *확인*을 클릭합니다.
+
+
+
+
+== igroup 삭제
+
+더 이상 필요하지 않은 igroup을 삭제하려면 SnapCenter 사용하면 됩니다.
+
+*단계*
+
+. 왼쪽 탐색 창에서 *호스트*를 클릭합니다.
+. 호스트 페이지에서 *Igroup*을 클릭합니다.
+. 이니시에이터 그룹 페이지에서 *스토리지 가상 머신* 필드를 클릭하여 사용 가능한 SVM의 드롭다운 목록을 표시한 다음, 삭제하려는 igroup의 SVM을 선택합니다.
+. SVM의 igroup 목록에서 삭제하려는 igroup을 선택하고 *삭제*를 클릭합니다.
+. igroup 삭제 대화 상자에서 *확인*을 클릭합니다.
++
+SnapCenter igroup을 삭제합니다.
+
+

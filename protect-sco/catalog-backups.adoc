@@ -1,0 +1,71 @@
+---
+permalink: protect-sco/catalog-backups.html 
+sidebar: sidebar 
+keywords: oracle databases discover 
+summary: SnapCenter Oracle 데이터베이스를 검색하는 방법. 
+---
+= Oracle Recovery Manager를 사용하여 백업을 카탈로그화하는 방법
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Oracle Recovery Manager(RMAN)를 사용하여 Oracle 데이터베이스의 백업을 카탈로그화하고 Oracle RMAN 저장소에 백업 정보를 저장할 수 있습니다.
+
+카탈로그화된 백업은 나중에 블록 수준 복원이나 테이블스페이스 지정 시점 복구 작업에 사용할 수 있습니다.  이러한 카탈로그화된 백업이 필요하지 않으면 카탈로그 정보를 제거할 수 있습니다.
+
+카탈로그화를 위해서는 데이터베이스가 마운트된 상태 이상이어야 합니다.  데이터 백업, 보관 로그 백업 및 전체 백업에 대한 카탈로그 작성을 수행할 수 있습니다.  여러 데이터베이스가 있는 리소스 그룹의 백업에 대해 카탈로그화가 활성화된 경우 각 데이터베이스에 대해 카탈로그화가 수행됩니다.  Oracle RAC 데이터베이스의 경우 카탈로그화는 데이터베이스가 최소한 마운트된 상태인 기본 노드에서 수행됩니다.
+
+RAC 데이터베이스의 백업을 카탈로그화하려면 해당 데이터베이스에 대해 다른 작업이 실행되고 있지 않은지 확인하세요.  다른 작업이 실행 중이면 카탈로그 작업은 대기열에 추가되지 않고 실패합니다.
+
+
+
+== 외부 카탈로그 데이터베이스
+
+기본적으로 대상 데이터베이스 제어 파일은 카탈로그화에 사용됩니다.  외부 카탈로그 데이터베이스를 추가하려면 SnapCenter 그래픽 사용자 인터페이스(GUI)의 데이터베이스 설정 마법사를 사용하여 외부 카탈로그의 자격 증명과 TNS(Transparent Network Substrate) 이름을 지정하여 구성할 수 있습니다.  -OracleRmanCatalogCredentialName 및 -OracleRmanCatalogTnsName 옵션과 함께 Configure-SmOracleDatabase 명령을 실행하여 CLI에서 외부 카탈로그 데이터베이스를 구성할 수도 있습니다.
+
+
+
+== RMAN 명령
+
+SnapCenter GUI에서 Oracle 백업 정책을 생성하는 동안 카탈로그화 옵션을 활성화한 경우 백업은 백업 작업의 일부로 Oracle RMAN을 사용하여 카탈로그화됩니다.  다음을 실행하여 백업의 지연 카탈로그를 수행할 수도 있습니다. `Catalog-SmBackupWithOracleRMAN` 명령.
+
+백업을 카탈로그화한 후 다음을 실행할 수 있습니다. `Get-SmBackupDetails` 카탈로그화된 데이터 파일의 태그, 제어 파일 카탈로그 경로, 카탈로그화된 보관 로그 위치와 같은 카탈로그화된 백업 정보를 얻기 위한 명령입니다.
+
+
+
+== 명명 형식
+
+ASM 디스크 그룹 이름이 16자 이상이면 SnapCenter 3.0부터 백업에 사용되는 명명 형식은 SC_HASHCODEofDISKGROUP_DBSID_BACKUPID입니다.  그러나 디스크 그룹 이름이 16자 미만이면 백업에 사용되는 명명 형식은 DISKGROUPNAME_DBSID_BACKUPID입니다. 이는 SnapCenter 2.0에서 사용되는 형식과 동일합니다.
+
+HASHCODEofDISKGROUP은 각 ASM 디스크 그룹에 대해 자동으로 생성되는 고유한 숫자(2~10자리)입니다.
+
+
+
+== 교차 확인 작업
+
+저장소 레코드가 물리적 상태와 일치하지 않는 백업에 대한 오래된 RMAN 저장소 정보를 업데이트하기 위해 교차 검사를 수행할 수 있습니다.  예를 들어, 사용자가 운영 체제 명령을 사용하여 디스크에서 보관된 로그를 제거하는 경우, 제어 파일은 실제로는 로그가 디스크에 있지 않더라도 여전히 로그가 디스크에 있다고 표시합니다.
+
+교차 검사 작업을 통해 제어 파일을 해당 정보로 업데이트할 수 있습니다.  Set-SmConfigSettings 명령을 실행하고 ENABLE_CROSSCHECK 매개변수에 TRUE 값을 할당하여 교차 검사를 활성화할 수 있습니다.  기본값은 FALSE로 설정됩니다.
+
+`sccli Set-SmConfigSettings-ConfigSettingsTypePlugin-PluginCodeSCO-ConfigSettings "KEY=ENABLE_CROSSCHECK, VALUE=TRUE"`
+
+
+
+== 카탈로그 정보 제거
+
+Uncatalog-SmBackupWithOracleRMAN 명령을 실행하면 카탈로그 정보를 제거할 수 있습니다.  SnapCenter GUI를 사용하여 카탈로그 정보를 제거할 수 없습니다.  그러나 카탈로그화된 백업의 정보는 백업을 삭제하거나 해당 카탈로그화된 백업과 연관된 보존 및 리소스 그룹을 삭제하는 동안 제거됩니다.
+
+
+NOTE: SnapCenter 호스트를 강제로 삭제하는 경우 해당 호스트와 연관된 카탈로그화된 백업 정보는 제거되지 않습니다.  호스트를 강제로 삭제하기 전에 해당 호스트에 대한 모든 카탈로그 백업 정보를 제거해야 합니다.
+
+작업 시간이 ORACLE_PLUGIN_RMAN_CATALOG_TIMEOUT 매개변수에 지정된 시간 초과 값을 초과하여 카탈로그화 및 카탈로그 해제가 실패하는 경우 다음 명령을 실행하여 매개변수 값을 수정해야 합니다.
+
+`/opt/Netapp/snapcenter/spl/bin/sccli Set-SmConfigSettings-ConfigSettingsType Plugin -PluginCode SCO-ConfigSettings "KEY=ORACLE_PLUGIN_RMAN_CATALOG_TIMEOUT,VALUE=user_defined_value"`
+
+매개변수 값을 수정한 후 다음 명령을 실행하여 SnapCenter 플러그인 Loader (SPL) 서비스를 다시 시작합니다.
+
+`/opt/NetApp/snapcenter/spl/bin/spl restart`
+
+명령과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 Get-Help command_name을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수 있습니다. https://library.netapp.com/ecm/ecm_download_file/ECMLP3337666["SnapCenter 소프트웨어 명령 참조 가이드"^] .

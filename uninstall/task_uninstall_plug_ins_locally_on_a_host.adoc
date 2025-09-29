@@ -1,0 +1,33 @@
+---
+permalink: uninstall/task_uninstall_plug_ins_locally_on_a_host.html 
+sidebar: sidebar 
+keywords: uninstall, uninstall plug-in locally, uninstall plug-in from a host 
+summary: SnapCenter 서버에서 호스트에 접속할 수 없는 경우 호스트에서 로컬로 SnapCenter 플러그인을 제거할 수 있습니다. 
+---
+= 호스트에서 로컬로 플러그인 제거
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 서버에서 호스트에 접속할 수 없는 경우 호스트에서 로컬로 SnapCenter 플러그인을 제거할 수 있습니다.
+
+.이 작업에 관하여
+개별 플러그인이나 플러그인 패키지를 제거하는 가장 좋은 방법은 SnapCenter GUI를 사용하거나 SnapCenter 서버 호스트 명령줄 인터페이스에서 Uninstall-SmHostPackage cmdlet을 사용하는 것입니다.  이러한 절차는 SnapCenter 서버가 모든 변경 사항에 맞게 최신 상태를 유지하는 데 도움이 됩니다.
+
+하지만 드물게는 로컬에서 플러그인을 제거해야 할 수도 있습니다.  예를 들어, SnapCenter 서버에서 제거 작업을 실행했지만 작업이 실패했거나 SnapCenter 서버를 제거했는데 고아 플러그인이 호스트에 남아 있을 수 있습니다.
+
+
+IMPORTANT: 호스트에서 로컬로 플러그인 패키지를 제거해도 호스트와 관련된 데이터(예: 예약된 작업 및 백업 메타데이터)는 삭제되지 않습니다.
+
+
+IMPORTANT: 제어판에서 Windows용 SnapCenter 플러그인 패키지를 로컬로 제거하려고 시도하지 마세요.  SnapCenter GUI를 사용하여 Microsoft Windows용 SnapCenter 플러그인이 제대로 제거되었는지 확인해야 합니다.
+
+.단계
+. 호스트 시스템에서 제어판으로 이동하여 *프로그램 제거*를 클릭합니다.
+. 프로그램 목록에서 제거하려는 SnapCenter 플러그인이나 플러그인 패키지를 선택하고 *제거*를 클릭합니다.
++
+Windows는 선택한 패키지의 모든 플러그인을 제거합니다.
+
+

@@ -1,0 +1,16 @@
+---
+permalink: protect-hana/concept_housekeeping_of_log_backups.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SAP HANA Database 
+summary: SnapCenter 스토리지 시스템 및 파일 시스템 수준과 SAP HANA 백업 카탈로그 내에서 로그 및 데이터 백업의 정리 작업을 관리합니다. 
+---
+= SnapCenter 로그 및 데이터 백업의 정리 작업을 관리하는 방법
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 스토리지 시스템 및 파일 시스템 수준과 SAP HANA 백업 카탈로그 내에서 로그 및 데이터 백업의 정리 작업을 관리합니다.
+
+기본 또는 보조 저장소의 스냅샷과 SAP HANA 카탈로그의 해당 항목은 보존 설정에 따라 삭제됩니다.  SAP HANA 카탈로그 항목은 백업 및 리소스 그룹 삭제 중에도 삭제됩니다.

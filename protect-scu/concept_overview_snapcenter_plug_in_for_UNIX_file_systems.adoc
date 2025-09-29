@@ -1,0 +1,112 @@
+---
+permalink: protect-scu/concept_overview_snapcenter_plug_in_for_UNIX_file_systems.html 
+sidebar: sidebar 
+keywords: overview, unix file system, plug-in for unix file system, backup, restore, clone 
+summary: Unix 파일 시스템용 플러그인은 Unix 파일 시스템의 백업, 복원, 복제를 지원합니다. 
+---
+= Unix 파일 시스템용 SnapCenter 플러그인으로 할 수 있는 일
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Unix 파일 시스템용 플러그인이 사용자 환경에 설치되면 SnapCenter 사용하여 Unix 파일 시스템을 백업, 복원 및 복제할 수 있습니다.  해당 작업을 지원하는 작업도 수행할 수 있습니다.
+
+* 리소스를 찾아보세요
+* Unix 파일 시스템 백업
+* 백업 작업 예약
+* 파일 시스템 백업 복원
+* 파일 시스템 백업 복제
+* 백업, 복원 및 복제 작업 모니터링
+
+
+
+
+== 지원되는 구성
+
+|===
+| 목 | 지원되는 구성 
+
+
+ a| 
+환경
+ a| 
+* 물리적 서버
+* 가상 서버
++
+NFS와 SAN 모두에 vVol 데이터 저장소가 있습니다. vVol 데이터 저장소는 VMware vSphere용 ONTAP 도구를 사용해서만 프로비저닝할 수 있습니다.
+
+
+
+
+
+ a| 
+운영 체제
+ a| 
+* 레드햇 엔터프라이즈 리눅스
+* 오라클 리눅스
+* SUSE Linux Enterprise Server(SLES)
+
+
+
+
+ a| 
+파일 시스템
+ a| 
+* 산:
++
+** LVM 기반 및 비 LVM 기반 파일 시스템 모두
+** VMDK ext3, ext4 및 xfs를 통한 LVM
+
+
+* NFS: NFS v3, NFS v4.x
+
+
+
+
+ a| 
+프로토콜
+ a| 
+* FC
+* FCoE
+* iSCSI
+* NFS
+
+
+
+
+ a| 
+다중 경로
+ a| 
+예
+
+|===
+
+
+== 제한 사항
+
+* 볼륨 그룹에서 RDM과 가상 디스크를 혼합하여 사용할 수 없습니다.
+* 파일 수준 복원은 지원되지 않습니다.
++
+하지만 백업을 복제한 다음 파일을 수동으로 복사하여 파일 수준 복원을 수동으로 수행할 수 있습니다.
+
+* NFS와 VMFS 데이터 저장소 모두에서 나오는 VMDK에 분산된 파일 시스템의 혼합은 지원되지 않습니다.
+* NVMe는 지원되지 않습니다.
+* 프로비저닝이 지원되지 않습니다.
+
+
+
+
+== 특징
+
+* Linux 또는 AIX 시스템에서 기본 호스트 스토리지 스택을 처리하여 Oracle 데이터베이스에서 데이터 보호 작업을 수행할 수 있도록 Oracle 데이터베이스용 플러그인을 활성화합니다.
+* ONTAP 실행하는 스토리지 시스템에서 NFS(네트워크 파일 시스템) 및 SAN(스토리지 영역 네트워크) 프로토콜을 지원합니다.
+* Linux 시스템의 경우 SnapCenter Plug-in for VMware vSphere 배포하고 SnapCenter 에 플러그인을 등록하면 VMDK 및 RDM LUN의 Oracle 데이터베이스가 지원됩니다.
+* SAN 파일 시스템과 LVM 레이아웃에서 AIX용 Mount Guard를 지원합니다.
+* SAN 파일 시스템에서 인라인 로깅을 지원하는 향상된 저널링 파일 시스템(JFS2)과 AIX 시스템에서만 LVM 레이아웃을 지원합니다.
++
+SAN 기본 장치, 파일 시스템 및 SAN 장치에 구축된 LVM 레이아웃이 지원됩니다.
+
+* SnapCenter 환경에서 UNIX 파일 시스템에 대한 애플리케이션 인식 백업, 복원 및 복제 작업을 자동화합니다.
+

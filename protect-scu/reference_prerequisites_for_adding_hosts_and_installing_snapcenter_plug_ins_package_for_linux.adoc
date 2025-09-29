@@ -1,0 +1,81 @@
+---
+permalink: protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html 
+sidebar: sidebar 
+keywords: prerequisites, iSCSI, host requirement for Linux, sudo privileges, non-root user, credentials, authenticate, domain administrator, local administrator, workgroup, sudo, root user 
+summary: 호스트를 추가하고 플러그인 패키지를 설치하기 전에 모든 요구 사항을 충족해야 합니다. 
+---
+= Linux용 호스트 추가 및 플러그인 패키지 설치를 위한 전제 조건
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Linux용 호스트를 추가하고 플러그인 패키지를 설치하기 전에 모든 요구 사항을 충족해야 합니다.
+
+* iSCSI를 사용하는 경우 iSCSI 서비스가 실행 중이어야 합니다.
+* 루트 또는 루트가 아닌 사용자에 대해 비밀번호 기반 인증을 사용하거나 SSH 키 기반 인증을 사용할 수 있습니다.
++
+Unix 파일 시스템용 SnapCenter 플러그인은 루트가 아닌 사용자도 설치할 수 있습니다.  하지만 루트가 아닌 사용자가 플러그인 프로세스를 설치하고 시작하려면 sudo 권한을 구성해야 합니다.  플러그인을 설치한 후에는 프로세스가 루트가 아닌 사용자 권한으로 실행됩니다.
+
+* 설치 사용자에 대해 Linux 인증 모드로 자격 증명을 생성합니다.
+* Linux 호스트에 Java 11을 설치했어야 합니다.
++
+
+NOTE: Linux 호스트에 JAVA 11 인증 버전만 설치했는지 확인하세요.
+
++
+JAVA 다운로드에 대한 자세한 내용은 다음을 참조하세요. http://www.java.com/en/download/manual.jsp["모든 운영 체제용 Java 다운로드"^]
+
+* 플러그인 설치를 위해 기본 셸로 *bash*를 사용해야 합니다.
+
+
+
+
+== Linux 호스트 요구 사항
+
+Linux용 SnapCenter 플러그인 패키지를 설치하기 전에 호스트가 요구 사항을 충족하는지 확인해야 합니다.
+
+|===
+| 목 | 요구 사항 
+
+
+ a| 
+운영 체제
+ a| 
+* 레드햇 엔터프라이즈 리눅스
+* 오라클 리눅스
+* SUSE Linux Enterprise Server(SLES)
+
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인을 위한 최소 RAM
+ a| 
+2GB
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인에 대한 최소 설치 및 로그 공간
+ a| 
+2GB
+
+
+NOTE: 충분한 디스크 공간을 할당하고 로그 폴더의 저장 공간 소비를 모니터링해야 합니다.  필요한 로그 공간은 보호해야 할 엔터티의 수와 데이터 보호 작업의 빈도에 따라 달라집니다.  디스크 공간이 충분하지 않으면 최근 실행된 작업에 대한 로그가 생성되지 않습니다.
+
+
+
+ a| 
+필수 소프트웨어 패키지
+ a| 
+Java 11 Oracle Java 및 OpenJDK
+
+
+NOTE: Linux 호스트에 JAVA 11 인증 버전만 설치했는지 확인하세요.
+
+JAVA를 최신 버전으로 업그레이드한 경우 /var/opt/snapcenter/spl/etc/spl.properties에 있는 JAVA_HOME 옵션이 올바른 JAVA 버전과 올바른 경로로 설정되어 있는지 확인해야 합니다.
+
+|===
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .

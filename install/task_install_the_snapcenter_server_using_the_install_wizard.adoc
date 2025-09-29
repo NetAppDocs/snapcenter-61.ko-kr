@@ -1,0 +1,189 @@
+---
+permalink: install/task_install_the_snapcenter_server_using_the_install_wizard.html 
+sidebar: sidebar 
+keywords: install, snapcenter software, install wizard, features enabled 
+summary: SnapCenter Server 설치 프로그램 실행 파일을 실행하여 SnapCenter Server를 설치할 수 있습니다. 
+---
+= Windows 호스트에 SnapCenter 서버 설치
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter Server 설치 프로그램 실행 파일을 실행하여 SnapCenter Server를 설치할 수 있습니다.
+
+PowerShell cmdlet을 사용하여 여러 설치 및 구성 절차를 선택적으로 수행할 수 있습니다.  PowerShell 7.4.2 이상을 사용해야 합니다.
+
+
+NOTE: 명령줄에서 SnapCenter 서버를 자동으로 설치하는 것은 지원되지 않습니다.
+
+.시작하기 전에
+* SnapCenter 서버 호스트는 보류 중인 시스템 재시작 없이 Windows 업데이트로 최신 상태를 유지해야 합니다.
+* SnapCenter 서버를 설치하려는 호스트에 MySQL 서버가 설치되어 있지 않은지 확인해야 합니다.
+* Windows 설치 프로그램 디버깅을 활성화해야 합니다.
++
+활성화에 대한 정보는 Microsoft 웹 사이트를 참조하세요. https://support.microsoft.com/kb/223300["Windows 설치 프로그램 로깅"^] .
+
++
+
+NOTE: Microsoft Exchange Server, Active Directory 또는 도메인 이름 서버가 있는 호스트에 SnapCenter 서버를 설치해서는 안 됩니다.
+
+
+
+.단계
+. SnapCenter 서버 설치 패키지를 다운로드하세요. https://mysupport.netapp.com/site/products/all/details/snapcenter/downloads-tab["NetApp 지원 사이트"^] .
+. 다운로드한 .exe 파일을 두 번 클릭하여 SnapCenter 서버 설치를 시작합니다.
++
+설치를 시작하면 모든 사전 검사가 수행되고 최소 요구 사항을 충족하지 못하면 해당 오류나 경고 메시지가 표시됩니다.
+
++
+경고 메시지를 무시하고 설치를 진행할 수 있습니다. 그러나 오류는 수정되어야 합니다.
+
+. SnapCenter 서버 설치에 필요한 미리 채워진 값을 검토하고 필요한 경우 수정합니다.
++
+MySQL 서버 저장소 데이터베이스에 대한 비밀번호를 지정할 필요는 없습니다.  SnapCenter 서버를 설치하는 동안 비밀번호가 자동으로 생성됩니다.
+
++
+
+NOTE: 특수문자 "`%`" is not supported in the custom path for the repository database. If you include "` 경로에 %`"가 있으면 설치가 실패합니다.
+
+. *지금 설치*를 클릭하세요.
++
+잘못된 값을 지정한 경우 해당 오류 메시지가 표시됩니다.  값을 다시 입력한 다음 설치를 시작하세요.
+
++
+
+NOTE: *취소* 버튼을 클릭하면 실행 중인 단계가 완료되고, 이후 롤백 작업이 시작됩니다.  SnapCenter 서버가 호스트에서 완전히 제거됩니다.
+
++
+하지만 "SnapCenter 서버 사이트 재시작" 또는 " SnapCenter 서버 시작 대기" 작업이 수행되는 동안 *취소*를 클릭하면 작업을 취소하지 않고 설치가 진행됩니다.
+
++
+로그 파일은 항상 관리자의 %temp% 폴더에 (가장 오래된 것부터) 나열됩니다.  로그 위치를 리디렉션하려면 명령 프롬프트에서 다음을 실행하여 SnapCenter 서버 설치를 시작하세요.``C:\installer_location\installer_name.exe /log"C:\"``
+
+
+
+
+
+== 설치 중 Windows 호스트에서 활성화된 기능
+
+SnapCenter 서버 설치 프로그램은 설치 중에 Windows 호스트에서 Windows 기능과 역할을 활성화합니다.  이러한 정보는 호스트 시스템의 문제 해결 및 유지 관리에 도움이 될 수 있습니다.
+
+|===
+| 범주 | 특징 
+
+
+ a| 
+웹 서버
+ a| 
+* 인터넷 정보 서비스
+* 월드 와이드 웹 서비스
+* 일반적인 HTTP 기능
++
+** 기본 문서
+** 디렉토리 탐색
+** HTTP 오류
+** HTTP 리디렉션
+** 정적 콘텐츠
+** WebDAV 게시
+
+
+* 건강 및 진단
++
+** 사용자 정의 로깅
+** HTTP 로깅
+** 로깅 도구
+** 요청 모니터
+** 트레이싱
+
+
+* 성능 특징
++
+** 정적 콘텐츠 압축
+
+
+* 보안
++
+** IP 보안
+** 기본 인증
+** 중앙 집중식 SSL 인증서 지원
+** 클라이언트 인증서 매핑 인증
+** IIS 클라이언트 인증서 매핑 인증
+** IP 및 도메인 제한
+** 요청 필터링
+** URL 인증
+** Windows 인증
+
+
+* 애플리케이션 개발 기능
++
+** .NET 확장성 4.5
+** 애플리케이션 초기화
+** ASP.NET Core Runtime 8.0.12(및 이후 모든 8.0.x 패치) 호스팅 번들
+** 서버 측 포함
+** 웹소켓 프로토콜
+
+
+* 관리 도구
++
+** IIS 관리 콘솔
+
+
+
+
+
+
+ a| 
+IIS 관리 스크립트 및 도구
+ a| 
+* IIS 관리 서비스
+* 웹 관리 도구
+
+
+
+
+ a| 
++.NET Framework 8.0.12 기능+
+ a| 
+* ASP.NET Core Runtime 8.0.12(및 이후 모든 8.0.x 패치) 호스팅 번들
+* Windows Communication Foundation(WCF) HTTP 활성화45
++
+** TCP 활성화
+** HTTP 활성화
+
+
+
+
+.NET 관련 문제 해결 정보는 다음을 참조하세요. https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/SnapCenter_upgrade_or_install_fails_with_%22This_KB_is_not_related_to_the_OS%22["인터넷 연결이 없는 레거시 시스템의 경우 SnapCenter 업그레이드 또는 설치가 실패합니다."^] .
+
+
+
+ a| 
+메시지 큐잉
+ a| 
+* 메시지 큐잉 서비스
++
+
+NOTE: SnapCenter 생성하고 관리하는 MSMQ 서비스를 다른 애플리케이션이 사용하지 않도록 하세요.
+
+* 래빗MQ
+* 얼랑
+
+
+
+
+ a| 
+Windows 프로세스 활성화 서비스
+ a| 
+* 프로세스 모델
+
+
+
+
+ a| 
+구성 API
+ a| 
+모두
+
+|===

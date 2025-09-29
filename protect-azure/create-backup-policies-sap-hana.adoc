@@ -1,0 +1,36 @@
+---
+permalink: protect-azure/create-backup-policies-sap-hana.html 
+sidebar: sidebar 
+keywords: create policies, SAP HANA, backup policies 
+summary: 백업하려는 리소스 또는 리소스 그룹에 대한 백업 정책을 만듭니다. 
+---
+= SAP HANA 데이터베이스에 대한 백업 정책 만들기
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 사용하여 SAP HANA 데이터베이스 리소스를 백업하기 전에 백업하려는 리소스 또는 리소스 그룹에 대한 백업 정책을 만들어야 합니다.
+
+.단계
+. 왼쪽 탐색 창에서 *설정*을 클릭합니다.
+. 설정 페이지에서 *정책*을 클릭합니다.
+. *새로 만들기*를 클릭합니다.
+. 이름 페이지에서 정책 이름과 설명을 입력합니다.
+. 정책 유형 페이지에서 다음 단계를 수행합니다.
++
+.. 저장소 유형으로 * Azure NetApp Files*를 선택합니다.
+.. 데이터베이스의 무결성 검사를 수행하려면 *파일 기반*을 선택합니다.
+.. 스냅샷 기술을 사용하여 백업을 만들려면 *스냅샷 기반*을 선택하세요.
+
+
+. 스냅샷 및 백업 페이지에서 다음 단계를 수행합니다.
++
+.. 예약된 백업의 빈도를 선택하세요.
+.. 보존 설정을 지정합니다.
+.. Azure NetApp Files 백업을 활성화하려면 *백업 활성화*를 선택하고 보존 설정을 지정합니다.
+
+
+. 요약을 검토하고 *마침*을 클릭하세요.
+

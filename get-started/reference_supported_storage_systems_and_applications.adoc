@@ -1,0 +1,38 @@
+---
+permalink: get-started/reference_supported_storage_systems_and_applications.html 
+sidebar: sidebar 
+keywords: storage system, ONTAP version, ASA r2 systems 
+summary: 지원되는 저장 시스템, 애플리케이션 및 데이터베이스를 알아야 합니다. 
+---
+= SnapCenter 에서 지원하는 스토리지 시스템 및 애플리케이션
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 가 지원하는 스토리지 시스템, 애플리케이션, 데이터베이스를 알아야 합니다.
+
+
+
+== 지원되는 스토리지 시스템
+
+* NetApp ONTAP 9.12.1 이상
+* Azure NetApp Files
+* Amazon FSx for NetApp ONTAP
++
+TCP(Transport Control Protocol)를 통한 NVMe(Non-Volatile Memory Express)를 지원합니다.
+
++
+Amazon FSx for NetApp ONTAP 에 대한 정보는 다음을 참조하세요. https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/what-is-fsx-ontap.html["Amazon FSx for NetApp ONTAP 설명서"^] .
+
+* NetApp ONTAP 9.16.1을 실행하는 NetApp ASA r2 시스템.
+
+
+
+
+== 지원되는 애플리케이션 및 데이터베이스
+
+SnapCenter 다양한 애플리케이션과 데이터베이스의 보호를 지원합니다.  지원되는 애플리케이션 및 데이터베이스에 대한 자세한 내용은 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121074;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+SnapCenter Amazon Web Services(AWS) 소프트웨어 정의 데이터 센터(SDDC) 환경의 VMware Cloud에서 Oracle 및 Microsoft SQL 워크로드 보호를 지원합니다. https://community.netapp.com/t5/Tech-ONTAP-Blogs/Protect-Oracle-MS-SQL-workloads-using-NetApp-SnapCenter-in-VMware-Cloud-on-AWS/ba-p/449168["자세히 알아보기"^] .

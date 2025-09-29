@@ -1,0 +1,203 @@
+---
+permalink: protect-sce/task_restore_exchange_databases.html 
+sidebar: sidebar 
+keywords: SnapCenter plug-in for Exchange Server 
+summary: SnapCenter 사용하면 백업된 Exchange 데이터베이스를 복원할 수 있습니다. 
+---
+= Exchange 데이터베이스 복원
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 사용하면 백업된 Exchange 데이터베이스를 복원할 수 있습니다.
+
+.시작하기 전에
+* 리소스 그룹, 데이터베이스 또는 DAG(데이터베이스 가용성 그룹)를 백업해야 합니다.
+* Exchange 데이터베이스가 다른 위치로 마이그레이션되면 이전 백업에 대한 복원 작업이 작동하지 않습니다.
+* 스냅샷을 미러 또는 볼트에 복제하는 경우 SnapCenter 관리자가 소스 볼륨과 대상 볼륨 모두에 대한 SVM을 할당해야 합니다.
+* DAG에서 활성 데이터베이스 복사본이 NetApp 스토리지가 아닌 스토리지에 있고 NetApp 스토리지에 있는 수동 데이터베이스 복사본 백업에서 복원하려는 경우 수동 복사본(NetApp 스토리지)을 활성 복사본으로 만들고 리소스를 새로 고친 다음 복원 작업을 수행합니다.
++
+실행하다 `Move-ActiveMailboxDatabase` 수동 데이터베이스 복사본을 활성 데이터베이스 복사본으로 만드는 명령입니다.
+
++
+그만큼 https://docs.microsoft.com/en-us/powershell/module/exchange/move-activemailboxdatabase?view=exchange-ps["Microsoft 설명서"^] 이 명령에 대한 정보가 포함되어 있습니다.
+
+
+
+.이 작업에 관하여
+* 데이터베이스에서 복원 작업을 수행하면 데이터베이스가 동일한 호스트에 다시 마운트되고 새 볼륨이 생성되지 않습니다.
+* DAG 수준 백업은 개별 데이터베이스에서 복원해야 합니다.
+* Exchange 데이터베이스(.edb) 파일 이외의 파일이 있는 경우 전체 디스크 복원은 지원되지 않습니다.
++
+Exchange용 플러그인은 복제에 사용되는 것과 같은 Exchange 파일이 디스크에 포함되어 있는 경우 디스크에서 전체 복원을 수행하지 않습니다.  전체 복원이 Exchange 기능에 영향을 줄 수 있는 경우 Exchange용 플러그인은 단일 파일 복원 작업을 수행합니다.
+
+* Exchange용 플러그인은 BitLocker로 암호화된 드라이브를 복원할 수 없습니다.
+* SCRIPTS_PATH는 플러그인 호스트의 SMCoreServiceHost.exe.Config 파일에 있는 PredefinedWindowsScriptsDirectory 키를 사용하여 정의됩니다.
++
+필요한 경우 이 경로를 변경하고 SMcore 서비스를 다시 시작할 수 있습니다.  보안을 위해 기본 경로를 사용하는 것이 좋습니다.
+
++
+키 값은 API를 통해 swagger에서 표시될 수 있습니다: API /4.7/configsettings
+
++
+GET API를 사용하여 키 값을 표시할 수 있습니다.  SET API는 지원되지 않습니다.
+
+* ONTAP 9.12.1 이하 버전의 경우 복원의 일부로 SnapLock Vault 스냅샷에서 생성된 복제본은 SnapLock Vault 만료 시간을 상속받습니다. 스토리지 관리자는 SnapLock 만료 시간 이후에 복제본을 수동으로 정리해야 합니다.
+* SnapMirror Active Sync 복원 작업의 경우 기본 위치에서 백업을 선택해야 합니다.
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.단계
+. 왼쪽 탐색 창에서 리소스 페이지의 왼쪽 상단 모서리에 있는 *리소스*를 클릭합니다.
+. 드롭다운 목록에서 Exchange Server 플러그인을 선택합니다.
+. 리소스 페이지의 보기 목록에서 *데이터베이스*를 선택합니다.
+. 목록에서 데이터베이스를 선택하세요.
+. 사본 관리 보기에서 기본 백업 표에서 *백업*을 선택한 다음 *를 클릭합니다.image:../media/restore_icon.gif["복원 아이콘"] *.
+. 옵션 페이지에서 다음 로그 백업 옵션 중 하나를 선택하세요.
++
+|===
+| 옵션 | 설명 
+
+
+ a| 
+모든 로그 백업
+ a| 
+*모든 로그 백업*을 선택하면 전체 백업 후 사용 가능한 모든 로그 백업을 복원하기 위해 최신 백업 복원 작업을 수행합니다.
+
+
+
+ a| 
+로그 백업까지
+ a| 
+*로그 백업 기준*을 선택하면 선택한 로그까지의 로그 백업을 기반으로 데이터베이스를 복원하는 지정 시간 복원 작업이 수행됩니다.
+
+
+NOTE: 드롭다운 목록에 표시되는 로그 수는 UTM을 기준으로 합니다.  예를 들어, 전체 백업 보존 기간이 5이고 UTM 보존 기간이 3인 경우 사용 가능한 로그 백업 수는 5개이지만 드롭다운에는 복원 작업을 수행할 로그가 3개만 나열됩니다.
+
+
+
+ a| 
+특정 날짜까지
+ a| 
+복원된 데이터베이스에 트랜잭션 로그가 적용되는 날짜와 시간을 지정하려면 *특정 날짜까지*를 선택합니다.  이 지정 시간 복원 작업은 지정된 날짜와 시간에 마지막 백업까지 기록된 트랜잭션 로그 항목을 복원합니다.
+
+
+
+ a| 
+None
+ a| 
+로그 백업 없이 전체 백업만 복원해야 하는 경우 *없음*을 선택합니다.
+
+|===
++
+다음 작업 중 하나를 수행할 수 있습니다.
+
++
+** *복원 후 데이터베이스 복구 및 마운트* - 이 옵션은 기본적으로 선택되어 있습니다.
+** *복원 전에 백업에서 트랜잭션 로그의 무결성을 확인하지 마세요* - 기본적으로 SnapCenter 복원 작업을 수행하기 전에 백업에서 트랜잭션 로그의 무결성을 확인합니다.
++
+|===
+
+
+| *모범 사례:* 이 옵션은 선택하지 마세요. 
+|===
+
+
+. 스크립트 페이지에서 복원 작업 전이나 후에 실행해야 하는 프리스크립트나 포스트스크립트의 경로와 인수를 각각 입력합니다.
++
+복원 사전 스크립트 인수에는 $Database와 $ServerInstance가 포함됩니다.
+
++
+복원 포스트스크립트 인수에는 $Database, $ServerInstance, $BackupName, $LogDirectory 및 $TargetServerInstance가 포함됩니다.
+
++
+스크립트를 실행하여 SNMP 트랩을 업데이트하고, 알림을 자동화하고, 로그를 보내는 등의 작업을 수행할 수 있습니다.
+
++
+
+NOTE: prescripts 또는 postscripts 경로에는 드라이브나 공유가 포함되어서는 안 됩니다.  경로는 SCRIPTS_PATH를 기준으로 해야 합니다.
+
+. 알림 페이지의 *이메일 환경 설정* 드롭다운 목록에서 이메일을 보낼 시나리오를 선택합니다.
++
+또한 발신자와 수신자의 이메일 주소와 이메일 제목을 지정해야 합니다.
+
+. 요약을 검토한 후 *마침*을 클릭하세요.
+. 페이지 하단의 활동 패널을 확장하면 복원 작업의 상태를 볼 수 있습니다.
++
+*모니터* > *작업* 페이지를 사용하여 복원 프로세스를 모니터링해야 합니다.
+
+
+
+백업에서 활성 데이터베이스를 복원할 때 복제본과 활성 데이터베이스 사이에 지연이 있는 경우 수동 데이터베이스가 일시 중단 또는 실패 상태로 전환될 수 있습니다.
+
+상태 변경은 활성 데이터베이스의 로그 체인이 포크되어 복제를 중단하는 새로운 분기를 시작할 때 발생할 수 있습니다.  Exchange Server는 복제본을 복구하려고 시도하지만 복구할 수 없는 경우 복원 후 새 백업을 만든 다음 복제본을 다시 시드해야 합니다.
+
+--
+.PowerShell cmdlet
+--
+.단계
+. 다음을 사용하여 지정된 사용자에 대한 SnapCenter 서버와의 연결 세션을 시작합니다. `Open-SmConnection` cmdlet.
++
+[listing]
+----
+Open-smconnection  -SMSbaseurl  https://snapctr.demo.netapp.com:8146/
+----
+. 다음을 사용하여 복원하려는 하나 이상의 백업에 대한 정보를 검색합니다. `Get-SmBackup` cmdlet.
++
+이 예제에서는 사용 가능한 모든 백업에 대한 정보를 표시합니다.
+
++
+[listing]
+----
+PS C:\> Get-SmBackup
+
+BackupId                      BackupName                    BackupTime                    BackupType
+--------                      ----------                    ----------                    ----------
+341                           ResourceGroup_36304978_UTM... 12/8/2017 4:13:24 PM          Full Backup
+342                           ResourceGroup_36304978_UTM... 12/8/2017 4:16:23 PM          Full Backup
+355                           ResourceGroup_06140588_UTM... 12/8/2017 6:32:36 PM          Log Backup
+356                           ResourceGroup_06140588_UTM... 12/8/2017 6:36:20 PM          Full Backup
+----
+. 다음을 사용하여 백업에서 데이터를 복원합니다. `Restore-SmBackup` cmdlet.
++
+이 예제에서는 최신 백업을 복원합니다.
+
++
+[listing]
+----
+C:\PS> Restore-SmBackup -PluginCode SCE -AppObjectId 'sce-w2k12-exch.sceqa.com\sce-w2k12-exch_DB_2' -BackupId 341 -IsRecoverMount:$true
+----
++
+이 예제에서는 특정 시점 백업을 복원합니다.
+
++
+[listing]
+----
+C:\ PS> Restore-SmBackup -PluginCode SCE -AppObjectId 'sce-w2k12-exch.sceqa.com\sce-w2k12-exch_DB_2' -BackupId 341 -IsRecoverMount:$true -LogRestoreType ByTransactionLogs -LogCount 2
+----
++
+이 예제에서는 보조 저장소의 백업을 기본 저장소로 복원합니다.
+
++
+[listing]
+----
+C:\ PS> Restore-SmBackup -PluginCode 'SCE' -AppObjectId 'DB2' -BackupId 81 -IsRecoverMount:$true -Confirm:$false
+-archive @{Primary="paw_vs:vol1";Secondary="paw_vs:vol1_mirror"} -logrestoretype All
+----
++
+그만큼 `-archive` 매개변수를 사용하면 복원에 사용할 기본 볼륨과 보조 볼륨을 지정할 수 있습니다.
+
++
+그만큼 `-IsRecoverMount:$true` 매개변수를 사용하면 복원 후 데이터베이스를 마운트할 수 있습니다.
+
+
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+--
+====

@@ -1,0 +1,452 @@
+---
+permalink: protect-sco/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux_or_aix.html 
+sidebar: sidebar 
+keywords: prerequisites, iSCSI, Oracle path, host requirement for Linux, sudo privileges, non-root user, host requirements for AIX, credentials, authenticate, domain administrator, local administrator, workgroup, sudo, root user 
+summary: 호스트를 추가하고 플러그인 패키지를 설치하기 전에 모든 요구 사항을 충족해야 합니다. 
+---
+= Linux 또는 AIX용 호스트 추가 및 플러그인 패키지 설치를 위한 전제 조건
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+호스트를 추가하고 플러그인 패키지를 설치하기 전에 모든 요구 사항을 충족해야 합니다.
+
+* iSCSI를 사용하는 경우 iSCSI 서비스가 실행 중이어야 합니다.
+* 루트 또는 루트가 아닌 사용자에 대해 비밀번호 기반 SSH 연결을 활성화해야 합니다.
++
+Oracle Database용 SnapCenter 플러그인은 루트가 아닌 사용자도 설치할 수 있습니다.  하지만 루트가 아닌 사용자가 플러그인 프로세스를 설치하고 시작하려면 sudo 권한을 구성해야 합니다.  플러그인을 설치한 후에는 프로세스가 루트가 아닌 사용자 권한으로 실행됩니다.
+
+* AIX 호스트에 AIX용 SnapCenter 플러그인 패키지를 설치하는 경우 디렉토리 수준 심볼릭 링크를 수동으로 해결했어야 합니다.
++
+AIX용 SnapCenter 플러그인 패키지는 JAVA_HOME 절대 경로를 얻기 위해 파일 수준 심볼릭 링크는 자동으로 확인하지만 디렉토리 수준 심볼릭 링크는 확인하지 않습니다.
+
+* 설치 사용자에 대해 Linux 또는 AIX 인증 모드로 자격 증명을 생성합니다.
+* Linux 또는 AIX 호스트에 Java 11을 설치했어야 합니다.
++
+** Linux에서는 Oracle 및 OpenJDK의 Java가 지원됩니다.
+** AIX용 IBM Java.  에서 다운로드할 수 있습니다 https://developer.ibm.com/languages/java/semeru-runtimes/downloads/?version=11&os=AIX["IBM Semeru 런타임 다운로드"]
++
+
+NOTE: Linux 호스트에 JAVA 11 인증 버전만 설치했는지 확인하세요.
+
+
+
+* Linux 또는 AIX 호스트에서 실행되는 Oracle 데이터베이스의 경우 Oracle Database용 SnapCenter 플러그인과 UNIX용 SnapCenter 플러그인을 모두 설치해야 합니다.
++
+
+NOTE: Oracle Database용 플러그인을 사용하면 SAP용 Oracle 데이터베이스도 관리할 수 있습니다.  하지만 SAP BR*Tools 통합은 지원되지 않습니다.
+
+* Oracle 데이터베이스 11.2.0.3 이상을 사용하는 경우 13366202 Oracle 패치를 설치해야 합니다.
+
+
+
+NOTE: SnapCenter 는 /etc/fstab 파일의 UUID 매핑을 지원하지 않습니다.
+
+* 플러그인 설치를 위해 기본 셸로 *bash*를 사용해야 합니다.
+
+
+
+
+== Linux 호스트 요구 사항
+
+Linux용 SnapCenter 플러그인 패키지를 설치하기 전에 호스트가 요구 사항을 충족하는지 확인해야 합니다.
+
+|===
+| 목 | 요구 사항 
+
+
+ a| 
+운영 체제
+ a| 
+* 레드햇 엔터프라이즈 리눅스
+* 오라클 리눅스
++
+
+NOTE: Oracle Linux 또는 Red Hat Enterprise Linux 6.6 또는 7.0 운영 체제에서 LVM에서 Oracle 데이터베이스를 사용하는 경우 최신 버전의 Logical Volume Manager(LVM)를 설치해야 합니다.
+
+* SUSE Linux Enterprise Server(SLES)
+
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인을 위한 최소 RAM
+ a| 
+2GB
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인에 대한 최소 설치 및 로그 공간
+ a| 
+2GB
+
+
+NOTE: 충분한 디스크 공간을 할당하고 로그 폴더의 저장 공간 소비를 모니터링해야 합니다.  필요한 로그 공간은 보호해야 할 엔터티의 수와 데이터 보호 작업의 빈도에 따라 달라집니다.  디스크 공간이 충분하지 않으면 최근 실행된 작업에 대한 로그가 생성되지 않습니다.
+
+
+
+ a| 
+필수 소프트웨어 패키지
+ a| 
+Java 11 Oracle 및 OpenJDK
+
+
+NOTE: Linux 호스트에 JAVA 11 인증 버전만 설치했는지 확인하세요.
+
+JAVA를 최신 버전으로 업그레이드한 경우 /var/opt/snapcenter/spl/etc/spl.properties에 있는 JAVA_HOME 옵션이 올바른 JAVA 버전과 올바른 경로로 설정되어 있는지 확인해야 합니다.
+
+|===
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+
+
+=== Linux 호스트에 대한 루트가 아닌 사용자에 대한 sudo 권한 구성
+
+SnapCenter 2.0 및 이후 릴리스에서는 루트가 아닌 사용자도 Linux용 SnapCenter 플러그인 패키지를 설치하고 플러그인 프로세스를 시작할 수 있습니다.  플러그인 프로세스는 루트가 아닌 사용자로 실행됩니다.  루트가 아닌 사용자에게 여러 경로에 대한 액세스 권한을 제공하려면 sudo 권한을 구성해야 합니다.
+
+*필요한 것*
+
+* Sudo 버전 1.8.7 이상.
+* umask가 0027인 경우, java 폴더와 그 안에 있는 모든 파일에 555 권한이 있어야 합니다.  그렇지 않으면 플러그인 설치가 실패할 수 있습니다.
+* 루트가 아닌 사용자의 경우 루트가 아닌 사용자의 이름과 사용자 그룹이 동일해야 합니다.
+* _/etc/ssh/sshd_config_ 파일을 편집하여 메시지 인증 코드 알고리즘(MAC hmac-sha2-256 및 MAC hmac-sha2-512)을 구성합니다.
++
+구성 파일을 업데이트한 후 sshd 서비스를 다시 시작합니다.
+
++
+예:
+
++
+[listing]
+----
+#Port 22
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+#Legacy changes
+#KexAlgorithms diffie-hellman-group1-sha1
+#Ciphers aes128-cbc
+#The default requires explicit activation of protocol
+Protocol 2
+HostKey/etc/ssh/ssh_host_rsa_key
+MACs hmac-sha2-256
+----
+
+
+*이 작업에 관하여*
+
+루트가 아닌 사용자에게 다음 경로에 대한 액세스를 제공하려면 sudo 권한을 구성해야 합니다.
+
+* /home/_LINUX_USER_/.sc_netapp/snapcenter_linux_host_plugin.bin
+* /custom_location/ NetApp/snapcenter/spl/설치/플러그인/제거
+* /custom_location/ NetApp/snapcenter/spl/bin/spl
+
+
+*단계*
+
+. Linux용 SnapCenter 플러그인 패키지를 설치하려는 Linux 호스트에 로그인합니다.
+. visudo Linux 유틸리티를 사용하여 /etc/sudoers 파일에 다음 줄을 추가합니다.
++
+[listing, subs="+quotes"]
+----
+Cmnd_Alias HPPLCMD = sha224:checksum_value== /home/_LINUX_USER_/.sc_netapp/snapcenter_linux_host_plugin.bin, /opt/NetApp/snapcenter/spl/installation/plugins/uninstall, /opt/NetApp/snapcenter/spl/bin/spl, /opt/NetApp/snapcenter/scc/bin/scc
+Cmnd_Alias PRECHECKCMD = sha224:checksum_value== /home/_LINUX_USER_/.sc_netapp/Linux_Prechecks.sh
+Cmnd_Alias CONFIGCHECKCMD = sha224:checksum_value== /opt/NetApp/snapcenter/spl/plugins/scu/scucore/configurationcheck/Config_Check.sh
+Cmnd_Alias SCCMD = sha224:checksum_value== /opt/NetApp/snapcenter/spl/bin/sc_command_executor
+Cmnd_Alias SCCCMDEXECUTOR =checksum_value== /opt/NetApp/snapcenter/scc/bin/sccCommandExecutor
+_LINUX_USER_ ALL=(ALL) NOPASSWD:SETENV: HPPLCMD, PRECHECKCMD, CONFIGCHECKCMD, SCCCMDEXECUTOR, SCCMD
+Defaults: _LINUX_USER_ env_keep += "IATEMPDIR"
+Defaults: _LINUX_USER_ env_keep += "JAVA_HOME"
+Defaults: _LINUX_USER_ !visiblepw
+Defaults: _LINUX_USER_ !requiretty
+----
++
+
+NOTE: RAC 설정을 사용하는 경우 허용되는 다른 명령과 함께 다음을 /etc/sudoers 파일에 추가해야 합니다. '/<crs_home>/bin/olsnodes'
+
+
+
+_crs_home_의 값은 _/etc/oracle/olr.loc_ 파일에서 얻을 수 있습니다.
+
+_LINUX_USER_는 사용자가 생성한 루트가 아닌 사용자의 이름입니다.
+
+_checksum_value_는 *sc_unix_plugins_checksum.txt* 파일에서 얻을 수 있습니다. 이 파일의 위치는 다음과 같습니다.
+
+* SnapCenter Server가 Windows 호스트에 설치된 경우 _C:\ProgramData\ NetApp\ SnapCenter \Package Repository\sc_unix_plugins_checksum.txt_.
+* SnapCenter 서버가 Linux 호스트에 설치되어 있는 경우 _/opt/ NetApp /snapcenter/SnapManagerWeb/Repository/sc_unix_plugins_checksum.txt_.
+
+
+
+IMPORTANT: 이 예제는 귀하만의 데이터를 생성하기 위한 참고자료로만 사용해야 합니다.
+
+
+
+== AIX 호스트 요구 사항
+
+AIX용 SnapCenter 플러그인 패키지를 설치하기 전에 호스트가 요구 사항을 충족하는지 확인해야 합니다.
+
+
+NOTE: AIX용 SnapCenter 플러그인 패키지의 일부인 UNIX용 SnapCenter 플러그인은 동시 볼륨 그룹을 지원하지 않습니다.
+
+|===
+| 목 | 요구 사항 
+
+
+ a| 
+운영 체제
+ a| 
+AIX 7.1 이상
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인을 위한 최소 RAM
+ a| 
+4GB
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인에 대한 최소 설치 및 로그 공간
+ a| 
+2GB
+
+
+NOTE: 충분한 디스크 공간을 할당하고 로그 폴더의 저장 공간 소비를 모니터링해야 합니다.  필요한 로그 공간은 보호해야 할 엔터티의 수와 데이터 보호 작업의 빈도에 따라 달라집니다.  디스크 공간이 충분하지 않으면 최근 실행된 작업에 대한 로그가 생성되지 않습니다.
+
+
+
+ a| 
+필수 소프트웨어 패키지
+ a| 
+자바 11 IBM 자바
+
+JAVA를 최신 버전으로 업그레이드한 경우 /var/opt/snapcenter/spl/etc/spl.properties에 있는 JAVA_HOME 옵션이 올바른 JAVA 버전과 올바른 경로로 설정되어 있는지 확인해야 합니다.
+
+|===
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+
+
+=== AIX 호스트에 대한 루트가 아닌 사용자에 대한 sudo 권한 구성
+
+SnapCenter 4.4 이상에서는 루트가 아닌 사용자도 AIX용 SnapCenter 플러그인 패키지를 설치하고 플러그인 프로세스를 시작할 수 있습니다.  플러그인 프로세스는 루트가 아닌 사용자로 실행됩니다.  루트가 아닌 사용자에게 여러 경로에 대한 액세스 권한을 제공하려면 sudo 권한을 구성해야 합니다.
+
+*필요한 것*
+
+* Sudo 버전 1.8.7 이상.
+* umask가 0027인 경우, java 폴더와 그 안에 있는 모든 파일에 555 권한이 있어야 합니다.  그렇지 않으면 플러그인 설치가 실패할 수 있습니다.
+* _/etc/ssh/sshd_config_ 파일을 편집하여 메시지 인증 코드 알고리즘(MAC hmac-sha2-256 및 MAC hmac-sha2-512)을 구성합니다.
++
+구성 파일을 업데이트한 후 sshd 서비스를 다시 시작합니다.
+
++
+예:
+
++
+[listing]
+----
+#Port 22
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+#Legacy changes
+#KexAlgorithms diffie-hellman-group1-sha1
+#Ciphers aes128-cbc
+#The default requires explicit activation of protocol
+Protocol 2
+HostKey/etc/ssh/ssh_host_rsa_key
+MACs hmac-sha2-256
+----
+
+
+*이 작업에 관하여*
+
+루트가 아닌 사용자에게 다음 경로에 대한 액세스를 제공하려면 sudo 권한을 구성해야 합니다.
+
+* /home/_AIX_USER_/.sc_netapp/snapcenter_aix_host_plugin.bsx
+* /custom_location/ NetApp/snapcenter/spl/설치/플러그인/제거
+* /custom_location/ NetApp/snapcenter/spl/bin/spl
+
+
+*단계*
+
+. AIX용 SnapCenter 플러그인 패키지를 설치하려는 AIX 호스트에 로그인합니다.
+. visudo Linux 유틸리티를 사용하여 /etc/sudoers 파일에 다음 줄을 추가합니다.
++
+[listing, subs="+quotes"]
+----
+Cmnd_Alias HPPACMD = sha224:checksum_value== /home/_AIX_USER_/.sc_netapp/snapcenter_aix_host_plugin.bsx,
+/opt/NetApp/snapcenter/spl/installation/plugins/uninstall, /opt/NetApp/snapcenter/spl/bin/spl
+Cmnd_Alias PRECHECKCMD = sha224:checksum_value== /home/_AIX_USER_/.sc_netapp/AIX_Prechecks.sh
+Cmnd_Alias CONFIGCHECKCMD = sha224:checksum_value== /opt/NetApp/snapcenter/spl/plugins/scu/scucore/configurationcheck/Config_Check.sh
+Cmnd_Alias SCCMD = sha224:checksum_value== /opt/NetApp/snapcenter/spl/bin/sc_command_executor
+_AIX_USER_ ALL=(ALL) NOPASSWD:SETENV: HPPACMD, PRECHECKCMD, CONFIGCHECKCMD, SCCMD
+Defaults: _LINUX_USER_ env_keep += "IATEMPDIR"
+Defaults: _LINUX_USER_ env_keep += "JAVA_HOME"
+Defaults: _AIX_USER_ !visiblepw
+Defaults: _AIX_USER_ !requiretty
+----
++
+
+NOTE: RAC 설정을 사용하는 경우 허용되는 다른 명령과 함께 다음을 /etc/sudoers 파일에 추가해야 합니다. '/<crs_home>/bin/olsnodes'
+
+
+
+_crs_home_의 값은 _/etc/oracle/olr.loc_ 파일에서 얻을 수 있습니다.
+
+_AIX_USER_는 사용자가 생성한 루트가 아닌 사용자의 이름입니다.
+
+_checksum_value_는 *sc_unix_plugins_checksum.txt* 파일에서 얻을 수 있습니다. 이 파일의 위치는 다음과 같습니다.
+
+* SnapCenter Server가 Windows 호스트에 설치된 경우 _C:\ProgramData\ NetApp\ SnapCenter \Package Repository\sc_unix_plugins_checksum.txt_.
+* SnapCenter 서버가 Linux 호스트에 설치되어 있는 경우 _/opt/ NetApp /snapcenter/SnapManagerWeb/Repository/sc_unix_plugins_checksum.txt_.
+
+
+
+IMPORTANT: 이 예제는 귀하만의 데이터를 생성하기 위한 참고자료로만 사용해야 합니다.
+
+
+
+== 자격 증명 설정
+
+SnapCenter 자격 증명을 사용하여 SnapCenter 작업을 위해 사용자를 인증합니다.  Linux 또는 AIX 호스트에 플러그인 패키지를 설치하려면 자격 증명을 만들어야 합니다.
+
+*이 작업에 관하여*
+
+자격 증명은 루트 사용자 또는 플러그인 프로세스를 설치하고 시작할 수 있는 sudo 권한이 있는 루트가 아닌 사용자를 위해 생성됩니다.
+
+자세한 내용은 다음을 참조하세요.<<Linux 호스트에 대한 루트가 아닌 사용자에 대한 sudo 권한 구성>> 또는<<AIX 호스트에 대한 루트가 아닌 사용자에 대한 sudo 권한 구성>>
+
+|===
+
+
+| *모범 사례:* 호스트를 배포하고 플러그인을 설치한 후에도 자격 증명을 생성할 수 있지만, 가장 좋은 방법은 SVM을 추가한 후 호스트를 배포하고 플러그인을 설치하기 전에 자격 증명을 생성하는 것입니다. 
+|===
+*단계*
+
+. 왼쪽 탐색 창에서 *설정*을 클릭합니다.
+. 설정 페이지에서 *자격 증명*을 클릭합니다.
+. *새로 만들기*를 클릭합니다.
+. 자격 증명 페이지에서 자격 증명 정보를 입력하세요.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+자격 증명 이름
+ a| 
+자격 증명의 이름을 입력하세요.
+
+
+
+ a| 
+사용자 이름/비밀번호
+ a| 
+인증에 사용할 사용자 이름과 비밀번호를 입력하세요.
+
+** 도메인 관리자
++
+SnapCenter 플러그인을 설치할 시스템의 도메인 관리자를 지정하세요. 사용자 이름 필드에 사용할 수 있는 형식은 다음과 같습니다.
+
++
+*** _NetBIOS\사용자 이름_
+*** _도메인 FQDN\사용자 이름_
+
+
+** 로컬 관리자(작업 그룹에만 해당)
++
+작업 그룹에 속한 시스템의 경우, SnapCenter 플러그인을 설치할 시스템에 기본 제공되는 로컬 관리자를 지정하십시오. 사용자 계정에 승격된 권한이 있거나 호스트 시스템에서 사용자 액세스 제어 기능이 비활성화된 경우, 로컬 관리자 그룹에 속하는 로컬 사용자 계정을 지정할 수 있습니다.  사용자 이름 필드의 유효한 형식은 다음과 같습니다. _UserName_
+
+
+
+
+
+ a| 
+인증 모드
+ a| 
+사용할 인증 모드를 선택하세요.
+
+플러그인 호스트의 운영 체제에 따라 Linux 또는 AIX를 선택하세요.
+
+
+
+ a| 
+sudo 권한을 사용하세요
+ a| 
+루트가 아닌 사용자에 대한 자격 증명을 생성하는 경우 *sudo 권한 사용* 확인란을 선택합니다.
+
+|===
+. *확인*을 클릭합니다.
+
+
+자격 증명 설정을 마친 후에는 *사용자 및 액세스* 페이지에서 사용자 또는 사용자 그룹에 자격 증명 유지 관리를 할당할 수 있습니다.
+
+
+
+== Oracle 데이터베이스에 대한 자격 증명 구성
+
+Oracle 데이터베이스에서 데이터 보호 작업을 수행하는 데 사용되는 자격 증명을 구성해야 합니다.
+
+*이 작업에 관하여*
+
+Oracle 데이터베이스에서 지원되는 다양한 인증 방법을 검토해야 합니다. 자세한 내용은 다음을 참조하세요.link:../get-started/concept_authentication_methods_for_your_credentials.html["자격 증명에 대한 인증 방법"^] .
+
+개별 리소스 그룹에 대한 자격 증명을 설정하고 사용자 이름에 전체 관리자 권한이 없는 경우, 사용자 이름에는 최소한 리소스 그룹 및 백업 권한이 있어야 합니다.
+
+Oracle 데이터베이스 인증을 활성화한 경우 리소스 보기에 빨간색 자물쇠 아이콘이 표시됩니다.  데이터베이스를 보호하거나 리소스 그룹에 추가하여 데이터 보호 작업을 수행하려면 데이터베이스 자격 증명을 구성해야 합니다.
+
+
+NOTE: 자격 증명을 생성하는 동안 잘못된 세부 정보를 지정하면 오류 메시지가 표시됩니다.  *취소*를 클릭한 후 다시 시도하세요.
+
+*단계*
+
+. 왼쪽 탐색 창에서 *리소스*를 클릭한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지의 *보기* 목록에서 *데이터베이스*를 선택합니다.
+. 딸깍 하는 소리image:../media/filter_icon.gif["필터 아이콘"] 그런 다음 호스트 이름과 데이터베이스 유형을 선택하여 리소스를 필터링합니다.
++
+그런 다음 클릭할 수 있습니다image:../media/filter_icon.gif["필터 아이콘"] 필터 창을 닫으려면.
+
+. 데이터베이스를 선택한 다음 *데이터베이스 설정* > *데이터베이스 구성*을 클릭합니다.
+. 데이터베이스 설정 구성 섹션의 *기존 자격 증명 사용* 드롭다운 목록에서 Oracle 데이터베이스에서 데이터 보호 작업을 수행하는 데 사용할 자격 증명을 선택합니다.
++
+
+NOTE: Oracle 사용자는 sysdba 권한이 있어야 합니다.
+
++
+또한 다음을 클릭하여 자격 증명을 만들 수도 있습니다.image:../media/add_icon_configure_database.gif["데이터베이스 구성 화면에 아이콘 추가"] .
+
+. ASM 설정 구성 섹션의 *기존 자격 증명 사용* 드롭다운 목록에서 ASM 인스턴스에서 데이터 보호 작업을 수행하는 데 사용할 자격 증명을 선택합니다.
++
+
+NOTE: ASM 사용자는 sysasm 권한이 있어야 합니다.
+
++
+또한 다음을 클릭하여 자격 증명을 만들 수도 있습니다.image:../media/add_icon_configure_database.gif["데이터베이스 구성 화면에 아이콘 추가"] .
+
+. RMAN 카탈로그 설정 구성 섹션의 *기존 자격 증명 사용* 드롭다운 목록에서 Oracle Recovery Manager(RMAN) 카탈로그 데이터베이스에서 데이터 보호 작업을 수행하는 데 사용할 자격 증명을 선택합니다.
++
+또한 다음을 클릭하여 자격 증명을 만들 수도 있습니다.image:../media/add_icon_configure_database.gif["데이터베이스 구성 화면에 아이콘 추가"] .
+
++
+*TNSName* 필드에 SnapCenter 서버가 데이터베이스와 통신하는 데 사용할 TNS(Transparent Network Substrate) 파일 이름을 입력합니다.
+
+. *선호하는 RAC 노드* 필드에서 백업에 선호하는 RAC(Real Application Cluster) 노드를 지정합니다.
++
+선호되는 노드는 RAC 데이터베이스 인스턴스가 있는 하나 또는 모든 클러스터 노드일 수 있습니다.  백업 작업은 선호도 순서대로 이러한 선호 노드에서만 실행됩니다.
+
++
+RAC One Node에서는 기본 노드에 노드가 하나만 나열되어 있으며, 이 기본 노드는 현재 데이터베이스가 호스팅되는 노드입니다.
+
++
+RAC One Node 데이터베이스를 장애 조치하거나 이전한 후 SnapCenter 리소스 페이지에서 리소스를 새로 고치면 이전에 데이터베이스가 호스팅되었던 *선호 RAC 노드* 목록에서 호스트가 제거됩니다.  데이터베이스가 이전된 RAC 노드는 *RAC 노드*에 나열되며, 기본 RAC 노드로 수동으로 구성해야 합니다.
+
++
+자세한 내용은 다음을 참조하세요. link:../protect-sco/task_define_a_backup_strategy_for_oracle_databases.html#preferred-nodes-in-rac-setup["RAC 설정에서 선호하는 노드"^] .
+
+. *확인*을 클릭합니다.
+

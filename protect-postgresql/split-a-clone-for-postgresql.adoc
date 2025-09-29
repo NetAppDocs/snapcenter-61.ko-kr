@@ -1,0 +1,77 @@
+---
+permalink: protect-postgresql/split-a-clone-for-postgresql.html 
+sidebar: sidebar 
+keywords: split clone, snapcenter 
+summary: SnapCenter 사용하면 복제된 리소스를 부모 리소스에서 분할할 수 있습니다.  분할된 복제본은 부모 리소스로부터 독립됩니다. 
+---
+= 클론 분할
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 사용하면 복제된 리소스를 부모 리소스에서 분할할 수 있습니다.  분할된 복제본은 부모 리소스로부터 독립됩니다.
+
+.이 작업에 관하여
+* 중간 복제본에서는 복제 분할 작업을 수행할 수 없습니다.
++
+예를 들어, 데이터베이스 백업에서 clone1을 만든 후 clone1의 백업을 만든 다음 이 백업(clone2)을 복제할 수 있습니다.  clone2를 생성한 후 clone1은 중간 복제본이 되며 clone1에서 복제 분할 작업을 수행할 수 없습니다.  하지만 clone2에 대해 클론 분할 작업을 수행할 수 있습니다.
+
++
+clone2를 분할한 후에는 clone1에 대해 clone 분할 작업을 수행할 수 있습니다. clone1은 더 이상 중간 클론이 아니기 때문입니다.
+
+* 복제본을 분할하면 복제본의 백업 사본과 복제 작업이 삭제됩니다.
+* FlexClone 볼륨 분할 작업에 대한 정보는 다음을 참조하세요. https://docs.netapp.com/us-en/ontap/volumes/split-flexclone-from-parent-task.html["FlexClone 볼륨을 부모 볼륨에서 분할합니다."^] .
+* 스토리지 시스템의 볼륨이나 집계가 온라인인지 확인하세요.
+
+
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 클릭한 다음 목록에서 적절한 플러그인을 선택합니다.
+. *리소스* 페이지에서 보기 목록에서 적절한 옵션을 선택하세요.
++
+|===
+| 옵션 | 설명 
+
+
+ a| 
+데이터베이스 애플리케이션의 경우
+ a| 
+보기 목록에서 *데이터베이스*를 선택합니다.
+
+
+
+ a| 
+파일 시스템의 경우
+ a| 
+보기 목록에서 *경로*를 선택합니다.
+
+|===
+. 목록에서 적절한 리소스를 선택하세요.
++
+리소스 토폴로지 페이지가 표시됩니다.
+
+. *사본 관리* 보기에서 복제된 리소스(예: 데이터베이스 또는 LUN)를 선택한 다음 *를 클릭합니다.image:../media/split_clone.gif["분할 복제 아이콘"] *.
+. 분할할 클론의 예상 크기와 집계에 필요한 사용 가능한 공간을 검토한 다음 *시작*을 클릭합니다.
+. *모니터* > *작업*을 클릭하여 작업 진행 상황을 모니터링하세요.
++
+SMCore 서비스를 다시 시작하면 복제 분할 작업이 더 이상 응답하지 않습니다.  복제 분할 작업을 중지하려면 Stop-SmJob cmdlet을 실행한 다음 복제 분할 작업을 다시 시도해야 합니다.
+
++
+복제본이 분할되었는지 여부를 확인하기 위해 더 긴 폴링 시간이나 더 짧은 폴링 시간이 필요한 경우 _SMCoreServiceHost.exe.config_ 파일에서 _CloneSplitStatusCheckPollTime_ 매개변수 값을 변경하여 SMCore가 복제본 분할 작업의 상태를 폴링하는 시간 간격을 설정할 수 있습니다.  값은 밀리초이고 기본값은 5분입니다.
+
++
+예를 들어:
+
++
+[listing]
+----
+<add key="CloneSplitStatusCheckPollTime" value="300000" />
+----
++
+백업, 복원 또는 다른 클론 분할이 진행 중이면 클론 분할 시작 작업이 실패합니다.  실행 중인 작업이 완료된 후에만 복제 분할 작업을 다시 시작해야 합니다.
+
+
+
+.관련 정보
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/SnapCenter_clone_or_verfication_fails_with_aggregate_does_not_exist["SnapCenter 복제 또는 검증이 집계가 존재하지 않아 실패합니다."]

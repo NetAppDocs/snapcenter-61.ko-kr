@@ -1,0 +1,30 @@
+---
+permalink: protect-mysql/types-of-restore-performed-for-auto-discovered-mysql.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for mysql 
+summary: 'SnapCenter 자동으로 검색된 MySQL 데이터베이스에 대해 볼륨 기반 SnapRestore \(VBSR\), 단일 파일 SnapRestore 및 연결 및 복사 복원 유형을 지원합니다.' 
+---
+= 자동 검색된 MySQL에 대한 복원 작업 유형
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+MySQL용 SnapCenter 플러그인은 단일 파일 SnapRestore 와 자동으로 검색된 MySQL 데이터베이스에 대한 연결 및 복사 복원 유형을 지원합니다.
+
+
+
+== 단일 파일 SnapRestore 다음 시나리오에 대해 NFS 환경에서 수행됩니다.
+
+* *전체 리소스* 옵션만 선택된 경우
+* 선택한 백업이 SnapMirror 또는 SnapVault 보조 위치에서 시작되고 *전체 리소스* 옵션이 선택된 경우
+
+
+
+
+== 단일 파일 SnapRestore 다음 시나리오에 대해 SAN 환경에서 수행됩니다.
+
+* *전체 리소스* 옵션만 선택된 경우
+* SnapMirror 또는 SnapVault 보조 위치에서 백업을 선택하고 *전체 리소스* 옵션을 선택한 경우
+

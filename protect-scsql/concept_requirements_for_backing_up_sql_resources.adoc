@@ -1,0 +1,22 @@
+---
+permalink: protect-scsql/concept_requirements_for_backing_up_sql_resources.html 
+sidebar: sidebar 
+keywords: Requirements 
+summary: SQL 리소스를 백업하기 전에 몇 가지 요구 사항이 충족되는지 확인해야 합니다. 
+---
+= SQL 리소스 백업 요구 사항
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SQL 리소스를 백업하기 전에 몇 가지 요구 사항이 충족되는지 확인해야 합니다.
+
+* NetApp 스토리지 시스템이 아닌 곳에서 NetApp 스토리지 시스템으로 리소스를 마이그레이션했어야 합니다.
+* 백업 정책을 생성했어야 합니다.
+* 보조 저장소에 SnapMirror 관계가 있는 리소스를 백업하려면 저장소 사용자에게 할당된 ONTAP 역할에 "`snapmirror all`" 권한이 포함되어야 합니다.  하지만 "`vsadmin`" 역할을 사용하는 경우 "`snapmirror all`" 권한은 필요하지 않습니다.
+* SQL 인스턴스 자격 증명이 AD 사용자 또는 그룹에 할당되지 않으면 AD(Active Directory) 사용자가 시작한 백업 작업이 실패합니다.  *설정* > *사용자 액세스* 페이지에서 SQL 인스턴스 자격 증명을 AD 사용자 또는 그룹에 할당해야 합니다.
+* 정책이 첨부된 리소스 그룹을 만들어야 합니다.
+* 리소스 그룹에 서로 다른 호스트의 여러 데이터베이스가 있는 경우 네트워크 문제로 인해 일부 호스트의 백업 작업이 늦게 실행될 수 있습니다.  Set-SmConfigSettings PS cmdlet을 사용하여 web.config에서 FMaxRetryForUninitializedHosts 값을 구성해야 합니다.
+

@@ -1,0 +1,38 @@
+---
+permalink: install/concept_high_availability_for_snapcenter_mysql_repository.html 
+sidebar: sidebar 
+keywords: SnapCenter, MySQL high availability 
+summary: 'MySQL 복제는 MySQL 서버의 기능으로, 한 MySQL 데이터베이스 서버(마스터)에서 다른 MySQL 데이터베이스 서버(슬레이브)로 데이터를 복제할 수 있습니다.  SnapCenter 두 개의 네트워크 부하 분산(NLB) 지원 노드에서만 고가용성을 위해 MySQL 복제를 지원합니다.' 
+---
+= SnapCenter MySQL 저장소의 고가용성
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+MySQL 복제는 MySQL 서버의 기능으로, 한 MySQL 데이터베이스 서버(마스터)에서 다른 MySQL 데이터베이스 서버(슬레이브)로 데이터를 복제할 수 있습니다.  SnapCenter 두 개의 네트워크 부하 분산(NLB) 지원 노드에서만 고가용성을 위해 MySQL 복제를 지원합니다.
+
+SnapCenter 마스터 저장소에서 읽기 또는 쓰기 작업을 수행하고, 마스터 저장소에 오류가 발생하면 슬레이브 저장소로 연결을 라우팅합니다.  그러면 슬레이브 저장소가 마스터 저장소가 됩니다.  SnapCenter 또한 장애 조치 중에만 활성화되는 역방향 복제를 지원합니다.
+
+MySQL 고가용성(HA) 기능을 사용하려면 첫 번째 노드에서 NLB(네트워크 로드 밸런서)를 구성해야 합니다.  MySQL 저장소는 설치의 일부로 이 노드에 설치됩니다.  두 번째 노드에 SnapCenter 설치하는 동안 첫 번째 노드의 F5에 가입하고 두 번째 노드에 MySQL 저장소의 복사본을 만들어야 합니다.
+
+SnapCenter MySQL 복제를 관리하기 위한 _Get-SmRepositoryConfig_ 및 _Set-SmRepositoryConfig_ PowerShell cmdlet을 제공합니다.
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+MySQL HA 기능과 관련된 제한 사항을 알고 있어야 합니다.
+
+* NLB와 MySQL HA는 두 개 이상의 노드에서는 지원되지 않습니다.
+* SnapCenter 독립 실행형 설치에서 NLB 설치로 전환하거나 그 반대로, MySQL 독립 실행형 설정에서 MySQL HA로 전환하는 것은 지원되지 않습니다.
+* 슬레이브 저장소 데이터가 마스터 저장소 데이터와 동기화되지 않으면 자동 장애 조치가 지원되지 않습니다.
++
+_Set-SmRepositoryConfig_ cmdlet을 사용하여 강제 장애 조치를 시작할 수 있습니다.
+
+* 장애 조치가 시작되면 실행 중인 작업이 실패할 수 있습니다.
++
+MySQL 서버나 SnapCenter 서버가 다운되어 장애 조치가 발생하는 경우 실행 중인 모든 작업이 실패할 수 있습니다.  두 번째 노드로 장애 조치한 후 모든 후속 작업이 성공적으로 실행됩니다.
+
+
+
+고가용성 구성에 대한 자세한 내용은 다음을 참조하세요. https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/How_to_configure_NLB_and_ARR_with_SnapCenter["SnapCenter 사용하여 NLB 및 ARR을 구성하는 방법"^] .

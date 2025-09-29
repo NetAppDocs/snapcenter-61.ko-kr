@@ -1,0 +1,173 @@
+---
+permalink: protect-hana/reference_prerequisites_to_adding_hosts_and_installing_snapcenter_plug_in_for_sap_hana_database.html 
+sidebar: sidebar 
+keywords: credentials 
+summary: 호스트를 추가하고 플러그인 패키지를 설치하기 전에 모든 요구 사항을 충족해야 합니다.  SAP HANA 데이터베이스용 SnapCenter 플러그인은 Windows와 Linux 환경에서 모두 사용할 수 있습니다. 
+---
+= SAP HANA 데이터베이스용 SnapCenter 플러그인을 설치하고 호스트를 추가하기 위한 전제 조건
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+호스트를 추가하고 플러그인 패키지를 설치하기 전에 모든 요구 사항을 충족해야 합니다.  SAP HANA 데이터베이스용 SnapCenter 플러그인은 Windows와 Linux 환경에서 모두 사용할 수 있습니다.
+
+* 호스트에 Java 11을 설치했어야 합니다.
++
+
+NOTE: IBM Java는 Windows 및 Linux 호스트에서 지원되지 않습니다.
+
+* 호스트에 SAP HANA 데이터베이스 대화형 터미널(HDBSQL 클라이언트)을 설치해야 합니다.
+* Windows의 경우 플러그인 생성 서비스는 "`LocalSystem`" Windows 사용자를 사용하여 실행해야 합니다. 이는 SAP HANA Database용 플러그인이 도메인 관리자로 설치된 경우의 기본 동작입니다.
+* Windows의 경우 사용자 저장소 키는 SYSTEM 사용자로 생성되어야 합니다.
+* Windows 호스트에 플러그인을 설치할 때 기본 제공되지 않은 자격 증명을 지정하거나 사용자가 로컬 작업 그룹 사용자에 속하는 경우 호스트에서 UAC를 비활성화해야 합니다.  Microsoft Windows용 SnapCenter 플러그인은 기본적으로 Windows 호스트의 SAP HANA 플러그인과 함께 배포됩니다.
+* Linux 호스트의 경우 HDB 보안 사용자 저장소 키는 HDBSQL OS 사용자로 액세스됩니다.
+* SnapCenter 서버는 SAP HANA 데이터베이스 호스트용 플러그인의 8145 또는 사용자 지정 포트에 액세스할 수 있어야 합니다.
+
+
+
+
+== Windows 호스트
+
+* 원격 호스트에 로컬 로그인 권한이 있는 로컬 관리자 권한이 있는 도메인 사용자가 있어야 합니다.
+* Windows 호스트에 SAP HANA 데이터베이스용 플러그인을 설치하는 동안 Microsoft Windows용 SnapCenter 플러그인이 자동으로 설치됩니다.
+* 루트 또는 루트가 아닌 사용자에 대해 비밀번호 기반 SSH 연결을 활성화해야 합니다.
+* Windows 호스트에 Java 11을 설치했어야 합니다.
++
+http://www.java.com/en/download/manual.jsp["모든 운영 체제용 JAVA 다운로드"]
+
++
+https://imt.netapp.com/matrix/imt.jsp?components=121074;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"]
+
+
+
+
+
+== 리눅스 호스트
+
+* 루트 또는 루트가 아닌 사용자에 대해 비밀번호 기반 SSH 연결을 활성화해야 합니다.
+* Linux 호스트에 Java 11을 설치했어야 합니다.
++
+http://www.java.com/en/download/manual.jsp["모든 운영 체제용 JAVA 다운로드"]
+
++
+https://imt.netapp.com/matrix/imt.jsp?components=121073;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"]
+
+* Linux 호스트에서 실행되는 SAP HANA 데이터베이스의 경우 SAP HANA 데이터베이스용 플러그인을 설치하는 동안 UNIX용 SnapCenter 플러그인이 자동으로 설치됩니다.
+* 플러그인 설치를 위해 기본 셸로 *bash*를 사용해야 합니다.
+
+
+
+
+== 보충 명령
+
+SAP HANA용 SnapCenter 플러그인에서 보충 명령을 실행하려면 _allowed_commands.config_ 파일에 해당 명령을 포함해야 합니다.
+
+* Windows 호스트의 기본 위치: _C:\Program Files\ NetApp\ SnapCenter\Snapcenter Plug-in Creator\etc\allowed_commands.config_
+* Linux 호스트의 기본 위치: _/opt/ NetApp/snapcenter/scc/etc/allowed_commands.config_
+
+
+플러그인 호스트에서 추가 명령을 허용하려면 편집기에서 _allowed_commands.config_ 파일을 엽니다.  각 명령을 별도의 줄에 입력하세요. 명령은 대소문자를 구분하지 않습니다.  완전히 정규화된 경로 이름을 지정하고, 경로 이름에 공백이 포함된 경우 따옴표(")로 묶으세요.
+
+예를 들어:
+
+명령어: mount
+
+명령어: umount
+
+명령: "C:\Program Files\ NetApp\SnapCreator commands\sdcli.exe"
+
+명령어: myscript.bat
+
+_allowed_commands.config_ 파일이 없으면 명령이나 스크립트 실행이 차단되고 다음 오류와 함께 워크플로가 실패합니다.
+
+"[/mnt/mount -a] 실행이 허용되지 않습니다.  플러그인 호스트의 %s 파일에 명령을 추가하여 권한을 부여합니다."
+
+_allowed_commands.config_에 명령이나 스크립트가 없으면 명령이나 스크립트 실행이 차단되고 다음 오류와 함께 워크플로가 실패합니다.
+
+"[/mnt/mount -a] 실행이 허용되지 않습니다.  플러그인 호스트의 %s 파일에 명령을 추가하여 권한을 부여합니다."
+
+
+NOTE: 모든 명령을 허용하려면 와일드카드 항목(*)을 사용해서는 안 됩니다.
+
+
+
+== Linux 호스트에 대한 루트가 아닌 사용자에 대한 sudo 권한 구성
+
+SnapCenter 2.0 및 이후 릴리스에서는 루트가 아닌 사용자도 Linux용 SnapCenter 플러그인 패키지를 설치하고 플러그인 프로세스를 시작할 수 있습니다.  플러그인 프로세스는 루트가 아닌 사용자로 실행됩니다.  루트가 아닌 사용자에게 여러 경로에 대한 액세스 권한을 제공하려면 sudo 권한을 구성해야 합니다.
+
+*필요한 것*
+
+* Sudo 버전 1.8.7 이상.
+* umask가 0027인 경우, java 폴더와 그 안에 있는 모든 파일에 555 권한이 있어야 합니다.  그렇지 않으면 플러그인 설치가 실패할 수 있습니다.
+* 루트가 아닌 사용자의 경우 루트가 아닌 사용자의 이름과 사용자 그룹이 동일해야 합니다.
+* _/etc/ssh/sshd_config_ 파일을 편집하여 메시지 인증 코드 알고리즘(MAC hmac-sha2-256 및 MAC hmac-sha2-512)을 구성합니다.
++
+구성 파일을 업데이트한 후 sshd 서비스를 다시 시작합니다.
+
++
+예:
+
++
+[listing]
+----
+#Port 22
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+#Legacy changes
+#KexAlgorithms diffie-hellman-group1-sha1
+#Ciphers aes128-cbc
+#The default requires explicit activation of protocol
+Protocol 2
+HostKey/etc/ssh/ssh_host_rsa_key
+MACs hmac-sha2-256
+----
+
+
+*이 작업에 관하여*
+
+루트가 아닌 사용자에게 다음 경로에 대한 액세스를 제공하려면 sudo 권한을 구성해야 합니다.
+
+* /home/_LINUX_USER_/.sc_netapp/snapcenter_linux_host_plugin.bin
+* /custom_location/ NetApp/snapcenter/spl/설치/플러그인/제거
+* /custom_location/ NetApp/snapcenter/spl/bin/spl
+
+
+*단계*
+
+. Linux용 SnapCenter 플러그인 패키지를 설치하려는 Linux 호스트에 로그인합니다.
+. visudo Linux 유틸리티를 사용하여 /etc/sudoers 파일에 다음 줄을 추가합니다.
++
+[listing, subs="+quotes"]
+----
+Cmnd_Alias HPPLCMD = sha224:checksum_value== /home/_LINUX_USER_/.sc_netapp/snapcenter_linux_host_plugin.bin, /opt/NetApp/snapcenter/spl/installation/plugins/uninstall, /opt/NetApp/snapcenter/spl/bin/spl, /opt/NetApp/snapcenter/scc/bin/scc
+Cmnd_Alias PRECHECKCMD = sha224:checksum_value== /home/_LINUX_USER_/.sc_netapp/Linux_Prechecks.sh
+Cmnd_Alias CONFIGCHECKCMD = sha224:checksum_value== /opt/NetApp/snapcenter/spl/plugins/scu/scucore/configurationcheck/Config_Check.sh
+Cmnd_Alias SCCMD = sha224:checksum_value== /opt/NetApp/snapcenter/spl/bin/sc_command_executor
+Cmnd_Alias SCCCMDEXECUTOR =checksum_value== /opt/NetApp/snapcenter/scc/bin/sccCommandExecutor
+_LINUX_USER_ ALL=(ALL) NOPASSWD:SETENV: HPPLCMD, PRECHECKCMD, CONFIGCHECKCMD, SCCCMDEXECUTOR, SCCMD
+Defaults: _LINUX_USER_ env_keep += "IATEMPDIR"
+Defaults: _LINUX_USER_ env_keep += "JAVA_HOME"
+Defaults: _LINUX_USER_ !visiblepw
+Defaults: _LINUX_USER_ !requiretty
+----
++
+
+NOTE: RAC 설정을 사용하는 경우 허용되는 다른 명령과 함께 다음을 /etc/sudoers 파일에 추가해야 합니다. '/<crs_home>/bin/olsnodes'
+
+
+
+_crs_home_의 값은 _/etc/oracle/olr.loc_ 파일에서 얻을 수 있습니다.
+
+_LINUX_USER_는 사용자가 생성한 루트가 아닌 사용자의 이름입니다.
+
+_checksum_value_는 *sc_unix_plugins_checksum.txt* 파일에서 얻을 수 있습니다. 이 파일의 위치는 다음과 같습니다.
+
+* SnapCenter Server가 Windows 호스트에 설치된 경우 _C:\ProgramData\ NetApp\ SnapCenter \Package Repository\sc_unix_plugins_checksum.txt_.
+* SnapCenter 서버가 Linux 호스트에 설치되어 있는 경우 _/opt/ NetApp /snapcenter/SnapManagerWeb/Repository/sc_unix_plugins_checksum.txt_. .
+
+
+
+IMPORTANT: 이 예제는 귀하만의 데이터를 생성하기 위한 참고자료로만 사용해야 합니다.

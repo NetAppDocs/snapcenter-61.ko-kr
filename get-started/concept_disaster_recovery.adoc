@@ -1,0 +1,35 @@
+---
+permalink: get-started/concept_disaster_recovery.html 
+sidebar: sidebar 
+keywords: Disaster Recovery, DR, crash, resource deleted 
+summary: SnapCenter 재해 복구 기능을 사용하면 리소스 손상이나 서버 충돌과 같은 재해가 발생할 경우 SnapCenter 서버를 복구할 수 있습니다. 
+---
+= SnapCenter 의 재해 복구
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 재해 복구(DR) 기능을 사용하면 리소스 손상이나 서버 충돌과 같은 재해로부터 복구할 수 있습니다.  SnapCenter 저장소, 서버 일정, 구성 구성 요소, SQL Server용 SnapCenter 플러그인 및 해당 저장소를 복원하는 데 도움이 됩니다.
+
+이 섹션에서는 SnapCenter 의 두 가지 유형의 DR에 대해 설명합니다.
+
+
+
+== SnapCenter 서버 DR
+
+* SnapCenter 서버 데이터는 백업되며 SnapCenter 서버에 플러그인을 추가하거나 관리하지 않고도 복구할 수 있습니다.
+* 보조 SnapCenter 서버는 기본 SnapCenter 서버와 동일한 설치 디렉토리와 동일한 포트에 설치해야 합니다.
+* 다중 인증(MFA)의 경우 SnapCenter 서버 DR 중에 모든 브라우저 탭을 닫고 브라우저를 다시 열어 다시 로그인하세요.  이렇게 하면 기존 또는 활성 세션 쿠키가 지워지고 올바른 구성 데이터가 업데이트됩니다.
+* SnapCenter 재해 복구 기능은 REST API를 사용하여 SnapCenter 서버를 백업합니다. 보다 link:../tech-refresh/task_tech_refresh_server_host.html["SnapCenter 서버 재해 복구를 위한 REST API 워크플로"] .
+* 감사 설정 관련 구성 파일은 DR 백업에 백업되지 않으며 복원 작업 후에는 DR 서버에도 백업되지 않습니다.  감사 로그 설정을 수동으로 반복해야 합니다.
+
+
+
+
+== SnapCenter 플러그인 및 스토리지 DR
+
+DR은 SQL Server용 SnapCenter 플러그인에서만 사용할 수 있습니다.  플러그인이 다운된 경우 다른 SQL 호스트로 전환하고 몇 가지 단계에 따라 데이터를 복구하세요. 보다 link:../protect-scsql/task_disaster_recovery_scsql.html["SQL Server용 SnapCenter 플러그인의 재해 복구"] .
+
+SnapCenter ONTAP SnapMirror 사용하여 데이터를 복제하고, 이를 보조 사이트와 동기화하여 DR에 사용할 수 있습니다.  장애 조치를 시작하려면 SnapMirror 복제를 중단하세요.  폴백 중에는 동기화를 역으로 진행하여 DR 사이트의 데이터를 기본 위치로 복제합니다.

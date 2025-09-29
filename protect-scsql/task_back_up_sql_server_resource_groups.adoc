@@ -1,0 +1,46 @@
+---
+permalink: protect-scsql/task_back_up_sql_server_resource_groups.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for SQL Server 
+summary: 리소스 페이지에서 필요에 따라 리소스 그룹을 백업할 수 있습니다.  리소스 그룹에 정책이 첨부되고 일정이 구성된 경우 백업은 일정에 따라 자동으로 수행됩니다. 
+---
+= SQL Server 리소스 그룹 백업
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스 페이지에서 필요에 따라 리소스 그룹을 백업할 수 있습니다.  리소스 그룹에 정책이 첨부되고 일정이 구성된 경우 백업은 일정에 따라 자동으로 수행됩니다.
+
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 선택한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 *보기* 목록에서 *리소스 그룹*을 선택합니다.
++
+검색창에 리소스 그룹 이름을 입력하거나 다음을 선택하여 리소스 그룹을 검색할 수 있습니다.image:../media/filter_icon.gif["필터 아이콘"] , 그리고 태그를 선택합니다.  그런 다음 선택할 수 있습니다image:../media/filter_icon.gif["필터 아이콘"] 필터 창을 닫으려면.
+
+. 리소스 그룹 페이지에서 백업할 리소스 그룹을 선택한 다음, *지금 백업*을 선택합니다.
+. 백업 페이지에서 다음 단계를 수행합니다.
++
+.. 리소스 그룹에 여러 정책을 연결한 경우, *정책* 드롭다운 목록에서 백업에 사용할 정책을 선택합니다.
++
+주문형 백업에 대해 선택한 정책이 백업 일정과 연결되어 있는 경우, 주문형 백업은 일정 유형에 지정된 보존 설정에 따라 보존됩니다.
+
+.. 백업 후, *확인*을 선택하여 주문형 백업을 확인하세요.
++
+정책의 *확인* 옵션은 예약된 작업에만 적용됩니다.
+
+.. *백업*을 선택하세요.
+
+
+. *모니터* > *작업*을 선택하여 작업 진행 상황을 모니터링합니다.
+
+
+.관련 정보
+link:task_create_backup_policies_for_sql_server_databases.html["SQL Server 데이터베이스에 대한 백업 정책 만들기"]
+
+link:task_create_resource_groups_and_attach_policies_for_sql_server.html["SQL Server에 대한 리소스 그룹 생성 및 정책 연결"]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Clone_operation_might_fail_or_take_longer_time_to_complete_with_default_TCP_TIMEOUT_value["TCP_TIMEOUT 지연으로 인해 MySQL 연결 오류로 인해 백업 작업이 실패합니다."]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Backup_fails_with_Windows_scheduler_error["Windows 스케줄러 오류로 인해 백업이 실패합니다."]

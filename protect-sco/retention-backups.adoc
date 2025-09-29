@@ -1,0 +1,23 @@
+---
+permalink: protect-sco/retention-backups.html 
+sidebar: sidebar 
+keywords: oracle databases discover 
+summary: 백업 보존 옵션. 
+---
+= 백업 보존 옵션
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+백업 사본을 보관할 일수를 선택하거나 보관할 백업 사본 수를 지정할 수 있으며, ONTAP 최대 255개 사본까지 보관할 수 있습니다.  예를 들어, 귀하의 조직에서는 10일 분의 백업 사본이나 130개의 백업 사본을 보관하도록 요구할 수 있습니다.
+
+정책을 생성하는 동안 백업 유형과 일정 유형에 대한 보존 옵션을 지정할 수 있습니다.
+
+SnapMirror 복제를 설정하면 보존 정책이 대상 볼륨에 미러링됩니다.
+
+SnapCenter 일정 유형과 일치하는 보존 레이블이 있는 보관된 백업을 삭제합니다.  리소스 또는 리소스 그룹의 일정 유형이 변경된 경우 이전 일정 유형 레이블이 지정된 백업이 시스템에 남아 있을 수 있습니다.
+
+
+NOTE: 백업 사본을 장기간 보관하려면 SnapVault 백업을 사용해야 합니다.

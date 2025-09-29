@@ -1,0 +1,209 @@
+---
+permalink: protect-scw/reference_installation_requirements_for_snapcenter_plug_in_for_microsoft_windows.html 
+sidebar: sidebar 
+keywords: requirements 
+summary: Windows용 플러그인을 설치하기 전에 특정 설치 요구 사항을 알아야 합니다. 
+---
+= Microsoft Windows용 SnapCenter 플러그인 설치 요구 사항
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Windows용 플러그인을 설치하기 전에 특정 설치 요구 사항을 알아야 합니다.
+
+Windows용 플러그인을 사용하기 전에 SnapCenter 관리자는 SnapCenter 서버를 설치하고 구성하고 필수 작업을 수행해야 합니다.
+
+* Windows용 플러그인을 설치하려면 SnapCenter 관리자 권한이 있어야 합니다.
++
+SnapCenter 관리자 역할에는 관리자 권한이 있어야 합니다.
+
+* SnapCenter 서버를 설치하고 구성해야 합니다.
+* Windows 호스트에 플러그인을 설치할 때 기본 제공되지 않은 자격 증명을 지정하거나 사용자가 로컬 작업 그룹 사용자에 속하는 경우 호스트에서 UAC를 비활성화해야 합니다.
+* 백업 복제를 원하시면 SnapMirror 와 SnapVault 설정해야 합니다.
+
+
+
+
+== Windows용 SnapCenter 플러그인 패키지를 설치하기 위한 호스트 요구 사항
+
+Windows용 SnapCenter 플러그인 패키지를 설치하기 전에 몇 가지 기본적인 호스트 시스템 공간 요구 사항과 크기 요구 사항을 숙지해야 합니다.
+
+|===
+| 목 | 요구 사항 
+
+
+ a| 
+운영 체제
+ a| 
+마이크로소프트 윈도우
+
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121074;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+Windows 클러스터 설정을 사용하는 경우 Windows 원격 관리(WinRM)도 설치하고 구성해야 합니다.
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인을 위한 최소 RAM
+ a| 
+1GB
+
+
+
+ a| 
+호스트의 SnapCenter 플러그인에 대한 최소 설치 및 로그 공간
+ a| 
+5GB
+
+
+NOTE: 충분한 디스크 공간을 할당하고 로그 폴더의 저장 공간 소비를 모니터링해야 합니다.  필요한 로그 공간은 보호해야 할 엔터티의 수와 데이터 보호 작업의 빈도에 따라 달라집니다.  디스크 공간이 충분하지 않으면 최근 실행된 작업에 대한 로그가 생성되지 않습니다.
+
+
+
+ a| 
+필수 소프트웨어 패키지
+ a| 
+* ASP.NET Core Runtime 8.0.12(및 이후 모든 8.0.x 패치) 호스팅 번들
+* 파워셸 코어 7.4.2
+
+
+지원되는 버전에 대한 최신 정보는 다음을 참조하세요. https://imt.netapp.com/matrix/imt.jsp?components=121074;&solution=1257&isHWU&src=IMT["NetApp 상호 운용성 매트릭스 도구"^] .
+
+.NET 관련 문제 해결 정보는 다음을 참조하세요. https://kb.netapp.com/mgmt/SnapCenter/SnapCenter_upgrade_or_install_fails_with_This_KB_is_not_related_to_the_OS["인터넷 연결이 없는 레거시 시스템에서는 SnapCenter 업그레이드 또는 설치가 실패합니다."]
+
+|===
+
+
+== Windows용 플러그인에 대한 자격 증명을 설정하세요
+
+SnapCenter 자격 증명을 사용하여 SnapCenter 작업을 위해 사용자를 인증합니다.  SnapCenter 플러그인을 설치하기 위한 자격 증명과 Windows 파일 시스템에서 데이터 보호 작업을 수행하기 위한 추가 자격 증명을 만들어야 합니다.
+
+*필요한 것*
+
+* 플러그인을 설치하기 전에 Windows 자격 증명을 설정해야 합니다.
+* 원격 호스트에서 관리자 권한을 포함한 관리자 권한이 있는 자격 증명을 설정해야 합니다.
+* 개별 리소스 그룹에 대한 자격 증명을 설정하고 사용자에게 전체 관리자 권한이 없는 경우 최소한 리소스 그룹 및 백업 권한을 사용자에게 할당해야 합니다.
+
+
+*단계*
+
+. 왼쪽 탐색 창에서 *설정*을 클릭합니다.
+. 설정 페이지에서 *자격 증명*을 클릭합니다.
+. *새로 만들기*를 클릭합니다.
+. 자격 증명 페이지에서 다음을 수행합니다.
++
+|===
+| 이 분야에서는... | 이렇게 하세요... 
+
+
+ a| 
+자격 증명 이름
+ a| 
+자격 증명의 이름을 입력하세요.
+
+
+
+ a| 
+사용자 이름/비밀번호
+ a| 
+인증에 사용되는 사용자 이름과 비밀번호를 입력하세요.
+
+** 도메인 관리자 또는 관리자 그룹의 모든 구성원
++
+SnapCenter 플러그인을 설치할 시스템의 도메인 관리자 또는 관리자 그룹 구성원을 지정하십시오. 사용자 이름 필드에 사용할 수 있는 형식은 다음과 같습니다.
+
++
+*** `NetBIOS\UserName`
+*** `Domain FQDN\UserName`
+*** `UserName@upn`
+
+
+** 로컬 관리자(작업 그룹에만 해당)
++
+작업 그룹에 속한 시스템의 경우, SnapCenter 플러그인을 설치할 시스템에 기본 제공되는 로컬 관리자를 지정하십시오. 사용자 계정에 승격된 권한이 있거나 호스트 시스템에서 사용자 액세스 제어 기능이 비활성화된 경우, 로컬 관리자 그룹에 속하는 로컬 사용자 계정을 지정할 수 있습니다.  사용자 이름 필드의 유효한 형식은 다음과 같습니다. `UserName`
+
++
+비밀번호에 큰따옴표(")나 백틱(`)을 사용하지 마세요.  비밀번호에 '<' 기호와 '!)' 기호를 함께 사용하면 안 됩니다.  예를 들어, lessthan<!10, lessthan10<!, backtick`12.
+
+
+
+
+
+ a| 
+비밀번호
+ a| 
+인증에 사용되는 비밀번호를 입력하세요.
+
+|===
+. *확인*을 클릭합니다.
++
+자격 증명 설정을 마친 후 사용자 및 액세스 페이지에서 사용자 또는 사용자 그룹에 자격 증명 유지 관리를 할당할 수 있습니다.
+
+
+
+
+
+== Windows Server 2016 이상에서 gMSA 구성
+
+Windows Server 2016 이상에서는 관리되는 도메인 계정에서 자동화된 서비스 계정 암호 관리를 제공하는 그룹 관리 서비스 계정(gMSA)을 만들 수 있습니다.
+
+.시작하기 전에
+* Windows Server 2016 이상 도메인 컨트롤러가 있어야 합니다.
+* 도메인의 구성원인 Windows Server 2016 이상 호스트가 있어야 합니다.
+
+
+.단계
+. gMSA의 각 개체에 대해 고유한 비밀번호를 생성하려면 KDS 루트 키를 만듭니다.
+. 각 도메인에 대해 Windows 도메인 컨트롤러에서 다음 명령을 실행합니다. Add-KDSRootKey -EffectiveImmediately
+. gMSA를 만들고 구성하세요.
++
+.. 다음 형식으로 사용자 그룹 계정을 만듭니다.
++
+ domainName\accountName$
+.. 그룹에 컴퓨터 객체를 추가합니다.
+.. 방금 만든 사용자 그룹을 사용하여 gMSA를 만듭니다.
++
+예를 들어,
+
++
+ New-ADServiceAccount -name <ServiceAccountName> -DNSHostName <fqdn> -PrincipalsAllowedToRetrieveManagedPassword <group> -ServicePrincipalNames <SPN1,SPN2,…>
+.. 달리다 `Get-ADServiceAccount` 서비스 계정을 확인하는 명령입니다.
+
+
+. 호스트에서 gMSA를 구성하세요.
++
+.. gMSA 계정을 사용하려는 호스트에서 Windows PowerShell용 Active Directory 모듈을 활성화합니다.
++
+이렇게 하려면 PowerShell에서 다음 명령을 실행하세요.
+
++
+[listing]
+----
+PS C:\> Get-WindowsFeature AD-Domain-Services
+
+Display Name                           Name                Install State
+------------                           ----                -------------
+[ ] Active Directory Domain Services   AD-Domain-Services  Available
+
+
+PS C:\> Install-WindowsFeature AD-DOMAIN-SERVICES
+
+Success Restart Needed Exit Code      Feature Result
+------- -------------- ---------      --------------
+True    No             Success        {Active Directory Domain Services, Active ...
+WARNING: Windows automatic updating is not enabled. To ensure that your newly-installed role or feature is
+automatically updated, turn on Windows Update.
+----
+.. 호스트를 다시 시작합니다.
+.. PowerShell 명령 프롬프트에서 다음 명령을 실행하여 호스트에 gMSA를 설치합니다. `Install-AdServiceAccount <gMSA>`
+.. 다음 명령을 실행하여 gMSA 계정을 확인하세요. `Test-AdServiceAccount <gMSA>`
+
+
+. 호스트에서 구성된 gMSA에 관리 권한을 할당합니다.
+. SnapCenter 서버에서 구성된 gMSA 계정을 지정하여 Windows 호스트를 추가합니다.
++
+SnapCenter Server는 호스트에 선택된 플러그인을 설치하고, 플러그인 설치 중에 지정된 gMSA가 서비스 로그온 계정으로 사용됩니다.
+
+

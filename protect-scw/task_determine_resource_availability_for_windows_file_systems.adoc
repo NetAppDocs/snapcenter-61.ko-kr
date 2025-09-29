@@ -1,0 +1,32 @@
+---
+permalink: protect-scw/task_determine_resource_availability_for_windows_file_systems.html 
+sidebar: sidebar 
+keywords: availability 
+summary: 리소스는 설치한 플러그인에 의해 유지 관리되는 파일 시스템의 LUN 및 유사한 구성 요소입니다.  여러 리소스에 대한 데이터 보호 작업을 수행할 수 있도록 해당 리소스를 리소스 그룹에 추가할 수 있지만, 먼저 사용 가능한 리소스를 파악해야 합니다.  사용 가능한 리소스를 검색하면 플러그인 설치가 성공적으로 완료되었는지 확인할 수도 있습니다. 
+---
+= Windows 파일 시스템의 리소스 가용성 확인
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스는 설치한 플러그인에 의해 유지 관리되는 파일 시스템의 LUN 및 유사한 구성 요소입니다.  여러 리소스에 대한 데이터 보호 작업을 수행할 수 있도록 해당 리소스를 리소스 그룹에 추가할 수 있지만, 먼저 사용 가능한 리소스를 파악해야 합니다.  사용 가능한 리소스를 검색하면 플러그인 설치가 성공적으로 완료되었는지 확인할 수도 있습니다.
+
+.시작하기 전에
+* SnapCenter 서버 설치, 호스트 추가, 스토리지 가상 머신(SVM) 연결 생성, 자격 증명 추가 등의 작업을 이미 완료했어야 합니다.
+* 파일이 VMware RDM LUN이나 VMDK에 있는 경우 SnapCenter Plug-in for VMware vSphere 배포하고 SnapCenter 에 플러그인을 등록해야 합니다. 자세한 내용은 다음을 참조하세요.  https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/["SnapCenter Plug-in for VMware vSphere 설명서"^] .
+
+
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 클릭한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 목록에서 *파일 시스템*을 선택합니다.
+. 리소스 목록을 필터링할 호스트를 선택한 다음 *리소스 새로 고침*을 클릭합니다.
++
+새로 추가되거나 이름이 변경되거나 삭제된 파일 시스템은 SnapCenter 서버 인벤토리에 업데이트됩니다.
+
++
+
+IMPORTANT: SnapCenter 외부에서 데이터베이스 이름이 변경된 경우 리소스를 새로 고쳐야 합니다.
+
+

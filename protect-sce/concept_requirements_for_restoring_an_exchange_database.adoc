@@ -1,0 +1,27 @@
+---
+permalink: protect-sce/concept_requirements_for_restoring_an_exchange_database.html 
+sidebar: sidebar 
+keywords: restoring an Exchange database 
+summary: Microsoft Exchange Server 백업용 SnapCenter 플러그인에서 Exchange Server 데이터베이스를 복원하기 전에 몇 가지 요구 사항이 충족되는지 확인해야 합니다. 
+---
+= Exchange 데이터베이스 복원을 위한 요구 사항
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Microsoft Exchange Server 백업용 SnapCenter 플러그인에서 Exchange Server 데이터베이스를 복원하기 전에 몇 가지 요구 사항이 충족되는지 확인해야 합니다.
+
+
+NOTE: 복원 기능을 완벽하게 사용하려면 SnapCenter 서버와 Exchange 데이터베이스용 SnapCenter 플러그인을 모두 4.6으로 업그레이드해야 합니다.
+
+* 데이터베이스를 복원하려면 Exchange Server가 온라인 상태이고 실행 중이어야 합니다.
+* 데이터베이스는 Exchange Server에 있어야 합니다.
++
+
+NOTE: 삭제된 데이터베이스 복원은 지원되지 않습니다.
+
+* 데이터베이스에 대한 SnapCenter 일정을 일시 중단해야 합니다.
+* SnapCenter 서버와 Microsoft Exchange Server 호스트용 SnapCenter 플러그인은 복원하려는 백업이 들어 있는 기본 및 보조 저장소에 연결되어야 합니다.
+

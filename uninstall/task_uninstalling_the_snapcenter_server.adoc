@@ -1,0 +1,41 @@
+---
+permalink: uninstall/task_uninstalling_the_snapcenter_server.html 
+sidebar: sidebar 
+keywords: uninstall, snapcenter server, windows 
+summary: 더 이상 SnapCenter Server를 사용하여 데이터 보호 작업을 관리하지 않으려면 SnapCenter Server 호스트의 프로그램 및 기능 제어판을 사용하여 SnapCenter Server를 제거할 수 있습니다.  SnapCenter 서버를 제거하면 모든 구성 요소가 제거됩니다. 
+---
+= Windows 호스트에서 SnapCenter 서버 제거
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+더 이상 SnapCenter Server를 사용하여 데이터 보호 작업을 관리하지 않으려면 SnapCenter Server 호스트의 프로그램 및 기능 제어판을 사용하여 SnapCenter Server를 제거할 수 있습니다.  SnapCenter 서버를 제거하면 모든 구성 요소가 제거됩니다.
+
+.시작하기 전에
+* SnapCenter 서버가 설치된 드라이브에 최소 2GB의 여유 공간이 있는지 확인하세요.
+* SnapCenter 서버가 설치된 도메인이 제거되지 않았는지 확인하세요.
++
+SnapCenter 서버가 설치된 도메인을 제거한 다음 제거를 시도하면 작업이 실패합니다.
+
+* 저장소 데이터베이스는 정리되고 설치 제거되므로 저장소 데이터베이스를 백업했어야 합니다.
+
+
+.단계
+. SnapCenter 서버 호스트에서 제어판으로 이동합니다.
+. *카테고리* 보기에 있는지 확인하세요.
+. 프로그램에서 *프로그램 제거*를 클릭합니다.
++
+프로그램 및 기능 창이 열립니다.
+
+. NetApp SnapCenter Server를 선택한 다음 *제거*를 클릭합니다.
++
+SnapCenter 4.2부터 SnapCenter 서버를 제거하면 MySQL 서버 저장소 데이터베이스를 포함한 모든 구성 요소가 제거됩니다.
+
++
+** NLB 클러스터에서 NLB 노드를 제거하려면 SnapCenter 서버 호스트를 다시 시작해야 합니다.  호스트를 재시작하지 않으면 SnapCenter 서버를 다시 설치하려고 할 때 오류가 발생할 수 있습니다.
+** 설치 제거 중에 제거되지 않은 .NET Framework는 수동으로 제거해야 합니다.
+
+
+

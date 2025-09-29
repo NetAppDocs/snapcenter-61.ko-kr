@@ -1,0 +1,54 @@
+---
+section: protect-scu
+title: Unix 파일 시스템 보호
+entries:
+- title: Unix 파일 시스템용 SnapCenter 플러그인 개요
+  url: "/protect-scu/concept_overview_snapcenter_plug_in_for_UNIX_file_systems.html"
+- title: Unix 파일 시스템용 SnapCenter 플러그인 설치
+  entries:
+  - title: Linux용 호스트 추가 및 플러그인 패키지 설치를 위한 전제 조건
+    url: "/protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html"
+  - title: 호스트 추가 및 Linux용 플러그인 패키지 설치
+    url: "/protect-scu/task_add_hosts_and_install_the_snapcenter_plug_ins_package_for_linux.html"
+  - title: SnapCenter 플러그인 Loader 서비스 구성
+    url: "/protect-scu/task_configure_snapcenter_plug_in_loader_service.html"
+  - title: Linux 호스트에서 SnapCenter 플러그인 Loader 서비스를 사용하여 CA 인증서 구성
+    url: "/protect-scu/task_configure_CA_certificate_with_SPL_on_Linux_host.html"
+  - title: 플러그인에 대한 CA 인증서 활성화
+    url: "/protect-scu/task_enable_ca_certificates_for_plug-ins.html"
+- title: SnapCenter Plug-in for VMware vSphere 설치
+  url: "/protect-scu/reference_install_snapcenter_plug_in_for_vmware_vsphere.html"
+- title: Unix 파일 시스템 보호를 준비하세요
+  url: "/protect-scu/reference_prepare_for_protecting_UNIX file systems.html"
+- title: Unix 파일 시스템 백업
+  entries:
+  - title: UNIX 파일 시스템 알아보기
+    url: "/protect-scu/task_determine_whether_unix_file_systems_are_available_for_backup.html"
+  - title: 백업 정책 생성
+    url: "/protect-scu/task_create_backup_policies_for_unix_file_systems.html"
+  - title: 리소스 그룹 생성
+    url: "/protect-scu/task_create_resource_groups_and_attach_policies_for_unix_file_systems.html"
+  - title: ASA r2 시스템에서 Unix 파일 시스템에 대한 리소스 그룹을 만들고 보조 보호를 활성화합니다.
+    url: "/protect-scu/create-resource-groups-secondary-protection-for-asa-r2-unix-resources.html"
+  - title: UNIX 파일 시스템 백업
+    url: "/protect-scu/task_back_up_unix_file_systems.html"
+  - title: 리소스 그룹 백업
+    url: "/protect-scu/task_back_up_unix_file_systems_resource_groups.html"
+  - title: 백업 진행 상황 모니터링
+    url: "/protect-scu/task_monitor_unix_file_systems_backup_operations.html"
+  - title: 토폴로지 페이지에서 보호된 Unix 파일 시스템 보기
+    url: "/protect-scu/view_protected_unix_file_systems_in_the_topology_page.html"
+- title: Unix 파일 시스템 복원 및 복구
+  entries:
+  - title: Unix 파일 시스템 복원 및 복구
+    url: "/protect-scu/task_restore_unix_file_systems.html"
+  - title: Unix 파일 시스템 복원 작업 모니터링
+    url: "/protect-scu/task_monitor_unix_file_systems_restore_operations.html"
+- title: 유닉스 파일 시스템 복제
+  entries:
+  - title: 유닉스 파일 시스템 복제
+    url: "/protect-scu/task_clone_unix_file_systems_backup.html"
+  - title: 클론 분할
+    url: "/protect-scu/task_split_a_clone.html"
+  - title: Unix 파일 시스템 복제 작업 모니터링
+    url: "/protect-scu/task_monitor_unix_file_systems_clone_operations.html"

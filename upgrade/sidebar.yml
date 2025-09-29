@@ -1,0 +1,14 @@
+---
+section: upgrade
+title: SnapCenter 서버 및 플러그인 업그레이드
+entries:
+- title: 사용 가능한 업데이트를 확인하기 위해 SnapCenter 구성합니다.
+  url: "/upgrade/task_configure_snapcenter_to_check_for_available_updates.html"
+- title: 업그레이드 워크플로
+  url: "/upgrade/upgrade_workflow.html"
+- title: Windows 호스트에서 SnapCenter 서버 업그레이드
+  url: "/upgrade/task_upgrade_snapcenter.html"
+- title: Linux 호스트에서 SnapCenter 서버 업그레이드
+  url: "/upgrade/upgrade_snapcenter_server_linux.html"
+- title: 플러그인 패키지를 업그레이드하세요
+  url: "/upgrade/task_upgrade_your_plug_in_packages.html"

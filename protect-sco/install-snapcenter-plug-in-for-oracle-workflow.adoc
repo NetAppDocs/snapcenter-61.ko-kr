@@ -1,0 +1,16 @@
+---
+permalink: protect-sco/install-snapcenter-plug-in-for-oracle-workflow.html 
+sidebar: sidebar 
+keywords: installing 
+summary: Oracle 데이터베이스를 보호하려면 Oracle 데이터베이스용 SnapCenter 플러그인을 설치하고 설정해야 합니다. 
+---
+= Oracle Database용 SnapCenter 플러그인 설치 워크플로
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Oracle 데이터베이스를 보호하려면 Oracle 데이터베이스용 SnapCenter 플러그인을 설치하고 설정해야 합니다.
+
+image::../media/sco_install_configure_workflow.gif[오라클 플러그인 설치]

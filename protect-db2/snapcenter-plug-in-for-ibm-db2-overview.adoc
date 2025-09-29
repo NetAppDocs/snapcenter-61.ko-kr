@@ -1,0 +1,29 @@
+---
+permalink: protect-db2/snapcenter-plug-in-for-ibm-db2-overview.html 
+sidebar: sidebar 
+keywords: SnapCenter Plug-in for IBM Db2 
+summary: IBM Db2용 SnapCenter 플러그인은 IBM Db2 데이터베이스의 애플리케이션 인식 데이터 보호 관리를 지원하는 NetApp SnapCenter software 의 호스트 측 구성 요소입니다.  IBM Db2 데이터베이스용 플러그인은 SnapCenter 환경에서 IBM Db2 데이터베이스의 백업, 복원 및 복제를 자동화합니다. 
+---
+= IBM Db2용 SnapCenter 플러그인 개요
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+IBM Db2 데이터베이스용 SnapCenter 플러그인은 IBM Db2 데이터베이스의 애플리케이션 인식 데이터 보호 관리를 지원하는 NetApp SnapCenter software 의 호스트 측 구성 요소입니다.  IBM Db2 데이터베이스용 플러그인은 SnapCenter 환경에서 IBM Db2 데이터베이스의 백업, 복원 및 복제를 자동화합니다.
+
+* SnapCenter 6.0은 IBM Db2 10.5 이상을 지원합니다.
+* SnapCenter 6.0.1은 IBM Db2 9.7.x 이상을 지원합니다.  또한 SnapCenter 6.0.1부터 AIX에서 IBM Db2가 지원됩니다.
+
+
+SnapCenter 단일 인스턴스 및 다중 인스턴스 Db2 설정을 지원합니다.  Linux와 Windows 환경 모두에서 IBM Db2 데이터베이스 플러그인을 사용할 수 있습니다.  Windows 환경에서는 Db2가 수동 리소스로 지원됩니다.
+
+
+NOTE: Db2 pureScale 환경 및 Db2 다중 노드(DPF) 시스템은 지원되지 않습니다.
+
+IBM Db2 데이터베이스용 플러그인이 설치되면 NetApp SnapMirror 기술과 함께 SnapCenter 사용하여 다른 볼륨에 백업 세트의 미러 사본을 만들 수 있습니다.  NetApp SnapVault 기술과 함께 플러그인을 사용하면 표준을 준수하기 위해 디스크 간 백업 복제를 수행할 수도 있습니다.
+
+Db2용 SnapCenter 플러그인은 ONTAP 및 Azure NetApp 파일 스토리지 레이아웃에서 NFS와 SAN을 지원합니다.
+
+VMDK, vVol 및 RDM 가상 스토리지 레이아웃이 지원됩니다.

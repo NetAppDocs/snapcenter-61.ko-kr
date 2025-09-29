@@ -1,0 +1,18 @@
+---
+permalink: protect-scsql/concept_backup_copy_verification_using_the_primary_or_secondary_storage_volume_for_plugin_for_sql.html 
+sidebar: sidebar 
+keywords: Backup copy verification 
+summary: 기본 저장소 볼륨이나 SnapMirror 또는 SnapVault 보조 저장소 볼륨에서 백업 사본을 확인할 수 있습니다.  보조 저장 볼륨을 사용하여 검증하면 기본 저장 볼륨의 부하가 줄어듭니다. 
+---
+= SQL Server용 플러그인의 기본 또는 보조 스토리지 볼륨을 사용한 백업 사본 검증
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+기본 저장소 볼륨이나 SnapMirror 또는 SnapVault 보조 저장소 볼륨에서 백업 사본을 확인할 수 있습니다.  보조 저장 볼륨을 사용하여 검증하면 기본 저장 볼륨의 부하가 줄어듭니다.
+
+기본 또는 보조 스토리지 볼륨에 있는 백업을 검증하면 모든 기본 및 보조 스냅샷이 검증됨으로 표시됩니다.
+
+SnapMirror 및 SnapVault 보조 스토리지 볼륨의 백업 사본을 확인하려면 SnapRestore 라이선스가 필요합니다.

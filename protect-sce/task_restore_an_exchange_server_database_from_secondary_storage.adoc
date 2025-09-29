@@ -1,0 +1,34 @@
+---
+permalink: protect-sce/task_restore_an_exchange_server_database_from_secondary_storage.html 
+sidebar: sidebar 
+keywords: SnapCenter plug-in for Exchange Server 
+summary: '보조 저장소(미러 또는 볼트)에서 백업된 Exchange Server 데이터베이스를 복원할 수 있습니다.' 
+---
+= 보조 저장소에서 Exchange Server 데이터베이스 복원
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+보조 저장소(미러 또는 볼트)에서 백업된 Exchange Server 데이터베이스를 복원할 수 있습니다.
+
+기본 저장소에서 보조 저장소로 스냅샷을 복제했어야 합니다.
+
+.이 작업에 관하여
+* ONTAP 9.12.1 이하 버전의 경우 복원의 일부로 SnapLock Vault 스냅샷에서 생성된 복제본은 SnapLock Vault 만료 시간을 상속받습니다. 스토리지 관리자는 SnapLock 만료 시간 이후에 복제본을 수동으로 정리해야 합니다.
+* SnapMirror Active Sync 복원 작업의 경우 기본 위치에서 백업을 선택해야 합니다.
+
+
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 클릭한 다음 목록에서 *Microsoft Exchange Server 플러그인*을 선택합니다.
+. 리소스 페이지에서 *보기* 드롭다운 목록에서 *데이터베이스* 또는 *리소스 그룹*을 선택합니다.
+. 데이터베이스나 리소스 그룹을 선택하세요.
++
+데이터베이스 또는 리소스 그룹 토폴로지 페이지가 표시됩니다.
+
+. '복사본 관리' 섹션에서 보조 저장 시스템(미러 또는 볼트)의 *백업*을 선택합니다.
+. 목록에서 백업을 선택한 다음 클릭하세요.image:../media/restore_icon.gif["복원 아이콘"] .
+. 위치 페이지에서 선택한 리소스를 복원할 대상 볼륨을 선택합니다.
+. 복원 마법사를 완료하고 요약을 검토한 후 *마침*을 클릭합니다.
+

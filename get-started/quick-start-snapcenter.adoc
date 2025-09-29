@@ -1,0 +1,45 @@
+---
+permalink: get-started/quick-start-snapcenter.html 
+sidebar: sidebar 
+keywords:  
+summary:  
+---
+= SnapCenter software 빠른 시작
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+빠른 시작 가이드에서는 SnapCenter software 설치하고 구성하는 기본 단계를 설명합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["하나"]SnapCenter 서버 설치를 준비하세요
+[role="quick-margin-para"]
+SnapCenter 서버를 설치하는 데 필요한 모든 요구 사항이 충족되었는지 확인해야 합니다.
+
+[role="quick-margin-list"]
+* link:../install/requirements-to-install-snapcenter-server.html["요구 사항"]
+* link:../install/register_enable_software_access.html["SnapCenter software 에 액세스하려면 등록하세요"]
+* link:../install/enable_multifactor_authentication.html["다중 요소 인증 활성화"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["둘"]SnapCenter 서버 설치
+[role="quick-margin-para"]
+SnapCenter 서버는 Windows 또는 Linux 호스트에 설치할 수 있습니다.  SnapCenter 서버 설치 패키지를 다운로드하세요. https://mysupport.netapp.com/site/products/all/details/snapcenter/downloads-tab["NetApp 지원 사이트"^] 설치 프로그램을 실행합니다.
+
+[role="quick-margin-list"]
+* link:../install/task_install_the_snapcenter_server_using_the_install_wizard.html["Windows에 SnapCenter 서버 설치"]
+* link:../install/install_snapcenter_server_linux.html["Linux에 SnapCenter 서버 설치"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["삼"]SnapCenter 서버 구성
+[role="quick-margin-para"]
+SnapCenter 서버를 설치한 후에는 환경에 맞게 구성해야 합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["네"]귀하의 애플리케이션에 플러그인을 설치하세요
+[role="quick-margin-para"]
+사용 중인 애플리케이션에 따라 애플리케이션별 플러그인을 설치하는 데 필요한 모든 요구 사항이 충족되는지 확인한 다음, 해당 플러그인을 설치하세요.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-5.png["다섯"]귀하의 애플리케이션을 보호하세요
+[role="quick-margin-para"]
+SnapCenter 서버와 필요한 플러그인을 성공적으로 설치한 후 애플리케이션 백업 생성을 시작할 수 있습니다.  이러한 백업은 나중에 필요할 때 복원 및 복제 목적으로 활용할 수 있습니다.

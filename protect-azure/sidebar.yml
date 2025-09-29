@@ -1,0 +1,66 @@
+---
+section: protect-azure
+title: Azure NetApp Files 에서 실행되는 애플리케이션 보호
+entries:
+- title: Azure NetApp Files 에서 실행되는 애플리케이션 보호
+  url: "/protect-azure/protect-applications-azure-netapp-files.html"
+- title: SnapCenter 설치하고 자격 증명을 만듭니다.
+  entries:
+  - title: Azure 가상 머신에 SnapCenter 설치
+    url: "/protect-azure/install-snapcenter-azure-virtual-machine.html"
+  - title: SnapCenter 에서 Azure 자격 증명 만들기
+    url: "/protect-azure/create-azure-credential.html"
+  - title: Azure 스토리지 계정 구성
+    url: "/protect-azure/configure-azure-storage-account.html"
+  - title: 플러그인 호스트를 추가하기 위한 자격 증명을 만듭니다.
+    url: "/protect-azure/create-credential-add-plugin-host.html"
+- title: SAP HANA 데이터베이스 보호
+  entries:
+  - title: 호스트를 추가하고 SAP HANA 데이터베이스용 SnapCenter 플러그인을 설치합니다.
+    url: "/protect-azure/add-hosts-install-plugin-for-sap-hana.html"
+  - title: SAP HANA 데이터베이스 추가
+    url: "/protect-azure/add-sap-hana-database.html"
+  - title: SAP HANA 데이터베이스에 대한 백업 정책 만들기
+    url: "/protect-azure/create-backup-policies-sap-hana.html"
+  - title: 리소스 그룹을 생성하고 SAP HANA 백업 정책을 연결합니다.
+    url: "/protect-azure/create-resource-groups-attach-sap-hana-backup-policies.html"
+  - title: Azure NetApp Files 에서 실행되는 SAP HANA 데이터베이스 백업
+    url: "/protect-azure/backup-sap-hana-databases.html"
+  - title: SAP HANA 리소스 그룹 백업
+    url: "/protect-azure/backup-sap-hana-resource-groups.html"
+  - title: SAP HANA 데이터베이스 복원 및 복구
+    url: "/protect-azure/restore-recover-sap-hana-backups.html"
+  - title: SAP HANA 데이터베이스 백업 복제
+    url: "/protect-azure/clone-sap-hana-database-backups.html"
+- title: Microsoft SQL Server 데이터베이스 보호
+  entries:
+  - title: 호스트를 추가하고 SQL Server 데이터베이스용 SnapCenter 플러그인을 설치합니다.
+    url: "/protect-azure/add-hosts-install-plugin-for-sql.html"
+  - title: SQL Server 데이터베이스에 대한 백업 정책 만들기
+    url: "/protect-azure/create-backup-policies-sql.html"
+  - title: 리소스 그룹을 만들고 SQL 백업 정책을 첨부합니다.
+    url: "/protect-azure/create-resource-groups-attach-sql-backup-policies.html"
+  - title: Azure NetApp Files 에서 실행되는 SQL Server 데이터베이스 백업
+    url: "/protect-azure/backup-sql-server-databases.html"
+  - title: SQL Server 리소스 그룹 백업
+    url: "/protect-azure/backup-sql-resource-groups.html"
+  - title: SQL Server 데이터베이스 복원 및 복구
+    url: "/protect-azure/restore-recover-sql-backups.html"
+  - title: SQL Server 데이터베이스 백업 복제
+    url: "/protect-azure/clone-sql-database-backups.html"
+- title: Oracle 데이터베이스 보호
+  entries:
+  - title: 호스트를 추가하고 Oracle 데이터베이스용 SnapCenter 플러그인을 설치합니다.
+    url: "/protect-azure/add-hosts-install-plugin-for-oracle.html"
+  - title: Oracle 데이터베이스에 대한 백업 정책 생성
+    url: "/protect-azure/create-backup-policies-oracle.html"
+  - title: 리소스 그룹을 생성하고 Oracle 백업 정책을 첨부합니다.
+    url: "/protect-azure/create-resource-groups-attach-oracle-backup-policies.html"
+  - title: Azure NetApp Files 에서 실행되는 Oracle 데이터베이스 백업
+    url: "/protect-azure/backup-oracle-databases.html"
+  - title: Oracle 리소스 그룹 백업
+    url: "/protect-azure/backup-oracle-resource-groups.html"
+  - title: Oracle 데이터베이스 복원 및 복구
+    url: "/protect-azure/restore-recover-oracle-backups.html"
+  - title: Oracle 데이터베이스 백업 복제
+    url: "/protect-azure/clone-oracle-database-backups.html"

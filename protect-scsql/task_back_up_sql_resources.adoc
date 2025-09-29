@@ -1,0 +1,261 @@
+---
+permalink: protect-scsql/task_back_up_sql_resources.html 
+sidebar: sidebar 
+keywords: backup 
+summary: 리소스가 아직 어떤 리소스 그룹에도 속하지 않은 경우 리소스 페이지에서 리소스를 백업할 수 있습니다. 
+---
+= SQL 리소스 백업
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+리소스가 아직 어떤 리소스 그룹에도 속하지 않은 경우 리소스 페이지에서 리소스를 백업할 수 있습니다.
+
+.이 작업에 관하여
+* 백업 작업을 최적화하려면 DNS 서버에서 Windows 클러스터 이름과 IP 주소에 대한 역방향 조회 레코드를 만들어야 합니다.
+* Windows 자격 증명 인증의 경우 플러그인을 설치하기 전에 자격 증명을 설정해야 합니다.
+* SQL Server 인스턴스 인증을 위해서는 플러그인을 설치한 후 자격 증명을 추가해야 합니다.
+* gMSA 인증을 위해서는 SnapCenter 에 호스트를 등록하는 동안 *호스트 추가* 또는 *호스트 수정* 페이지에서 gMSA를 설정하여 gMSA를 활성화하고 사용해야 합니다.
+* 호스트가 gMSA로 추가되고 gMSA에 로그인 및 시스템 관리자 권한이 있는 경우 gMSA는 SQL 인스턴스에 연결할 수 있습니다.
++
+** SnapCenter SQL 인스턴스에 대한 인증이 구성되어 있는지 확인합니다.  인증이 구성된 경우 이 자격 증명을 사용하여 SQL 인스턴스에 액세스합니다.
+** 인증이 구성되지 않은 경우 gMSA를 사용하여 SQL 플러그인이 현재 작동 중인지 확인하세요.  플러그인이 작동 중이면 SQL 인스턴스에 대한 연결을 설정하는 데 사용됩니다.
+** SQL 인스턴스에 대한 인증이 구성되지 않았고 플러그인이 작동하지 않는 경우 Windows 자격 증명 인증을 통해 SQL 인스턴스에 액세스합니다.
+
+
+
+
+[role="tabbed-block"]
+====
+.SnapCenter UI
+--
+.단계
+. 왼쪽 탐색 창에서 *리소스*를 선택한 다음 목록에서 적절한 플러그인을 선택합니다.
+. 리소스 페이지에서 *보기* 드롭다운 목록에서 *데이터베이스*, *인스턴스* 또는 *가용성 그룹*을 선택합니다.
++
+.. 백업할 데이터베이스, 인스턴스 또는 가용성 그룹을 선택합니다.
++
+인스턴스를 백업할 때 마지막 백업 상태나 해당 인스턴스의 타임스탬프에 대한 정보는 리소스 페이지에서 사용할 수 없습니다.
+
++
+토폴로지 보기에서는 백업 상태, 타임스탬프 또는 백업이 인스턴스에 대한 것인지 데이터베이스에 대한 것인지 구별할 수 없습니다.
+
+
+
+. 리소스 페이지에서 *스냅샷 복사본에 대한 사용자 지정 이름 형식* 확인란을 선택한 다음 스냅샷 이름에 사용할 사용자 지정 이름 형식을 입력합니다.
++
+예를 들어, customtext_policy_hostname 또는 resource_hostname입니다.  기본적으로 타임스탬프는 스냅샷 이름에 추가됩니다.
+
+. 정책 페이지에서 다음 작업을 수행합니다.
++
+.. 정책 섹션에서 드롭다운 목록에서 하나 이상의 정책을 선택합니다.
++
+*를 선택하여 정책을 생성할 수 있습니다.image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] * 정책 마법사를 시작합니다.
+
++
+*선택한 정책에 대한 일정 구성* 섹션에는 선택한 정책이 나열됩니다.
+
+.. 선택하다 *image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] * 일정을 구성하려는 정책에 대한 일정 구성 열에 있습니다.
+.. *정책 일정 추가*에서 `policy_name` 대화 상자에서 일정을 구성한 다음 *확인*을 선택합니다.
++
+여기 `policy_name` 선택한 정책의 이름입니다.
+
++
+구성된 일정은 *적용된 일정* 열에 나열됩니다.
+
+.. *Microsoft SQL Server 스케줄러 사용*을 선택한 다음, 스케줄링 정책과 연결된 *스케줄러 인스턴스* 드롭다운 목록에서 스케줄러 인스턴스를 선택합니다.
+
+
+. 확인 페이지에서 다음 단계를 수행하세요.
++
+.. *인증 서버* 드롭다운 목록에서 인증 서버를 선택하세요.
++
+여러 개의 검증 서버(로컬 호스트 또는 원격 호스트)를 선택할 수 있습니다.
+
++
+
+NOTE: 검증 서버 버전은 기본 데이터베이스를 호스팅하는 SQL 서버 에디션 버전과 같거나 그 이상이어야 합니다.
+
+.. 보조 저장소 시스템의 백업을 확인하려면 *보조 저장소의 백업을 확인하기 위해 보조 로케이터 로드*를 선택하세요.
+.. 확인 일정을 구성하려는 정책을 선택한 다음 *를 선택합니다.image:../media/add_policy_from_resourcegroup.gif["정책 양식 리소스 그룹 추가"] *.
+.. 확인 일정 추가 _정책_이름_ 대화 상자에서 다음 작업을 수행합니다.
++
+|===
+| 만약 당신이 원한다면... | 이렇게 하세요... 
+
+
+ a| 
+백업 후 검증 실행
+ a| 
+*백업 후 검증 실행*을 선택하세요.
+
+
+
+ a| 
+검증 일정을 예약하세요
+ a| 
+*예약된 검증 실행*을 선택하세요.
+
+|===
++
+
+NOTE: 검증 서버에 저장소 연결이 없으면 검증 작업이 실패하고 "디스크를 마운트하지 못했습니다" 오류가 발생합니다.
+
+.. *확인*을 선택하세요.
++
+구성된 일정은 적용된 일정 열에 나열됩니다.
+
+
+
+. 알림 페이지의 *이메일 환경 설정* 드롭다운 목록에서 이메일을 보낼 시나리오를 선택합니다.
++
+또한 발신자와 수신자의 이메일 주소와 이메일 제목을 지정해야 합니다.  리소스 그룹에서 수행된 작업 보고서를 첨부하려면 *작업 보고서 첨부*를 선택하세요.
+
++
+
+NOTE: 이메일 알림의 경우 GUI 또는 PowerShell 명령 Set-SmSmtpServer를 사용하여 SMTP 서버 세부 정보를 지정해야 합니다.
+
+. 요약을 검토한 후 *마침*을 선택하세요.
++
+데이터베이스 토폴로지 페이지가 표시됩니다.
+
+. *지금 백업*을 선택하세요.
+. 백업 페이지에서 다음 단계를 수행합니다.
++
+.. 리소스에 여러 정책을 적용한 경우, *정책* 드롭다운 목록에서 백업에 사용할 정책을 선택합니다.
++
+주문형 백업에 대해 선택한 정책이 백업 일정과 연결되어 있는 경우, 주문형 백업은 일정 유형에 지정된 보존 설정에 따라 보존됩니다.
+
+.. 백업을 확인하려면 *백업 후 확인*을 선택하세요.
+.. *백업*을 선택하세요.
++
+
+NOTE: Windows 스케줄러나 SQL Server 에이전트에서 생성된 백업 작업의 이름을 바꾸면 안 됩니다.
+
++
+주문형 백업에 대해 선택한 정책이 백업 일정과 연결되어 있는 경우, 주문형 백업은 일정 유형에 지정된 보존 설정에 따라 보존됩니다.
+
++
+암묵적 리소스 그룹이 생성됩니다.  사용자 액세스 페이지에서 해당 사용자 또는 그룹을 선택하면 이를 볼 수 있습니다.  암시적 리소스 그룹 유형은 "`Resource`"입니다.
+
+
+
+. *모니터* > *작업*을 선택하여 작업 진행 상황을 모니터링합니다.
+
+
+.당신이 완료한 후
+* MetroCluster 구성에서 SnapCenter 장애 조치 후 보호 관계를 감지하지 못할 수 있습니다.
++
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Unable_to_detect_SnapMirror_or_SnapVault_relationship_after_MetroCluster_failover["MetroCluster 장애 조치 후 SnapMirror 또는 SnapVault 관계를 감지할 수 없습니다."]
+
+* VMDK에서 애플리케이션 데이터를 백업하고 SnapCenter Plug-in for VMware vSphere 의 Java 힙 크기가 충분히 크지 않으면 백업이 실패할 수 있습니다.  Java 힙 크기를 늘리려면 스크립트 파일 /opt/netapp/init_scripts/scvservice를 찾으세요.  해당 스크립트에서 `do_start method` 명령은 SnapCenter VMware 플러그인 서비스를 시작합니다.  해당 명령을 다음과 같이 업데이트하세요. `Java -jar -Xmx8192M -Xms4096M` .
+
+
+.관련 정보
+link:task_create_backup_policies_for_sql_server_databases.html["SQL Server 데이터베이스에 대한 백업 정책 만들기"]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Clone_operation_might_fail_or_take_longer_time_to_complete_with_default_TCP_TIMEOUT_value["TCP_TIMEOUT 지연으로 인해 MySQL 연결 오류로 인해 백업 작업이 실패합니다."]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Backup_fails_with_Windows_scheduler_error["Windows 스케줄러 오류로 인해 백업이 실패합니다."]
+
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Quiesce_or_grouping_resources_operations_fail["정지 또는 리소스 그룹화 작업이 실패합니다."]
+
+--
+.PowerShell cmdlet
+--
+.단계
+. Open-SmConnection cmdlet을 사용하여 지정된 사용자에 대한 SnapCenter 서버와의 연결 세션을 시작합니다.
++
+[listing]
+----
+Open-smconnection  -SMSbaseurl  https://snapctr.demo.netapp.com:8146
+----
++
+사용자 이름과 비밀번호를 입력하라는 메시지가 표시됩니다.
+
+. Add-SmPolicy cmdlet을 사용하여 백업 정책을 만듭니다.
++
+이 예제에서는 FullBackup의 SQL 백업 유형을 사용하여 새 백업 정책을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmPolicy -PolicyName TESTPolicy
+-PluginPolicyType SCSQL -PolicyType Backup
+-SqlBackupType FullBackup -Verbose
+----
++
+이 예제에서는 CrashConsistent의 Windows 파일 시스템 백업 유형을 사용하여 새 백업 정책을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmPolicy -PolicyName FileSystemBackupPolicy
+-PluginPolicyType SCW -PolicyType Backup
+-ScwBackupType CrashConsistent -Verbose
+----
+. Get-SmResources cmdlet을 사용하여 호스트 리소스를 검색합니다.
++
+이 예제에서는 지정된 호스트에서 Microsoft SQL 플러그인에 대한 리소스를 검색합니다.
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmResources -HostName vise-f6.sddev.mycompany.com
+-PluginCode SCSQL
+----
++
+이 예제에서는 지정된 호스트에서 Windows 파일 시스템의 리소스를 검색합니다.
+
++
+[listing]
+----
+C:\PS>PS C:\> Get-SmResources -HostName vise2-f6.sddev.mycompany.com
+-PluginCode SCW
+----
+. Add-SmResourceGroup cmdlet을 사용하여 SnapCenter 에 새 리소스 그룹을 추가합니다.
++
+이 예제에서는 지정된 정책과 리소스를 사용하여 새로운 SQL 데이터베이스 백업 리소스 그룹을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmResourceGroup -ResourceGroupName AccountingResource
+-Resources @{"Host"="visef6.org.com";
+"Type"="SQL Database";"Names"="vise-f6\PayrollDatabase"}
+-Policies "BackupPolicy"
+----
++
+이 예제에서는 지정된 정책과 리소스를 사용하여 새로운 Windows 파일 시스템 백업 리소스 그룹을 만듭니다.
+
++
+[listing]
+----
+PS C:\> Add-SmResourceGroup -ResourceGroupName EngineeringResource
+-PluginCode SCW -Resources @{"Host"="WIN-VOK20IKID5I";
+"Type"="Windows Filesystem";"Names"="E:\"}
+-Policies "EngineeringBackupPolicy"
+----
+. New-SmBackup cmdlet을 사용하여 새로운 백업 작업을 시작합니다.
++
+[listing]
+----
+PS C:> New-SmBackup -ResourceGroupName PayrollDataset -Policy FinancePolicy
+----
+. Get-SmBackupReport cmdlet을 사용하여 백업 작업의 상태를 확인합니다.
++
+이 예제에서는 지정된 날짜에 실행된 모든 작업에 대한 작업 요약 보고서를 표시합니다.
+
++
+[listing]
+----
+PS C:\> Get-SmJobSummaryReport -Date '1/27/2016'
+----
+
+
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .
+
+--
+====

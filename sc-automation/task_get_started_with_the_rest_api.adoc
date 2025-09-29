@@ -1,0 +1,38 @@
+---
+sidebar: sidebar 
+permalink: sc-automation/task_get_started_with_the_rest_api.html 
+keywords: REST API 
+summary: API에 액세스하면 라이브 설정에서 보다 복잡한 워크플로 프로세스를 사용하기 전에 어느 정도 관점을 얻을 수 있습니다. 
+---
+= REST API 시작하기
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter REST API를 사용하면 빠르게 시작할 수 있습니다.  API에 액세스하면 라이브 설정에서 보다 복잡한 워크플로 프로세스를 사용하기 전에 어느 정도 관점을 얻을 수 있습니다.
+
+
+
+== 안녕하세요 세상
+
+시스템에서 간단한 명령을 실행하여 SnapCenter REST API를 사용하고 가용성을 확인할 수 있습니다.
+
+.시작하기 전에
+* Curl 유틸리티가 시스템에서 사용 가능한지 확인하세요.
+* SnapCenter 서버의 IP 주소 또는 호스트 이름
+* SnapCenter REST API에 액세스할 권한이 있는 계정의 사용자 이름과 비밀번호입니다.
+
+
+
+NOTE: 자격 증명에 특수 문자가 포함되어 있는 경우, 사용하는 셸을 기준으로 Curl에서 허용하는 방식으로 형식을 지정해야 합니다.  예를 들어, 각 특수 문자 앞에 백슬래시를 삽입하거나 전체를 래핑할 수 있습니다. `username:password` 작은따옴표로 묶은 문자열.
+
+.단계
+명령줄 인터페이스에서 다음을 실행하여 플러그인 정보를 검색합니다.
+
+`curl -X GET -u username:password -k "https://<ip_address>/api/hosts?fields=IncludePluginInfo"`
+
+예:
+
+`curl -X GET -u admin:password -k "'https://10.225.87.97/api/hosts?fields=IncludePluginInfo"`

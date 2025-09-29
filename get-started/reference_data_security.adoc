@@ -1,0 +1,68 @@
+---
+permalink: get-started/reference_data_security.html 
+sidebar: sidebar 
+keywords: security, authentication, CA certificates, FIPS, SSL, AES, TLS, RBAC, MFA, multi-factor authentication 
+summary: SnapCenter 엄격한 보안 및 인증 기능을 사용하여 귀하의 데이터를 안전하게 보호합니다. 
+---
+= SnapCenter 의 보안 기능
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 엄격한 보안 및 인증 기능을 사용하여 귀하의 데이터를 안전하게 보호합니다.
+
+SnapCenter 에는 다음과 같은 보안 기능이 포함되어 있습니다.
+
+* SnapCenter 와의 모든 통신은 HTTPS(HTTP over SSL)를 사용합니다.
+* SnapCenter 의 모든 자격 증명은 AES(Advanced Encryption Standard) 암호화를 사용하여 보호됩니다.
+* 연방 정보 처리 표준(FIPS)을 준수하는 보안 알고리즘을 지원합니다.
+* 고객이 제공한 공인 CA 인증서 사용을 지원합니다.
+* ONTAP 과 통신하기 위해 TLS(전송 계층 보안) 1.3을 지원합니다.  클라이언트와 서버 간 통신에는 TLS 1.2를 사용할 수도 있습니다.
+* 네트워크 통신 전반에 걸쳐 보안을 제공하기 위해 특정 SSL 암호화 제품군을 지원합니다. https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/How_to_configure_the_supported_SSL_Cipher_Suite["자세히 알아보기"] .
+* SnapCenter SnapCenter 서버에 대한 액세스를 활성화하고 SnapCenter 서버와 플러그인 간의 통신을 활성화하기 위해 회사 방화벽 내부에 설치됩니다.
+* SnapCenter API 및 운영 액세스는 AES 암호화로 암호화된 토큰을 사용하며, 이 토큰은 24시간 후에 만료됩니다.
+* SnapCenter Windows Active Directory와 통합되어 로그인 및 역할 기반 액세스 제어(RBAC)를 통해 액세스 권한을 관리합니다.
+* IPsec은 Windows 및 Linux 호스트 머신의 ONTAP 에서 SnapCenter 통해 지원됩니다. https://docs.netapp.com/us-en/ontap/networking/configure_ip_security_@ipsec@_over_wire_encryption.html#use-ipsec-identities["자세히 알아보기"] .
+* SnapCenter PowerShell cmdlet은 세션 보안이 적용됩니다.
+* SnapCenter 기본적으로 15분 동안 활동이 없으면 5분 후에 로그아웃된다는 경고를 표시합니다.
++
+20분 동안 아무런 활동이 없으면 SnapCenter 로그아웃되며, 다시 로그인해야 합니다.  로그아웃 기간을 변경할 수 있습니다.
+
+* 5번 이상 잘못된 로그인을 시도하면 로그인이 일시적으로 비활성화됩니다.
+* SnapCenter Server와 ONTAP 간의 CA 인증서 인증을 지원합니다. https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/How_to_securely_connect_SnapCenter_with_ONTAP_using_CA_certificate["자세히 알아보기"] .
+* 무결성 검증 도구는 SnapCenter 서버와 플러그인에 추가되며, 새로 설치 및 업그레이드 작업 중에 제공된 모든 바이너리의 유효성을 검사합니다.
+
+
+
+
+== CA 인증 개요
+
+SnapCenter 서버 설치 프로그램은 설치 중에 중앙 집중식 SSL 인증서 지원을 활성화합니다.  서버와 플러그인 간의 보안 통신을 강화하기 위해 SnapCenter 고객이 제공한 공인 CA 인증서를 사용하도록 지원합니다.
+
+SnapCenter 서버와 해당 플러그인을 설치한 후 CA 인증서를 배포해야 합니다. 자세한 내용은 다음을 참조하세요. link:../install/reference_generate_CA_certificate_CSR_file.html["CA 인증서 CSR 파일 생성"] .
+
+VMware vSphere용 SnapCenter 플러그인에 대한 CA 인증서를 배포할 수도 있습니다. 자세한 내용은 다음을 참조하세요.  https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_create_and_import_certificates.html["인증서 생성 및 가져오기"^] .
+
+
+
+== 양방향 SSL 통신
+
+양방향 SSL 통신은 SnapCenter Server와 플러그인 간의 상호 통신을 보호합니다.
+
+
+
+== 인증서 기반 인증 개요
+
+인증서 기반 인증은 SnapCenter 플러그인 호스트에 액세스하려는 각 사용자의 진위성을 검증합니다.  사용자는 개인 키 없이 SnapCenter 서버 인증서를 내보내고 플러그인 호스트 신뢰할 수 있는 저장소로 가져와야 합니다.  인증서 기반 인증은 양방향 SSL 기능이 활성화된 경우에만 작동합니다.
+
+
+
+== 다중 요소 인증(MFA)
+
+MFA는 SAML(Security Assertion Markup Language)을 통해 타사 IdP(Identity Provider)를 사용하여 사용자 세션을 관리합니다.  이 기능은 기존 사용자 이름 및 비밀번호와 함께 TOTP, 생체 인식, 푸시 알림 등 여러 요소를 사용할 수 있는 옵션을 제공하여 인증 보안을 강화합니다.  또한, 고객은 자체 사용자 ID 공급자를 사용하여 포트폴리오 전반에 걸쳐 통합 사용자 로그인(SSO)을 얻을 수 있습니다.
+
+MFA는 SnapCenter 서버 UI 로그인에만 적용됩니다.  로그인은 IdP Active Directory Federation Services(AD FS)를 통해 인증됩니다.  AD FS에서 다양한 인증 요소를 구성할 수 있습니다.  SnapCenter 는 서비스 공급자이며 AD FS에서 SnapCenter 신뢰 당사자로 구성해야 합니다.  SnapCenter 에서 MFA를 활성화하려면 AD FS 메타데이터가 필요합니다.
+
+MFA를 활성화하는 방법에 대한 정보는 다음을 참조하세요.link:../install/enable_multifactor_authentication.html["다중 요소 인증 활성화"] .

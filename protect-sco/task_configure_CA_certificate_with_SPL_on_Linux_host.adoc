@@ -1,0 +1,121 @@
+---
+permalink: protect-sco/task_configure_CA_certificate_with_SPL_on_Linux_host.html 
+sidebar: sidebar 
+keywords: SnapCenter, SPL, Plug-in loader service, CA certificate, certificate 
+summary: Linux 호스트에서 SnapCenter 플러그인 Loader 서비스를 사용하여 CA 인증서 구성 
+---
+= Linux 호스트에서 SnapCenter 플러그인 Loader (SPL) 서비스를 사용하여 CA 인증서 구성
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 플러그인 Loader 서비스를 사용하여 SPL 키 저장소와 인증서의 비밀번호를 관리하고, CA 인증서를 구성하고, SPL 신뢰 저장소에 루트 또는 중간 인증서를 구성하고, SPL 신뢰 저장소에 CA 서명 키 쌍을 구성하여 설치된 디지털 인증서를 활성화해야 합니다.
+
+
+IMPORTANT: SPL은 '/var/opt/snapcenter/spl/etc'에 위치한 'keystore.jks' 파일을 신뢰 저장소와 키 저장소로 사용합니다.
+
+
+
+== 사용 중인 SPL 키 저장소 및 CA 서명 키 쌍의 별칭에 대한 비밀번호 관리
+
+*단계*
+
+. SPL 속성 파일에서 SPL 키 저장소 기본 비밀번호를 검색할 수 있습니다.
++
+이는 'SPL_KEYSTORE_PASS' 키에 해당하는 값입니다.
+
+. 키스토어 비밀번호를 변경하세요:
++
+ keytool -storepasswd -keystore keystore.jks
+. 키 저장소에 있는 개인 키 항목의 모든 별칭에 대한 비밀번호를 키 저장소에 사용된 비밀번호와 동일하게 변경합니다.
++
+ keytool -keypasswd -alias "<alias_name>" -keystore keystore.jks
++
+spl.properties 파일에서 SPL_KEYSTORE_PASS 키에 대해서도 동일하게 업데이트합니다.
+
+. 비밀번호를 변경한 후 서비스를 다시 시작하세요.
+
+
+
+NOTE: SPL 키 저장소의 비밀번호와 개인 키의 모든 관련 별칭 비밀번호는 동일해야 합니다.
+
+
+
+== SPL 신뢰 저장소에 루트 또는 중간 인증서 구성
+
+SPL 신뢰 저장소에 대한 개인 키 없이 루트 또는 중간 인증서를 구성해야 합니다.
+
+*단계*
+
+. SPL 키 저장소가 포함된 폴더로 이동합니다: _/var/opt/snapcenter/spl/etc_.
+. 'keystore.jks' 파일을 찾으세요.
+. 키 저장소에 추가된 인증서를 나열합니다.
++
+ keytool -list -v -keystore keystore.jks
+. 루트 또는 중간 인증서를 추가합니다.
++
+ keytool -import -trustcacerts -alias <AliasNameForCerticateToBeImported> -file /<CertificatePath> -keystore keystore.jks
+. 루트 또는 중간 인증서를 SPL 신뢰 저장소로 구성한 후 서비스를 다시 시작합니다.
+
+
+
+NOTE: 루트 CA 인증서를 추가한 다음 중간 CA 인증서를 추가해야 합니다.
+
+
+
+== SPL 신뢰 저장소에 CA 서명 키 쌍 구성
+
+CA 서명 키 쌍을 SPL 신뢰 저장소에 구성해야 합니다.
+
+*단계*
+
+. SPL 키 저장소 /var/opt/snapcenter/spl/etc가 포함된 폴더로 이동합니다.
+. 'keystore.jks' 파일을 찾으세요.
+. 키 저장소에 추가된 인증서를 나열합니다.
++
+ keytool -list -v -keystore keystore.jks
+. 개인 키와 공개 키를 모두 포함하는 CA 인증서를 추가합니다.
++
+ keytool -importkeystore -srckeystore <CertificatePathToImport> -srcstoretype pkcs12 -destkeystore keystore.jks -deststoretype JKS
+. 키스토어에 추가된 인증서를 나열합니다.
++
+ keytool -list -v -keystore keystore.jks
+. 키 저장소에 추가된 새 CA 인증서에 해당하는 별칭이 키 저장소에 포함되어 있는지 확인합니다.
+. CA 인증서에 추가된 개인 키 비밀번호를 키 저장소 비밀번호로 변경합니다.
++
+기본 SPL 키 저장소 비밀번호는 spl.properties 파일의 SPL_KEYSTORE_PASS 키 값입니다.
+
++
+ keytool -keypasswd -alias "<aliasNameOfAddedCertInKeystore>" -keystore keystore.jks
+. CA 인증서의 별칭 이름이 길고 공백이나 특수 문자("*",",")가 포함된 경우 별칭 이름을 간단한 이름으로 변경합니다.
++
+ keytool -changealias -alias "<OrignalAliasName>" -destalias "<NewAliasName>" -keystore keystore.jks
+. spl.properties 파일에 있는 키스토어에서 별칭 이름을 구성합니다.
++
+이 값을 SPL_CERTIFICATE_ALIAS 키에 대해 업데이트합니다.
+
+. CA 서명 키 쌍을 SPL 신뢰 저장소로 구성한 후 서비스를 다시 시작합니다.
+
+
+
+
+== SPL에 대한 인증서 해지 목록(CRL) 구성
+
+SPL에 대한 CRL을 구성해야 합니다.
+
+*이 작업에 관하여*
+
+* SPL은 미리 구성된 디렉토리에서 CRL 파일을 찾습니다.
+* SPL의 CRL 파일에 대한 기본 디렉토리는 _/var/opt/snapcenter/spl/etc/crl_입니다.
+
+
+*단계*
+
+. spl.properties 파일에서 기본 디렉토리를 SPL_CRL_PATH 키에 맞춰 수정하고 업데이트할 수 있습니다.
+. 이 디렉토리에 두 개 이상의 CRL 파일을 넣을 수 있습니다.
++
+수신 인증서는 각 CRL에 대해 검증됩니다.
+
+

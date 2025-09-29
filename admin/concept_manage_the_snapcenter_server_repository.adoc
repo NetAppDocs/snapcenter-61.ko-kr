@@ -1,0 +1,164 @@
+---
+permalink: admin/concept_manage_the_snapcenter_server_repository.html 
+sidebar: sidebar 
+keywords: SnapCenter Server 
+summary: SnapCenter 에서 수행되는 다양한 작업과 관련된 정보는 SnapCenter 서버 데이터베이스 저장소에 저장됩니다.  SnapCenter 서버를 데이터 손실로부터 보호하려면 저장소의 백업을 만들어야 합니다. 
+---
+= SnapCenter 서버 저장소 관리
+:allow-uri-read: 
+
+
+[role="lead"]
+SnapCenter 에서 수행되는 다양한 작업과 관련된 정보는 SnapCenter 서버 데이터베이스 저장소에 저장됩니다.  SnapCenter 서버를 데이터 손실로부터 보호하려면 저장소의 백업을 만들어야 합니다.
+
+SnapCenter 서버 저장소는 때때로 NSM 데이터베이스라고도 합니다.
+
+
+
+== SnapCenter 저장소 보호를 위한 전제 조건
+
+SnapCenter 저장소를 보호하려면 환경이 특정 전제 조건을 충족해야 합니다.
+
+* 스토리지 가상 머신(SVM) 연결 관리
++
+저장소 자격 증명을 구성해야 합니다.
+
+* 호스트 프로비저닝
++
+SnapCenter 저장소 호스트에는 최소한 하나의 NetApp 스토리지 디스크가 있어야 합니다.  SnapCenter 저장소 호스트에 NetApp 디스크가 없으면 디스크를 하나 만들어야 합니다.
+
++
+호스트 추가, SVM 연결 설정, 호스트 프로비저닝에 대한 자세한 내용은 설치 지침을 참조하세요.
+
+* iSCSI LUN 또는 VMDK 프로비저닝
++
+고가용성(HA) 구성의 경우 SnapCenter 서버 중 하나에서 iSCSI LUN이나 VMDK를 프로비저닝할 수 있습니다.
+
+
+
+
+
+== SnapCenter 저장소 백업
+
+SnapCenter 서버 저장소를 백업하면 데이터 손실로부터 보호하는 데 도움이 됩니다.  _Protect-SmRepository_ cmdlet을 실행하여 저장소를 백업할 수 있습니다.
+
+*이 작업에 관하여*
+
+_Protect-SmRepository_ cmdlet은 다음 작업을 수행합니다.
+
+* 리소스 그룹과 정책을 생성합니다.
+* SnapCenter 저장소에 대한 백업 일정을 생성합니다.
+
+
+*단계*
+
+. PowerShell을 실행합니다.
+. SnapCenter 서버 호스트에서 _Open-SmConnection_ cmdlet을 사용하여 세션을 설정한 다음 자격 증명을 입력합니다.
+. _Protect-SmRepository_ cmdlet과 필요한 매개변수를 사용하여 저장소를 백업합니다.
+
+
+
+
+== SnapCenter 저장소의 백업 보기
+
+_Get-SmRepositoryBackups_ cmdlet을 실행하면 SnapCenter Server 데이터베이스 저장소 백업 목록을 표시할 수 있습니다.
+
+저장소 백업은 _Protect-SmRepository_ cmdlet에 지정된 일정에 따라 생성됩니다.
+
+*단계*
+
+. PowerShell을 실행합니다.
+. 명령 프롬프트에서 다음 cmdlet을 입력한 다음 SnapCenter 서버에 연결하기 위한 자격 증명을 제공합니다. _Open-SMConnection_
+. _Get-SmRepositoryBackups_ cmdlet을 사용하여 사용 가능한 모든 SnapCenter 데이터베이스 백업을 나열합니다.
+
+
+
+
+== SnapCenter 데이터베이스 저장소 복원
+
+_Restore-SmRepositoryBackup_ cmdlet을 실행하여 SnapCenter 저장소를 복원할 수 있습니다.
+
+SnapCenter 저장소를 복원하는 경우, 복원 작업 중에는 저장소 데이터베이스에 액세스할 수 없으므로 실행 중인 다른 SnapCenter 작업에 영향을 미칩니다.
+
+*단계*
+
+. PowerShell을 실행합니다.
+. 명령 프롬프트에서 다음 cmdlet을 입력한 다음 SnapCenter 서버에 연결하기 위한 자격 증명을 제공합니다. _Open-SMConnection_
+. _Restore-SmRepositoryBackup_ cmdlet을 사용하여 저장소 백업을 복원합니다.
++
+다음 cmdlet은 iSCSI LUN이나 VMDK에 있는 백업에서 SnapCenter MySQL 데이터베이스 저장소를 복원합니다.
+
++
+[listing]
+----
+C:\PS>Restore-SmRepositoryBackup -BackupName MYSQL_DS_SC_Repository_mva-x3550-s09_09-15-2016_10.32.00.4445
+----
++
+다음 cmdlet은 iSCSI LUN에서 백업 파일이 실수로 삭제된 경우 SnapCenter MySQL 데이터베이스를 복원합니다.  VMDK의 경우 ONTAP 스냅샷에서 백업을 수동으로 복원합니다.
+
++
+[listing]
+----
+C:\PS>Restore-SmRepositoryBackup -BackupName MYSQL_DS_SC_Repository_mva-x3550-s09_09-15-2016_10.32.00.4445 -RestoreFileSystem
+----
+
+
+
+NOTE: 복원 작업을 수행한 후 저장소 백업을 검색하면 저장소 복원 작업을 수행하는 데 사용된 백업은 나열되지 않습니다.
+
+
+
+== SnapCenter 저장소 마이그레이션
+
+SnapCenter Server 데이터베이스 저장소를 기본 위치에서 다른 디스크로 마이그레이션할 수 있습니다.  더 많은 공간이 있는 디스크로 저장소를 옮기고 싶을 때 저장소를 마이그레이션할 수 있습니다.
+
+*단계*
+
+. Windows에서 MYSQL57 서비스를 중지합니다.
+. MySQL 데이터 디렉토리를 찾습니다.
++
+일반적으로 데이터 디렉터리는 C:\ProgramData\MySQL\MySQL Server 5.7\Data에서 찾을 수 있습니다.
+
+. MySQL 데이터 디렉토리를 새 위치(예: E:\Data\nsm)로 복사합니다.
+. 새 디렉토리를 마우스 오른쪽 버튼으로 클릭한 다음 *속성* > *보안*을 선택하여 네트워크 서비스 로컬 서버 계정을 새 디렉토리에 추가한 다음 해당 계정에 모든 권한을 할당합니다.
+. 원래 데이터베이스 디렉토리의 이름을 nsm_copy로 바꿉니다.
+. Windows 명령 프롬프트에서 _mklink_ 명령을 사용하여 심볼릭 디렉토리 링크를 만듭니다.
++
+`"mklink /d "C:\ProgramData\MySQL\MySQL Server 5.7\Data\nsm" "E:\Data\nsm" "`
+
+. Windows에서 MYSQL57 서비스를 시작합니다.
+. SnapCenter 에 로그인하여 저장소 항목을 확인하거나 MySQL 유틸리티에 로그인하여 새 저장소에 연결하여 데이터베이스 위치가 변경되었는지 확인합니다.
+. 원래의 이름이 바뀐 데이터베이스 저장소 디렉토리(nsm_copy)를 삭제합니다.
+
+
+
+
+== SnapCenter 저장소 비밀번호 재설정
+
+MySQL 서버 저장소 데이터베이스 비밀번호는 SnapCenter 4.2에서 SnapCenter 서버를 설치하는 동안 자동으로 생성됩니다.  이 자동 생성된 비밀번호는 SnapCenter 사용자에게 어떤 시점에서도 알려지지 않습니다.  저장소 데이터베이스에 접근하려면 비밀번호를 재설정해야 합니다.
+
+.시작하기 전에
+비밀번호를 재설정하려면 SnapCenter 관리자 권한이 있어야 합니다.
+
+*단계*
+
+. PowerShell을 실행합니다.
+. 명령 프롬프트에서 다음 명령을 입력한 다음 SnapCenter 서버에 연결하기 위한 자격 증명을 제공하세요: _Open-SMConnection_
+. 저장소 비밀번호 재설정: _Set-SmRepositoryPassword_
++
+다음 명령은 저장소 비밀번호를 재설정합니다.
+
++
+[listing]
+----
+
+Set-SmRepositoryPassword at command pipeline position 1
+Supply values for the following parameters:
+NewPassword: ********
+ConfirmPassword: ********
+Successfully updated the MySQL server password.
+----
+
+
+.관련 정보
+cmdlet과 함께 사용할 수 있는 매개변수와 해당 설명에 대한 정보는 _Get-Help command_name_을 실행하면 얻을 수 있습니다. 또는 다음을 참조할 수도 있습니다. https://docs.netapp.com/us-en/snapcenter-cmdlets/index.html["SnapCenter 소프트웨어 Cmdlet 참조 가이드"^] .

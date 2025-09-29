@@ -1,0 +1,266 @@
+---
+permalink: install/enable_multifactor_authentication_using_RestAPI_PowerShell_SCCLI.html 
+sidebar: sidebar 
+keywords: mfa, authentication, multifactor authentication 
+summary: Rest API, PowerShell, SCCLI 인터페이스를 사용하여 MFA를 관리할 수 있습니다. 
+---
+= Rest API, PowerShell 및 SCCLI를 사용하여 다중 인증 요소(MFA) 관리
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+MFA 로그인은 브라우저, REST API, PowerShell 및 SCCLI에서 지원됩니다.  MFA는 AD FS ID 관리자를 통해 지원됩니다.  GUI, REST API, PowerShell 및 SCCLI에서 MFA를 활성화, 비활성화하고 MFA를 구성할 수 있습니다.
+
+
+
+== AD FS를 OAuth/OIDC로 설정
+
+*Windows GUI 마법사를 사용하여 AD FS 구성*
+
+. *서버 관리자 대시보드* > *도구* > *ADFS 관리*로 이동합니다.
+. *ADFS* > *응용 프로그램 그룹*으로 이동합니다.
++
+.. *응용 프로그램 그룹*을 마우스 오른쪽 버튼으로 클릭합니다.
+.. *애플리케이션 그룹 추가*를 선택하고 *애플리케이션 이름*을 입력합니다.
+.. *서버 애플리케이션*을 선택하세요.
+.. *다음*을 클릭하세요.
+
+
+. *클라이언트 식별자*를 복사하세요.
++
+이것은 클라이언트 ID입니다.  ..  리디렉트 URL에 콜백 URL(SnapCenter 서버 URL)을 추가합니다.  .. *다음*을 클릭하세요.
+
+. *공유 비밀 생성*을 선택하세요.
++
+비밀 값을 복사합니다.  이것은 고객의 비밀입니다.  .. *다음*을 클릭하세요.
+
+. *요약* 페이지에서 *다음*을 클릭합니다.
++
+.. *완료* 페이지에서 *닫기*를 클릭합니다.
+
+
+. 새로 추가된 *응용 프로그램 그룹*을 마우스 오른쪽 버튼으로 클릭하고 *속성*을 선택합니다.
+. 앱 속성에서 *애플리케이션 추가*를 선택합니다.
+. *애플리케이션 추가*를 클릭하세요.
++
+웹 API를 선택하고 *다음*을 클릭합니다.
+
+. 웹 API 구성 페이지에서 이전 단계에서 만든 SnapCenter 서버 URL과 클라이언트 식별자를 식별자 섹션에 입력합니다.
++
+.. *추가*를 클릭하세요.
+.. *다음*을 클릭하세요.
+
+
+. *액세스 제어 정책 선택* 페이지에서 요구 사항에 따라 제어 정책을 선택합니다(예: 모든 사람 허용 및 MFA 요구) 그리고 *다음*을 클릭합니다.
+. *애플리케이션 권한 구성* 페이지에서 기본적으로 openid가 범위로 선택되어 있으므로 *다음*을 클릭합니다.
+. *요약* 페이지에서 *다음*을 클릭합니다.
++
+*완료* 페이지에서 *닫기*를 클릭합니다.
+
+. *샘플 애플리케이션 속성* 페이지에서 *확인*을 클릭합니다.
+. 권한 부여 서버(AD FS)에서 발행하고 리소스에서 사용하도록 의도된 JWT 토큰입니다.
++
+이 토큰의 'aud' 또는 청중 클레임은 리소스 또는 웹 API의 식별자와 일치해야 합니다.
+
+. 선택한 WebAPI를 편집하고 콜백 URL(SnapCenter 서버 URL)과 클라이언트 식별자가 올바르게 추가되었는지 확인하세요.
++
+OpenID Connect를 구성하여 사용자 이름을 클레임으로 제공합니다.
+
+. 서버 관리자의 오른쪽 상단에 있는 *도구* 메뉴 아래에 있는 *AD FS 관리* 도구를 엽니다.
++
+.. 왼쪽 사이드바에서 *애플리케이션 그룹* 폴더를 선택합니다.
+.. 웹 API를 선택하고 *편집*을 클릭합니다.
+.. 발급 변환 규칙 탭으로 이동
+
+
+. *규칙 추가*를 클릭합니다.
++
+.. 클레임 규칙 템플릿 드롭다운에서 *LDAP 속성을 클레임으로 보내기*를 선택합니다.
+.. *다음*을 클릭하세요.
+
+
+. *청구 규칙* 이름을 입력하세요.
++
+.. 속성 저장소 드롭다운에서 *Active Directory*를 선택합니다.
+.. *LDAP 속성* 드롭다운에서 *사용자 주체 이름*을 선택하고 *송신 클레임 유형* 드롭다운에서 *UPN*을 선택합니다.
+.. *마침*을 클릭하세요.
+
+
+
+
+
+
+== PowerShell 명령을 사용하여 애플리케이션 그룹 만들기
+
+PowerShell 명령을 사용하여 애플리케이션 그룹과 웹 API를 만들고 범위와 클레임을 추가할 수 있습니다.  이러한 명령은 자동화된 스크립트 형식으로 제공됩니다.  자세한 내용은 <KB 문서 링크>를 참조하세요.
+
+. 다음 명령을 사용하여 AD FS에서 새 애플리케이션 그룹을 만듭니다.
++
+`New-AdfsApplicationGroup -Name $ClientRoleIdentifier -ApplicationGroupIdentifier $ClientRoleIdentifier`
+
++
+`ClientRoleIdentifier`귀하의 애플리케이션 그룹 이름
+
++
+`redirectURL`승인 후 리디렉션을 위한 유효한 URL
+
+. AD FS 서버 애플리케이션을 만들고 클라이언트 비밀번호를 생성합니다.
++
+`Add-AdfsServerApplication -Name "$ClientRoleIdentifier - Server app" -ApplicationGroupIdentifier` `$ClientRoleIdentifier -RedirectUri $redirectURL  -Identifier $identifier -GenerateClientSecret`
+
+. ADFS 웹 API 애플리케이션을 만들고 사용해야 하는 정책 이름을 구성합니다.
++
+`$identifier = (New-Guid).Guid`
+
++
+`Add-AdfsWebApiApplication -ApplicationGroupIdentifier $ClientRoleIdentifier  -Name "App Web API"`
+
++
+`-Identifier $identifier -AccessControlPolicyName "Permit everyone"`
+
+. 다음 명령의 출력에서 클라이언트 ID와 클라이언트 비밀번호를 얻으세요. 이는 한 번만 표시됩니다.
++
+`"client_id = $identifier"`
+
++
+`"client_secret: "$($ADFSApp.ClientSecret)`
+
+. AD FS 애플리케이션에 allatclaims 및 openid 권한을 부여합니다.
++
+`Grant-AdfsApplicationPermission -ClientRoleIdentifier $identifier -ServerRoleIdentifier $identifier -ScopeNames @('openid')`
+
++
+`$transformrule = @"`
+
++
+`@RuleTemplate = "LdapClaims"`
+
++
+`@RuleName = "AD User properties and Groups"`
+
++
+`c:[Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/windowsaccountname", Issuer ==`
+
++
+`"AD AUTHORITY"]`
+
++
+`=> issue(store = "Active Directory", types = ("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"), query = ";userPrincipalName;{0}", param = c.Value);`
+
++
+`"@`
+
+. 변환 규칙 파일을 작성합니다.
++
+`$transformrule |Out-File -FilePath .\issueancetransformrules.tmp -force -Encoding ascii`
+`$relativePath = Get-Item .\issueancetransformrules.tmp`
+
+. 외부 파일을 사용하여 웹 API 애플리케이션의 이름을 지정하고 발급 변환 규칙을 정의합니다.
++
+`Set-AdfsWebApiApplication -Name "$ClientRoleIdentifier - Web API" -TargetIdentifier`
+
++
+`$identifier -Identifier $identifier,$redirectURL -IssuanceTransformRulesFile`
+
++
+`$relativePath`
+
+
+
+
+
+== 액세스 토큰 만료 시간 업데이트
+
+PowerShell 명령을 사용하여 액세스 토큰 만료 시간을 업데이트할 수 있습니다.
+
+*이 작업에 관하여*
+
+* 액세스 토큰은 사용자, 클라이언트, 리소스의 특정 조합에만 사용할 수 있습니다.  액세스 토큰은 취소할 수 없으며 만료일까지 유효합니다.
+* 기본적으로 액세스 토큰의 만료 시간은 60분입니다.  이 최소 만료 시간은 충분하고 확장 가능합니다.  진행 중인 비즈니스에 중요한 작업을 피하기 위해 충분한 가치를 제공해야 합니다.
+
+
+*단계*
+
+애플리케이션 그룹 WebApi에 대한 액세스 토큰 만료 시간을 업데이트하려면 AD FS 서버에서 다음 명령을 사용합니다.
+
++ 
+`Set-AdfsWebApiApplication -TokenLifetime 3600 -TargetName "<Web API>"`
+
+
+
+== AD FS에서 베어러 토큰 가져오기
+
+REST 클라이언트(예: Postman)에서 아래에 언급된 매개변수를 입력하면 사용자 자격 증명을 입력하라는 메시지가 표시됩니다.  또한, 소지자 토큰을 받으려면 2차 인증(본인이 소유한 것 및 본인인 것)을 입력해야 합니다.
+
++ 베어러 토큰의 유효성은 애플리케이션별로 AD FS 서버에서 구성할 수 있으며 기본 유효 기간은 60분입니다.
+
+|===
+
+
+| 필드 | 가치 
+
+
+ a| 
+보조금 유형
+ a| 
+승인 코드
+
+
+
+ a| 
+콜백 URL
+ a| 
+콜백 URL이 없으면 애플리케이션의 기본 URL을 입력하세요.
+
+
+
+ a| 
+인증 URL
+ a| 
+[adfs-도메인-이름]/adfs/oauth2/authorize
+
+
+
+ a| 
+액세스 토큰 URL
+ a| 
+[adfs-도메인-이름]/adfs/oauth2/토큰
+
+
+
+ a| 
+클라이언트 ID
+ a| 
+AD FS 클라이언트 ID를 입력하세요
+
+
+
+ a| 
+클라이언트 비밀번호
+ a| 
+AD FS 클라이언트 비밀번호를 입력하세요
+
+
+
+ a| 
+범위
+ a| 
+오픈아이디
+
+
+
+ a| 
+클라이언트 인증
+ a| 
+기본 AUTH 헤더로 보내기
+
+
+
+ a| 
+의지
+ a| 
+*고급 옵션* 탭에서 JWT 토큰의 "aud" 값으로 제공되는 콜백 URL과 동일한 값을 가진 리소스 필드를 추가합니다.
+
+|===

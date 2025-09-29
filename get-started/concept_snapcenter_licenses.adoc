@@ -1,0 +1,105 @@
+---
+permalink: get-started/concept_snapcenter_licenses.html 
+sidebar: sidebar 
+keywords: licenses, FAS, AFF, ASA, SnapMirror, SnapVault, SnapRestore, FlexClone, SMBR, Single Mailbox Recovery 
+summary: SnapCenter 데이터 보호 작업을 수행하기 위해 여러 개의 라이선스가 필요합니다. 설치하는 SnapCenter 라이선스 유형은 스토리지 환경과 사용하려는 기능에 따라 달라집니다. 
+---
+= SnapCenter 에 필요한 라이센스
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SnapCenter 애플리케이션, 데이터베이스, 파일 시스템 및 가상 머신의 데이터 보호를 위해 여러 라이선스가 필요합니다. 설치하는 SnapCenter 라이선스 유형은 스토리지 환경과 사용하려는 기능에 따라 달라집니다.
+
+|===
+| 특허 | 필요한 경우 
+
+
+ a| 
+SnapCenter Standard 컨트롤러 기반
+ a| 
+FAS, AFF, ASA 에 필요함
+
+SnapCenter Standard 라이선스는 컨트롤러 기반 라이선스이며 NetApp ONTAP One의 일부로 포함됩니다.  SnapManager Suite 라이선스가 있는 경우 SnapCenter Standard 라이선스 권한도 제공됩니다.  FAS, AFF 또는 ASA 스토리지를 사용하여 SnapCenter 체험판으로 설치하려는 경우 영업 담당자에게 문의하여 NetApp ONTAP One 평가판 라이선스를 받을 수 있습니다.
+
+NetApp ONTAP One에 포함된 라이센스에 대한 정보는 다음을 참조하세요. https://docs.netapp.com/us-en/ontap/system-admin/manage-licenses-concept.html#licenses-included-with-ontap-one["NetApp ONTAP One에 포함된 라이센스"] .
+
+
+NOTE: SnapCenter 데이터 보호 번들의 일부로도 제공됩니다.  A400 이상을 구매한 경우 데이터 보호 번들을 구매해야 합니다.
+
+
+
+ a| 
+SnapMirror 또는 SnapVault
+ a| 
+ONTAP
+
+SnapCenter 에서 복제가 활성화된 경우 SnapMirror 또는 SnapVault 라이선스가 필요합니다.
+
+
+
+ a| 
+SnapRestore
+ a| 
+백업을 복원하고 확인하는 데 필요합니다.
+
+1차 스토리지 시스템에서
+
+* SnapVault 대상 시스템에서 원격 검증을 수행하고 백업에서 복원하는 데 필요합니다.
+* SnapMirror 대상 시스템에서 원격 검증을 수행하는 데 필요합니다.
+
+
+
+
+ a| 
+FlexClone
+ a| 
+데이터베이스 복제 및 검증 작업에 필요합니다.
+
+1차 및 2차 저장 시스템에서
+
+* SnapVault 대상 시스템에서 보조 볼트 백업으로부터 복제본을 생성하는 데 필요합니다.
+* SnapMirror 대상 시스템에서 보조 SnapMirror 백업으로부터 복제본을 생성하는 데 필요합니다.
+
+
+
+
+ a| 
+프로토콜 라이센스
+ a| 
+* LUN에 대한 iSCSI 또는 FC 라이센스
+* SMB 주식에 대한 CIFS 라이선스
+* NFS 유형 VMDK에 대한 NFS 라이센스
+* VMFS 유형 VMDK에 대한 iSCSI 또는 FC 라이센스
+
+
+소스 볼륨을 사용할 수 없는 경우 SnapMirror 대상 시스템에서 데이터를 제공하는 데 필요합니다.
+
+
+
+ a| 
+SnapCenter Standard 라이선스(선택 사항)
+ a| 
+2차 목적지
+
+
+NOTE: 보조 대상에 SnapCenter Standard 라이선스를 추가하는 것이 권장되지만 필수는 아닙니다.  보조 대상에서 SnapCenter Standard 라이선스가 활성화되지 않은 경우 장애 조치 작업을 수행한 후 SnapCenter 사용하여 보조 대상의 리소스를 백업할 수 없습니다.  그러나 복제 및 검증 작업을 수행하려면 보조 대상에 FlexClone 라이선스가 필요합니다.
+
+
+
+ a| 
+단일 사서함 복구(SMBR) 라이선스
+ a| 
+Exchange용 SnapCenter 플러그인을 사용하여 Microsoft Exchange Server 데이터베이스와 SMBR(단일 사서함 복구)을 관리하는 경우, 사용자 사서함에 따라 별도로 구매해야 하는 SMBR에 대한 추가 라이선스가 필요합니다.
+
+NetApp® Single Mailbox Recovery는 2023년 5월 12일에 제공이 종료되었습니다(EOA).  자세한 내용은 다음을 참조하세요.link:https://mysupport.netapp.com/info/communications/ECMLP2885729.html["CPC-00507"] .  NetApp 2020년 6월 24일에 출시된 마케팅 부품 번호를 통해 사서함 용량, 유지 관리 및 지원을 구매한 고객을 지원 자격 기간 동안 계속 지원할 것입니다.
+
+NetApp Single Mailbox Recovery는 Ontrack에서 제공하는 파트너 제품입니다.  Ontrack PowerControls는 NetApp Single Mailbox Recovery와 유사한 기능을 제공합니다.  고객은 2023년 5월 12일 EOA 날짜 이후 세분화된 사서함 복구를 위해 Ontrack(licensingteam@ontrack.com)을 통해 새로운 Ontrack PowerControls 소프트웨어 라이선스와 Ontrack PowerControls 유지 관리 및 지원 갱신을 구매할 수 있습니다.
+
+|===
+
+NOTE: SnapCenter Advanced 및 SnapCenter NAS File Services 라이선스는 더 이상 제공되지 않습니다.  Amazon FSx for NetApp ONTAP, ONTAP Select, Cloud Volumes ONTAP 및 Azure NetApp Files 더 이상 표준 라이선스 및 용량 기반 라이선스가 필요하지 않습니다.
+
+SnapCenter 라이선스를 하나 이상 설치해야 합니다.  라이센스를 추가하는 방법에 대한 정보는 다음을 참조하세요.link:../install/concept_snapcenter_standard_controller_based_licenses.html["SnapCenter Standard 컨트롤러 기반 라이선스 추가"] .

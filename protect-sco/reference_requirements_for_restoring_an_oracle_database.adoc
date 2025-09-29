@@ -1,0 +1,35 @@
+---
+permalink: protect-sco/reference_requirements_for_restoring_an_oracle_database.html 
+sidebar: sidebar 
+keywords:  
+summary: Oracle 데이터베이스를 복원하기 전에 필수 구성 요소가 완료되었는지 확인해야 합니다. 
+---
+= Oracle 데이터베이스 복원을 위한 요구 사항
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Oracle 데이터베이스를 복원하기 전에 필수 구성 요소가 완료되었는지 확인해야 합니다.
+
+* 복구 및 복구 전략을 정의했어야 합니다.
+* 스냅샷을 미러 또는 볼트에 복제하는 경우 SnapCenter 관리자가 소스 볼륨과 대상 볼륨 모두에 대한 스토리지 가상 머신(SVM)을 할당했어야 합니다.
+* 백업의 일부로 보관 로그가 정리되는 경우, 필요한 보관 로그 백업을 수동으로 마운트해야 합니다.
+* VMDK(가상 머신 디스크)에 있는 Oracle 데이터베이스를 복원하려면 복제된 VMDK를 할당하는 데 필요한 수의 여유 슬롯이 게스트 머신에 있는지 확인해야 합니다.
+* 해당 데이터베이스에 대해 보조 보호가 활성화된 경우 해당 데이터베이스에 속한 모든 데이터 볼륨과 보관 로그 볼륨이 보호되는지 확인해야 합니다.
+* 제어 파일이나 전체 데이터베이스 복원을 수행하려면 RAC One Node 데이터베이스가 "nomount" 상태인지 확인해야 합니다.
+* NFS 환경에 ASM 데이터베이스 인스턴스가 있는 경우 asm_diskstring 매개변수에 정의된 기존 경로에 ASM 디스크 경로 _/var/opt/snapcenter/scu/clones/*/*_를 추가해야 복구 작업의 일부로 ASM 로그 백업을 성공적으로 마운트할 수 있습니다.
+* asm_diskstring 매개변수에서 ASMFD를 사용하는 경우 _AFD:*_를 구성해야 하고, ASMLIB를 사용하는 경우 _ORCL:*_를 구성해야 합니다.
++
+
+NOTE: asm_diskstring 매개변수를 편집하는 방법에 대한 자세한 내용은 다음을 참조하세요. https://kb.netapp.com/Advice_and_Troubleshooting/Data_Protection_and_Security/SnapCenter/Disk_paths_are_not_added_to_the_asm_diskstring_database_parameter["asm_diskstring에 디스크 경로를 추가하는 방법"^]
+
+* Oracle 데이터베이스에 대해 OS 인증을 비활성화하고 Oracle 데이터베이스 인증을 활성화한 경우, 해당 데이터베이스의 데이터 파일과 제어 파일을 복원하려는 경우, ASM 데이터베이스가 아닌 경우 _$ORACLE_HOME/network/admin_에 있는 *listener.ora* 파일에서 정적 리스너를 구성해야 하고, ASM 데이터베이스의 경우 _$GRID_HOME/network/admin_에 있는 *listener.ora* 파일에서 정적 리스너를 구성해야 합니다.
+* 데이터베이스 크기가 테라바이트(TB)인 경우 Set-SmConfigSettings 명령을 실행하여 SCORestoreTimeout 매개변수 값을 늘려야 합니다.
+* vCenter에 필요한 모든 라이선스가 설치되고 최신 상태인지 확인해야 합니다.
++
+라이센스가 설치되지 않았거나 최신이 아닌 경우 경고 메시지가 표시됩니다.  경고를 무시하고 계속 진행하면 RDM에서 복원이 실패합니다.
+
+* LUN이 iSCSI와 FC의 혼합 프로토콜로 구성된 iGroup을 사용하여 AIX 호스트에 매핑되지 않았는지 확인해야 합니다. 자세한 내용은 다음을 참조하세요.  https://kb.netapp.com/mgmt/SnapCenter/SnapCenter_Plug-in_for_Oracle_operations_fail_with_error_Unable_to_discover_the_device_for_LUN_LUN_PATH["LUN에 대한 장치를 검색할 수 없습니다. 오류가 발생하여 작업이 실패합니다."^] .
+

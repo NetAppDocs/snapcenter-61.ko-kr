@@ -1,0 +1,28 @@
+---
+section: get-started
+title: 시작하기
+entries:
+- title: SnapCenter software 에 대해 알아보세요
+  entries:
+  - title: 개요
+    url: "/get-started/concept_snapcenter_overview.html"
+  - title: 보안 및 인증
+    url: "/get-started/reference_data_security.html"
+  - title: 역할 기반 액세스 제어
+    url: "/get-started/rbac-snapcenter.html"
+  - title: 재해 복구
+    url: "/get-started/concept_disaster_recovery.html"
+  - title: 라이센스
+    url: "/get-started/concept_snapcenter_licenses.html"
+  - title: SnapMirror 액티브 싱크
+    url: "/get-started/snapmirror-active-sync-snapcenter.html"
+  - title: 데이터 보호의 핵심 개념
+    url: "/get-started/concept_resources_resource_groups_and_policies.html"
+  - title: 지원되는 스토리지 시스템 및 애플리케이션
+    url: "/get-started/reference_supported_storage_systems_and_applications.html"
+  - title: 인증 방법
+    url: "/get-started/concept_authentication_methods_for_your_credentials.html"
+- title: ASA r2 시스템에 지원되는 SnapCenter 작업
+  url: "/get-started/learn-about-snapcenter-support-for-asa-r2-systems.html"
+- title: 빠른 시작
+  url: "/get-started/quick-start-snapcenter.html"
