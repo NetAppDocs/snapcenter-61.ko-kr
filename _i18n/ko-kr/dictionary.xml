@@ -3310,7 +3310,6 @@
   <block id="f78fb51edae6a69d5e1e911a2b6fc268" category="cell">포트 번호</block>
   <block id="888a77f5ac0748b6c8001822417df8b6" category="cell">규약</block>
   <block id="02674a4ef33e11c879283629996c8ff8" category="cell">방향</block>
-  <block id="ed00b70cc595a411eff2cc42510a291f" category="paragraph">SnapCenter 포트</block>
   <block id="202ed3792e2cfa7318b12ead83763c37" category="paragraph">8146</block>
   <block id="0e8433f9a404f1f3ba601c14b026d321" category="paragraph">HTTPS</block>
   <block id="abd4328c725637aabedbd02d3b7ffd40" category="paragraph">양방향</block>
@@ -9558,4 +9557,5 @@
   <block id="bdd6d606b70db547418beb7cef6dd4c3" category="list-text">키를 사용하여 Microsoft SQL Server 리소스 검색</block>
   <block id="88d9e24753477cfb09f25b21c0a59b9e" category="paragraph">SnapCenter 스냅샷 작업을 완료한 후 SnapMirror 와 SnapVault 에 대한 업데이트를 수행합니다. SnapMirror 및 SnapVault 업데이트는 SnapCenter 작업의 일부로 수행됩니다. SnapMirror 활성 동기화를 사용하는 경우 SnapMirror 활성 동기화와 비동기 관계 모두에 기본 SnapMirror 또는 SnapVault 일정을 사용하세요.</block>
   <block id="ea1c96f839915f73d25b910bbc92b734" category="list-text">NetApp 백업 및 복구 통합을 사용하여 ONTAP FAS, AFF 또는 ASA 기본 및 보조 시스템에 있는 데이터를 클라우드의 개체 및 아카이브 스토리지로 보호합니다.</block>
+  <block id="e6f36a956625505e0a3733e3e0073fa0" category="paragraph">SnapCenter 웹 포트</block>
 </blocks>
