@@ -136,4 +136,10 @@ NOTE: 이 기능은 ESX 5.5i 이전 릴리스에서는 지원되지 않습니다
 
 Microsoft 클러스터의 노드 간에 저장소를 공유하기 위해 FC RDM LUN을 사용하려면 먼저 공유 쿼럼 디스크와 공유 저장소 디스크를 만든 다음, 클러스터의 두 가상 머신에 이를 추가해야 합니다.
 
-공유 디스크는 Windows용 플러그인을 사용하여 생성되지 않습니다.  클러스터의 각 가상 머신에 공유 LUN을 만든 다음 추가해야 합니다. 자세한 내용은 다음을 참조하세요. https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/6-7/setup-for-failover-clustering-and-microsoft-cluster-service.html["물리적 호스트에 걸쳐 클러스터 가상 머신"^] .
+공유 디스크는 Plug-in for Windows를 사용하여 생성되지 않습니다. 공유 LUN을 생성한 다음 클러스터의 각 가상 머신에 추가해야 합니다.
+
+
+
+=== 관련 정보
+
+ https://techdocs.broadcom.com/["Broadcom 기술 문서"^]를 참조하여 물리적 호스트에 걸쳐 가상 머신을 클러스터링하고 Microsoft 클러스터용 공유 FC RDM LUN을 생성하는 방법에 대한 문서를 검색하십시오.
